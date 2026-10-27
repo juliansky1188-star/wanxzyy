@@ -236,13 +236,18 @@ body.tools-mode #proc,body.tools-mode #download{display:none!important}
 @media(max-width:520px){.tool-library-head{align-items:flex-start;flex-direction:column}.tool-library-head h2{font-size:23px}.tool-library-grid{grid-template-columns:1fr}.tool-launch-card{padding:16px}.tool-modal{padding:9px;align-items:end}.tool-modal-panel{max-height:91dvh;border-radius:20px}.tool-modal-head{padding:17px 16px 14px}.tool-modal-head h2{font-size:19px}.tool-modal-content{padding:10px}.tool-modal-content .card{padding:14px}}
 
 
-/* Hardware-only build: hide all FFmpeg command/template/software controls. */
-#ffEngine,#ffLoad,#ffTpl,#ffTplDesc,#ffPreset,#ffManual,#ffCmd,#ffRecent,.ff-label[for="ffTpl"],.ff-label[for="ffCmd"],.ff-cmdwrap,.ff-manual-toggle {display:none!important}
+/* Hardware-only build: hide FFmpeg command/template controls; expose configurable options. */
+#ffEngine,#ffLoad,#ffTpl,#ffTplDesc,#ffManual,#ffCmd,#ffRecent,.ff-label[for="ffTpl"],.ff-label[for="ffCmd"],.ff-cmdwrap,.ff-manual-toggle {display:none!important}
 #ffCard .tool-intro{margin-bottom:12px}
 #ffFiles{max-width:100%}
 #ffCard .ff-actions .ff-run{font-size:15px}
 #ffCard .ff-prefix{display:none!important}
-.ff-label[for="ffTpl"],.ff-label[for="ffPreset"],.ff-manual-toggle,.ff-cmdwrap {display:none!important}
+.ff-label[for="ffTpl"],.ff-manual-toggle,.ff-cmdwrap {display:none!important}
+#ff1080Config .ff-label[for="ffPreset"]{display:block!important}
+#ffPreset{display:block!important}
+#ff1080Config .ff-label[for="ffBitrate"]{display:block!important}
+#ffBitrate{display:block!important}
+@media(max-width:520px){#ffCard .tool-file-pick{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:10px}#ffCard .tool-file-pick span:nth-child(2){min-width:0;width:100%}#ffCard .tool-file-pick input{grid-column:2;display:block;width:100%;max-width:100%;min-width:0;font-size:12px}#ffCard .tool-file-pick small{overflow-wrap:anywhere;word-break:normal}#ffCard .ff-config{min-width:0}#ffCard .ff-select{min-width:0;max-width:100%}}
 #ff1080Config{display:block!important}
 #ff1080Config .ff-label[for="ffBitrate"]{display:block!important}
 
@@ -489,7 +494,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <select class="ff-select" id="ffTpl"></select>
     <p class="tool-note" id="ffTplDesc"></p>
     <div class="ff-config" id="ff1080Config" hidden>
-      <label class="ff-label" for="ffPreset" hidden>Preset software (tidak digunakan)</label>
+      <label class="ff-label" for="ffPreset">Preferensi preset (ultrafast–placebo)</label>
       <select class="ff-select" id="ffPreset">
         <option value="ultrafast">ultrafast — paling cepat, file cenderung lebih besar</option>
         <option value="superfast">superfast</option>
@@ -502,21 +507,10 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
         <option value="veryslow">veryslow — paling lambat, kompresi lebih efisien</option>
         <option value="placebo">placebo — sangat lambat, biasanya tidak sepadan</option>
       </select>
-      <label class="ff-label" for="ffBitrate">Bitrate video</label>
-      <select class="ff-select" id="ffBitrate">
-        <option value="6">6 Mbps</option>
-        <option value="8">8 Mbps</option>
-        <option value="10">10 Mbps</option>
-        <option value="12">12 Mbps</option>
-        <option value="15">15 Mbps</option>
-        <option value="17" selected>17 Mbps</option>
-        <option value="20">20 Mbps</option>
-        <option value="25">25 Mbps</option>
-        <option value="30">30 Mbps</option>
-        <option value="35">35 Mbps</option>
-        <option value="40">40 Mbps</option>
-      </select>
-      <p class="tool-note" id="ffHwNote">Mode 1080p60 meminta hardware encoder lewat WebCodecs. Preset x264 hanya berlaku di FFmpeg software dan tidak dapat diterapkan ke encoder hardware. WebCodecs tidak menjamin driver benar-benar memakai GPU dan tidak menyediakan kontrol minrate/maxrate seperti FFmpeg.</p>
+      <label class="ff-label" for="ffBitrate">Bitrate video (Mbps)</label>
+      <input class="ff-select" id="ffBitrate" type="number" inputmode="decimal" min="0.1" max="200" step="0.1" value="17" placeholder="Contoh: 17 atau 17.5" aria-describedby="ffBitrateHelp">
+      <p class="tool-note" id="ffBitrateHelp">Isi bebas, misalnya 1 · 1.5 · 2 · 2.5 · 17 Mbps. Gunakan titik untuk angka desimal.</p>
+      <p class="tool-note" id="ffHwNote">Catatan penting: pilihan preset ultrafast–placebo ditampilkan agar bisa dipilih, tetapi preset x264 tidak didukung encoder hardware WebCodecs sehingga tidak mengubah kecepatan/kompresi pada jalur ini. Bitrate adalah target; WebCodecs tidak menyediakan kontrol minrate/maxrate seperti FFmpeg.</p>
     </div>
     <label class="ff-manual-toggle"><input type="checkbox" id="ffManual" checked> Aktifkan edit perintah manual</label>
     <label class="ff-label" for="ffCmd">Perintah</label>
@@ -877,7 +871,7 @@ function refreshConfiguredCommand(){
   renderTemplate();
 }
 el.ffPreset.addEventListener("change",refreshConfiguredCommand);
-el.ffBitrate.addEventListener("change",refreshConfiguredCommand);
+el.ffBitrate.addEventListener("input",refreshConfiguredCommand);
 el.ffManual.addEventListener("change",()=>{el.ffCmd.readOnly=!el.ffManual.checked});
 
 el.ffTpl.addEventListener("change",()=>{
@@ -977,7 +971,7 @@ async function runHardware1080(){
       throw new Error("Konversi hardware tidak valid. "+(discarded||"Codec atau format input tidak didukung."));
     }
     addLog("Output: MP4 H.264/AVC, 1080×1920, 60 FPS, target "+rate+" Mbps.");
-    addLog("Preset pilihan: "+preset+". Catatan: preset x264 hanya berlaku untuk encoder software; jalur hardware tidak punya padanan preset yang sama, jadi pilihan ini tidak mengubah encoder hardware.");
+    addLog("Preset yang dipilih di UI: "+preset+". Catatan: preset x264 tidak diterapkan pada jalur hardware WebCodecs; pilihan ini tidak mengubah encoder fisik.");
     addLog("Audio: dipertahankan bila format sumber kompatibel; library dapat mentranscode bila diperlukan.");
     addLog("Memulai encoding. Jika hardware encoder tidak didukung, proses akan menampilkan error bila browser menolak konfigurasi.");
     flushLog();setStatus("Encoding 1080p60 melalui WebCodecs…");setBar(3);
