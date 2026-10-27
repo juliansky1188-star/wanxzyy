@@ -490,31 +490,17 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <label class="tool-file-pick" for="ffFiles"><span class="tool-file-icon">＋</span><span><b id="ffFilesName">Pilih satu video</b><small>MP4, MOV, WebM, dan format video yang didukung browser</small></span><input id="ffFiles" type="file" accept="video/*,audio/*,image/*,.mp4,.mov,.mkv,.webm,.avi,.m4v,.m4a,.mp3,.wav,.aac,.gif,.jpg,.jpeg,.png"></label>
     <div class="ff-chips" id="ffChips"></div>
     <p class="tool-note" id="ffMemNote" hidden></p>
-    <label class="ff-label" for="ffTpl">Template perintah</label>
-    <select class="ff-select" id="ffTpl"></select>
-    <p class="tool-note" id="ffTplDesc"></p>
+    <div hidden><label class="ff-label" for="ffTpl">Template perintah</label><select class="ff-select" id="ffTpl"></select><p class="tool-note" id="ffTplDesc"></p></div>
     <div class="ff-config" id="ff1080Config" hidden>
-      <label class="ff-label" for="ffPreset">Preferensi preset (ultrafast–placebo)</label>
-      <select class="ff-select" id="ffPreset">
-        <option value="ultrafast">ultrafast — paling cepat, file cenderung lebih besar</option>
-        <option value="superfast">superfast</option>
-        <option value="veryfast">veryfast</option>
-        <option value="faster">faster</option>
-        <option value="fast">fast</option>
-        <option value="medium" selected>medium</option>
-        <option value="slow">slow</option>
-        <option value="slower">slower</option>
-        <option value="veryslow">veryslow — paling lambat, kompresi lebih efisien</option>
-        <option value="placebo">placebo — sangat lambat, biasanya tidak sepadan</option>
-      </select>
+      <label class="ff-label">Resize filter</label>
+      <div class="ff-select" style="display:block;min-height:auto;padding:12px 14px">Lanczos3 (WebGL2 GPU shader)</div>
+      <p class="tool-note">Lanczos dipakai untuk resize ke 1080×1920 sebelum encoding hardware. WebCodecs tidak punya preset x264 seperti ultrafast/slow/placebo, jadi preset software tidak ditampilkan.</p>
       <label class="ff-label" for="ffBitrate">Bitrate video (Mbps)</label>
       <input class="ff-select" id="ffBitrate" type="number" inputmode="decimal" min="0.1" max="200" step="0.1" value="17" placeholder="Contoh: 17 atau 17.5" aria-describedby="ffBitrateHelp">
       <p class="tool-note" id="ffBitrateHelp">Isi bebas, misalnya 1 · 1.5 · 2 · 2.5 · 17 Mbps. Gunakan titik untuk angka desimal.</p>
-      <p class="tool-note" id="ffHwNote">Catatan penting: pilihan preset ultrafast–placebo ditampilkan agar bisa dipilih, tetapi preset x264 tidak didukung encoder hardware WebCodecs sehingga tidak mengubah kecepatan/kompresi pada jalur ini. Bitrate adalah target; WebCodecs tidak menyediakan kontrol minrate/maxrate seperti FFmpeg.</p>
+      <p class="tool-note" id="ffHwNote">Bitrate adalah target encoder, bukan jaminan angka konstan per detik. Encoder hardware mengatur detail kompresinya sendiri.</p>
     </div>
-    <label class="ff-manual-toggle"><input type="checkbox" id="ffManual" checked> Aktifkan edit perintah manual</label>
-    <label class="ff-label" for="ffCmd">Perintah</label>
-    <div class="ff-cmdwrap"><span class="ff-prefix">ffmpeg ▸</span><textarea class="ff-cmd" id="ffCmd" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="-i in1.mp4 -c copy out.mp4"></textarea></div>
+    <div hidden><label class="ff-manual-toggle"><input type="checkbox" id="ffManual" checked> Aktifkan edit perintah manual</label><label class="ff-label" for="ffCmd">Perintah</label><div class="ff-cmdwrap"><span class="ff-prefix">ffmpeg ▸</span><textarea class="ff-cmd" id="ffCmd" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="-i in1.mp4 -c copy out.mp4"></textarea></div></div>
     <div class="ff-recent" id="ffRecent"></div>
     <div class="ff-actions"><button type="button" class="secondary-btn ff-run" id="ffRun">Mulai Encoding Hardware</button><button type="button" class="secondary-btn" id="ffStop" hidden>Hentikan</button></div>
     <div class="ff-prog"><span id="ffStatus">Siap.</span><em id="ffTime">00:00</em></div>
@@ -522,7 +508,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <div class="ff-logtools"><span>Log</span><button type="button" class="ff-mini" id="ffCopy">Salin log</button></div>
     <pre class="log" id="ffLog"></pre>
     <div class="ff-out" id="ffOut"></div>
-    <p class="tool-note">Mode tunggal: WebCodecs + Mediabunny dengan preferensi hardware, output MP4 H.264 1080×1920 60 FPS. Browser/driver menentukan encoder yang benar-benar dipakai; halaman ini tidak bisa menjamin GPU fisik selalu aktif. Tidak ada template FFmpeg/software lain di versi ini.</p>
+    <p class="tool-note">Mode tunggal: resize Lanczos3 melalui WebGL2 lalu WebCodecs + Mediabunny dengan preferensi hardware, output MP4 H.264 1080×1920 60 FPS. Browser/driver menentukan encoder yang benar-benar dipakai; halaman ini tidak bisa menjamin GPU fisik selalu aktif. Tidak ada template FFmpeg/software lain di versi ini.</p>
   </section>
       </div>
     </section>
@@ -736,7 +722,7 @@ for(const [cdn,w,c] of [
 ])for(const k of ["esm","umd"])SRC.push({tag:cdn+"/"+k,js:w+"ffmpeg.js",worker:w+"814.ffmpeg.js",core:c+k+"/ffmpeg-core.js",wasm:c+k+"/ffmpeg-core.wasm"});
 
 const el={};
-["ffEngine","ffEngineText","ffLoad","ffFiles","ffFilesName","ffChips","ffMemNote","ffTpl","ffTplDesc","ff1080Config","ffPreset","ffBitrate","ffManual","ffCmd","ffRecent","ffRun","ffStop","ffStatus","ffTime","ffBar","ffFill","ffCopy","ffLog","ffOut"].forEach(id=>el[id]=$(id));
+["ffEngine","ffEngineText","ffLoad","ffFiles","ffFilesName","ffChips","ffMemNote","ffTpl","ffTplDesc","ff1080Config","ffBitrate","ffManual","ffCmd","ffRecent","ffRun","ffStop","ffStatus","ffTime","ffBar","ffFill","ffCopy","ffLog","ffOut"].forEach(id=>el[id]=$(id));
 const RECENT_KEY="wanxzyy_ffmpeg_recent_v1";
 let inst=null,loading=null,files=[],names=[],written=new Map(),busy=false,stopped=false,dirty=false,urls=[],tick=null,t0=0,logLines=[],logTimer=null,curTpl=null,wasmBase=0,activeHardwareConversion=null;
 
@@ -850,9 +836,8 @@ dirty=false;
 function is1080Tpl(){return true}
 function configuredTemplateCommand(){
   const rate=Number(el.ffBitrate.value)||17;
-  const preset=el.ffPreset.value||"medium";
   const buf=rate*2;
-  return `-i {in1} -vf scale=1080:1920:flags=lanczos,fps=60 -fps_mode cfr -c:v libx264 -preset ${preset} -b:v ${rate}M -minrate ${rate}M -maxrate ${rate}M -bufsize ${buf}M -g 60 -keyint_min 60 -sc_threshold 0 -pix_fmt yuv420p -profile:v high -level 4.2 -c:a copy out.mp4`;
+  return `-i {in1} -vf scale=1080:1920:flags=lanczos,fps=60 -fps_mode cfr -c:v libx264 -b:v ${rate}M -minrate ${rate}M -maxrate ${rate}M -bufsize ${buf}M -g 60 -keyint_min 60 -sc_threshold 0 -pix_fmt yuv420p -profile:v high -level 4.2 -c:a copy out.mp4`;
 }
 function renderTemplate(){
   el.ff1080Config.hidden=!is1080Tpl();
@@ -870,7 +855,6 @@ function refreshConfiguredCommand(){
   dirty=false;
   renderTemplate();
 }
-el.ffPreset.addEventListener("change",refreshConfiguredCommand);
 el.ffBitrate.addEventListener("input",refreshConfiguredCommand);
 el.ffManual.addEventListener("change",()=>{el.ffCmd.readOnly=!el.ffManual.checked});
 
@@ -932,6 +916,66 @@ function showOutputs(list){
     el.ffOut.append(box);
   });
 }
+function makeLanczos3WebGLResizer(){
+  let srcCanvas=null,srcCtx=null,glCanvas=null,gl=null,program=null,texture=null,intermediate=null,framebuffer=null;
+  let srcW=0,srcH=0,intermediateH=0;
+  const OUT_W=1080,OUT_H=1920;
+  const vertex=`#version 300 es
+    in vec2 aPosition; in vec2 aUV; out vec2 vUV;
+    void main(){ gl_Position=vec4(aPosition,0.0,1.0); vUV=aUV; }`;
+  const fragment=`#version 300 es
+    precision highp float; uniform sampler2D uTex; uniform vec2 uSrcSize; uniform vec2 uDstSize; uniform vec2 uDirection; in vec2 vUV; out vec4 outColor;
+    const float PI=3.14159265358979323846;
+    float sinc(float x){ if(abs(x)<0.00001) return 1.0; float p=PI*x; return sin(p)/p; }
+    float lanczos(float x){ x=abs(x); if(x>=3.0) return 0.0; return sinc(x)*sinc(x/3.0); }
+    void main(){
+      float srcAxis = (uDirection.x>0.5) ? uSrcSize.x : uSrcSize.y;
+      float dstAxis = (uDirection.x>0.5) ? uDstSize.x : uDstSize.y;
+      float scale=max(1.0,srcAxis/dstAxis);
+      float center=((uDirection.x>0.5)?vUV.x:vUV.y)*srcAxis-0.5;
+      float base=floor(center); vec4 sum=vec4(0.0); float total=0.0;
+      for(int i=-12;i<=12;i++){
+        float idx=base+float(i); float d=(idx-center)/scale; float w=lanczos(d/1.0);
+        if(abs(d)<3.0){
+          vec2 uv=vUV;
+          if(uDirection.x>0.5) uv.x=(idx+0.5)/uSrcSize.x;
+          else uv.y=(idx+0.5)/uSrcSize.y;
+          sum+=texture(uTex,clamp(uv,vec2(0.0),vec2(1.0)))*w; total+=w;
+        }
+      }
+      outColor=sum/max(total,0.00001);
+    }`;
+  function compile(type,source){const sh=gl.createShader(type);gl.shaderSource(sh,source);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw new Error('Lanczos WebGL shader gagal: '+gl.getShaderInfoLog(sh));return sh;}
+  function init(w,h){
+    srcW=w;srcH=h;intermediateH=h;
+    srcCanvas=new OffscreenCanvas(w,h);srcCtx=srcCanvas.getContext('2d',{alpha:false,willReadFrequently:false});
+    glCanvas=new OffscreenCanvas(OUT_W,OUT_H);gl=glCanvas.getContext('webgl2',{alpha:false,antialias:false,preserveDrawingBuffer:true});
+    if(!gl)throw new Error('Lanczos3 memerlukan WebGL2; browser/perangkat ini tidak menyediakannya.');
+    program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,vertex));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,fragment));gl.linkProgram(program);
+    if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error('Lanczos WebGL program gagal: '+gl.getProgramInfoLog(program));
+    gl.useProgram(program);
+    const vertices=new Float32Array([-1,-1,0,0, 1,-1,1,0, -1,1,0,1, 1,1,1,1]);
+    const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
+    const pos=gl.getAttribLocation(program,'aPosition'),uv=gl.getAttribLocation(program,'aUV');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,16,0);gl.enableVertexAttribArray(uv);gl.vertexAttribPointer(uv,2,gl.FLOAT,false,16,8);
+    texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    intermediate=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,intermediate);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,OUT_W,intermediateH,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+    framebuffer=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,intermediate,0);if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE)throw new Error('Framebuffer Lanczos tidak lengkap.');gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+  }
+  return {process(sample){
+    const w=Math.max(1,sample.displayWidth|0),h=Math.max(1,sample.displayHeight|0);
+    if(!gl||w!==srcW||h!==srcH)init(w,h);
+    sample.draw(srcCtx,0,0);
+    gl.useProgram(program);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,texture);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,srcCanvas);gl.uniform1i(gl.getUniformLocation(program,'uTex'),0);
+    const srcLoc=gl.getUniformLocation(program,'uSrcSize'),dstLoc=gl.getUniformLocation(program,'uDstSize'),dirLoc=gl.getUniformLocation(program,'uDirection');
+    // Pass 1: Lanczos3 horizontal resize to 1080 x source-height.
+    gl.bindFramebuffer(gl.FRAMEBUFFER,framebuffer);gl.viewport(0,0,OUT_W,intermediateH);gl.bindTexture(gl.TEXTURE_2D,texture);gl.uniform2f(srcLoc,w,h);gl.uniform2f(dstLoc,OUT_W,h);gl.uniform2f(dirLoc,1,0);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    // Pass 2: Lanczos3 vertical resize to 1080 x 1920.
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,OUT_W,OUT_H);gl.bindTexture(gl.TEXTURE_2D,intermediate);gl.uniform2f(srcLoc,OUT_W,h);gl.uniform2f(dstLoc,OUT_W,OUT_H);gl.uniform2f(dirLoc,0,1);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    return glCanvas;
+  }};
+}
+
 async function runHardware1080(){
   if(!files.length){setStatus("Pilih satu file video dulu untuk encoding hardware.","err");return}
   if(!("VideoEncoder" in window) || !("VideoDecoder" in window)){
@@ -954,14 +998,16 @@ async function runHardware1080(){
     const input=new Input({formats:ALL_FORMATS,source:new BlobSource(files[0])});
     const output=new Output({format:new Mp4OutputFormat({fastStart:"in-memory"}),target:new BufferTarget()});
     const rate=Number(el.ffBitrate.value)||17;
-    const preset=el.ffPreset.value||"medium";
+    if(!Number.isFinite(rate)||rate<=0||rate>200)throw new Error("Bitrate harus di antara 0.1 sampai 200 Mbps.");
+    const lanczosResizer=makeLanczos3WebGLResizer();
     const conversion=await Conversion.init({
       input,output,
       video:{
-        width:1080,height:1920,fit:"fill",frameRate:60,codec:"avc",
-        bitrate:rate*1000000,
+        frameRate:60,codec:"avc",bitrate:rate*1000000,
         hardwareAcceleration:"prefer-hardware",
-        forceTranscode:true,keyFrameInterval:1
+        forceTranscode:true,keyFrameInterval:1,
+        process:(sample)=>lanczosResizer.process(sample),
+        processedWidth:1080,processedHeight:1920
       },
       audio:{}
     });
@@ -971,9 +1017,10 @@ async function runHardware1080(){
       throw new Error("Konversi hardware tidak valid. "+(discarded||"Codec atau format input tidak didukung."));
     }
     addLog("Output: MP4 H.264/AVC, 1080×1920, 60 FPS, target "+rate+" Mbps.");
-    addLog("Preset yang dipilih di UI: "+preset+". Catatan: preset x264 tidak diterapkan pada jalur hardware WebCodecs; pilihan ini tidak mengubah encoder fisik.");
+    addLog("Resize: Lanczos3 dua tahap melalui shader WebGL2 sebelum encoding.");
+    addLog("Encoding: WebCodecs prefer-hardware. Preset x264 tidak tersedia pada jalur hardware; bitrate satu-satunya kontrol kompresi yang disediakan.");
     addLog("Audio: dipertahankan bila format sumber kompatibel; library dapat mentranscode bila diperlukan.");
-    addLog("Memulai encoding. Jika hardware encoder tidak didukung, proses akan menampilkan error bila browser menolak konfigurasi.");
+    addLog("Memulai resize Lanczos3 + encoding hardware. Jika WebGL2 atau encoder hardware-path tidak didukung, proses akan menampilkan error; tidak ada fallback software.");
     flushLog();setStatus("Encoding 1080p60 melalui WebCodecs…");setBar(3);
     conversion.onProgress=(progress,processedTime)=>{
       if(stopped)return;
