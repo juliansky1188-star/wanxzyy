@@ -469,6 +469,46 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 .vr-explain li span{color:#f1f2f4;font-weight:650;margin-right:6px}
 .vr-explain p{margin:10px 0 0;font-size:11.5px;color:#8f959d}
 @media(max-width:440px){#inspectorCard label.ff-drop{min-height:160px;padding:30px 16px}}
+#inspectorCard.vr-picked label.ff-drop,#inspectorCard.vr-picked label.ff-drop:hover{min-height:0;padding:14px 16px;margin-bottom:12px}
+#inspectorCard.vr-picked label.ff-drop svg{width:24px;height:24px;margin:0 0 4px}
+#vrReport,#vrStatus{scroll-margin-top:12px}
+/* Video A/B comparison */
+.vr-compare-help{margin-top:8px;padding:10px 12px;border-left:3px solid var(--accent,#8b9cff);border-radius:0 8px 8px 0;background:rgba(130,145,255,.07);font-size:.9em;line-height:1.5}
+.vr-compare p{line-height:1.55}
+
+
+.vr-inspector-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.vr-inspector-title h2{margin:0;min-width:0}
+.vr-compare-hint{margin:-4px 0 12px;color:#9da3ac;font-size:11px;line-height:1.45}
+.vr-inspector-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.vr-compare-trigger:disabled{opacity:.42;cursor:not-allowed;filter:saturate(.25)}
+.vr-reset-trigger{flex:0 0 auto;border:1px solid #8f3038;border-radius:999px;background:linear-gradient(180deg,#d94a53,#a9212c);color:#fff;padding:7px 11px;font:700 11px/1.2 var(--display);cursor:pointer;box-shadow:0 2px 8px #0003}
+.vr-reset-trigger:active{transform:scale(.97)}
+.vr-reset-trigger[hidden]{display:none!important}
+.vr-compare-trigger{flex:0 0 auto;border:1px solid #454a52;border-radius:999px;background:#24272c;color:#c6cbd2;padding:7px 10px;font:600 11px/1.2 var(--display);cursor:pointer;white-space:nowrap}
+.vr-compare-trigger:active{transform:scale(.98)}
+.vr-compare-trigger[aria-expanded="true"]{border-color:#777f89;color:#f3f4f5;background:#2c3036}
+.vr-compare[hidden]{display:none!important}
+.vr-compare{margin:0 0 14px;padding:12px;border:1px solid #30343a;border-radius:13px;background:#141619}
+.vr-compare h3{margin:0 0 8px;font:700 15px var(--display);color:#f1f2f4}
+.vr-compare p{margin:0 0 12px;font-size:12px;line-height:1.5;color:#a0a5ad}
+.vr-compare-file{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:124px;padding:22px 16px;border:1.5px dashed #555b63;border-radius:16px;background:linear-gradient(145deg,#202328,#17191c);text-align:center;cursor:pointer;min-width:0;transition:border-color .18s,background .18s,transform .1s;overflow:hidden}
+.vr-compare-file:hover,.vr-compare-file:focus-within{border-color:#e6e9ed;background:linear-gradient(145deg,#292d32,#1a1c20)}
+.vr-compare-file:active{transform:scale(.995)}
+.vr-compare-file .vr-compare-icon{width:29px;height:29px;margin-bottom:3px;color:#e8eaed;stroke-width:1.6;flex:none}
+.vr-compare-file span{display:grid;gap:4px;min-width:0;width:100%;flex:0 1 auto}
+.vr-compare-file b{font-size:13px;line-height:1.35;overflow-wrap:anywhere;color:#f3f4f5}
+.vr-compare-file small{font-size:11px;color:#a3a8af;line-height:1.45}
+.vr-compare-file input{position:absolute;inset:0;width:100%;height:100%;max-width:none;margin:0;opacity:0;cursor:pointer}
+.vr-compare-status{margin-top:10px;color:#aeb3ba;font-size:12px}
+.vr-compare-table{display:grid;gap:7px;margin-top:12px}
+.vr-diff-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:11px;border:1px solid #30343a;border-radius:11px;background:#141619;min-width:0}
+.vr-diff-row.changed{border-color:#6a5835;background:#1d1a14}
+.vr-diff-key{grid-column:1/-1;font-size:10px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:#aeb3ba}
+.vr-diff-val{font-size:12px;line-height:1.45;overflow-wrap:anywhere;min-width:0}
+.vr-diff-val small{display:block;color:#9298a0;font-size:10px;margin-bottom:3px}
+.vr-diff-summary{margin-top:10px;padding:11px 12px;border-radius:11px;background:#191c20;border:1px solid #363b42;font-size:12px;color:#dfe2e6}
+@media(max-width:440px){.vr-compare-file{min-height:118px;padding:20px 13px}.vr-diff-row{gap:6px;padding:9px}}
 .tool-modal-panel.wide{width:min(100%,780px)}
 .vr-status{margin:0 0 14px;padding:11px 13px;border:1px solid #30343a;border-radius:12px;background:#141619;color:#b2b7be;font-size:12.5px}
 .vr-status.err{color:#ff9cab;border-color:#703541}
@@ -577,28 +617,38 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <div class="tool-library-head"><div><p class="eyebrow">WORKSPACE / UTILITIES</p><h2>Tools Library</h2><p>Tools tambahan untuk menganalisis video secara mandiri, tanpa mengubah pilihan video utama di Patcher.</p></div><span class="folder-mark">▰ VIDEO TOOLS</span></div>
     <div class="tool-library-grid">
       <article class="tool-launch-card">
-        <div class="tool-launch-icon">◫</div><span class="tool-tag">STRUKTUR · MOOV · FPS</span><h3>Pemeriksa Video Lengkap</h3>
-        <p>Bedah isi file video: resolusi, FPS presisi dari header, durasi, bitrate, codec, letak moov &amp; mdat, keyframe, warna/HDR, audio, tag encoder, dan pemeriksaan masalah. Tanpa upload.</p>
-        <button type="button" class="tool-open-btn" data-open-tool="fps">Buka Pemeriksa <span>↗</span></button>
+        <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></div><span class="tool-tag">RESOLUSI · FPS · MOOV</span><h3>Resolution &amp; Fps Video Checker</h3>
+        <p>Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov &amp; mdat, keyframe, warna/HDR, audio, dan tag encoder. Tanpa upload.</p>
+        <button type="button" class="tool-open-btn" data-open-tool="fps">Buka Checker <span>↗</span></button>
       </article>
       <article class="tool-launch-card">
-        <div class="tool-launch-icon">&gt;_</div><span class="tool-tag">WEBCODECS / HARDWARE</span><h3>Hardware Video Encoder</h3>
-        <p>Konversi video ke MP4 H.264 1080p60 menggunakan WebCodecs dengan preferensi hardware.</p>
-        <button type="button" class="tool-open-btn" data-open-tool="ffmpeg">Buka Hardware Encoder <span>↗</span></button>
+        <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l5 5m0 0V5m0 4H5"/><path d="M20 4l-5 5m0 0V5m0 4h4"/><path d="M4 20l5-5m0 0v4m0-4H5"/><path d="M20 20l-5-5m0 0v4m0-4h4"/></svg></div><span class="tool-tag">FFMPEG · WEBCODECS</span><h3>Ffmpeg Video Compressor</h3>
+        <p>Kompres video ke MP4 H.264 1080p60 langsung di browser. Pilih mode Hardware (WebCodecs, cepat) atau Software (FFmpeg, lebih lambat).</p>
+        <button type="button" class="tool-open-btn" data-open-tool="ffmpeg">Buka Compressor <span>↗</span></button>
       </article>
     </div>
-    <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Hardware Encoder memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan.</span></div>
+    <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan.</span></div>
   </section>
 
   <div class="tool-modal" id="toolModal" hidden>
     <button type="button" class="tool-modal-scrim" data-close-tool aria-label="Tutup jendela tools"></button>
     <section class="tool-modal-panel" role="dialog" aria-modal="true" aria-labelledby="toolModalTitle">
-      <header class="tool-modal-head"><div><p class="eyebrow">WANXZYY / TOOLS</p><h2 id="toolModalTitle">Pemeriksa Video Lengkap</h2><p id="toolModalDescription">Analisis informasi dasar video.</p></div><button type="button" class="tool-modal-close" data-close-tool aria-label="Tutup">×</button></header>
+      <header class="tool-modal-head"><div><p class="eyebrow">WANXZYY / TOOLS</p><h2 id="toolModalTitle">Resolution &amp; Fps Video Checker</h2><p id="toolModalDescription">Analisis informasi dasar video.</p></div><button type="button" class="tool-modal-close" data-close-tool aria-label="Tutup">×</button></header>
       <div class="tool-modal-content">
   <section class="card tool-modal-tool" id="inspectorCard" hidden>
-    <h2>Video yang diperiksa</h2>
-    <label class="tool-file-pick ff-drop" id="inspectorDrop" for="inspectorFile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><b id="inspectorFileName">Pilih atau seret video ke sini</b><small>MP4, MOV, atau format video lain</small><input id="inspectorFile" type="file" accept="video/*,.mp4,.mov,.mkv,.webm,.avi,.m4v,.3gp"></label>
-    <div class="vr-explain">
+    <div class="vr-inspector-title"><h2>Video yang diperiksa</h2><div class="vr-inspector-actions"><button type="button" class="vr-compare-trigger" id="vrCompareTrigger" aria-expanded="false" disabled>Bandingkan video</button><button type="button" class="vr-reset-trigger" id="vrResetTrigger" hidden>Reset</button></div></div>
+    <p class="vr-compare-hint" id="vrCompareHint">Pilih Video A di kotak “Video yang diperiksa” terlebih dahulu. Setelah dipilih, tombol Bandingkan video aktif untuk memilih Video B.</p>
+    <section class="vr-compare" id="vrCompare" hidden>
+      <h3>Bandingkan dua video</h3>
+      <p><b>Video A</b> adalah video acuan yang sudah kamu pilih. Setelah menekan tombol Bandingkan video, <b>pickzone yang sama di bawah akan berubah menjadi pemilih Video B</b>. Tidak ada pickzone tambahan; Video A tetap tersimpan sebagai acuan.</p>
+      <p class="vr-compare-help">Video B akan dibandingkan dengan Video A pada resolusi, FPS/CFR-VFR, durasi, ukuran file, bitrate, codec, posisi moov, container, metadata/tag, dan track audio-video. Perbedaan akan ditandai. File diproses lokal di browser dan tidak diunggah.</p>
+      <div class="vr-compare-status" id="vrCompareChoice">Tekan pickzone di bawah untuk memilih Video B.</div>
+      <div class="vr-compare-status" id="vrCompareStatus" hidden></div>
+      <div class="vr-compare-table" id="vrCompareTable" hidden></div>
+      <div class="vr-diff-summary" id="vrCompareSummary" hidden></div>
+    </section>
+    <label class="tool-file-pick ff-drop" id="inspectorDrop" for="inspectorFile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><b id="inspectorFileName">Pilih atau seret video ke sini</b><small id="inspectorHint">MP4, MOV, atau format video lain. Hasil muncul otomatis setelah video dipilih.</small><input id="inspectorFile" type="file" accept="video/*,.mp4,.mov,.mkv,.webm,.avi,.m4v,.3gp"></label>
+    <div class="vr-explain" id="vrExplain">
       <b>Apa yang diperiksa?</b>
       <ul>
         <li><span>Letak &amp; struktur</span> posisi moov dan mdat, faststart atau tidak, urutan box.</li>
@@ -639,7 +689,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     </div>
   </section>
   <section class="card tool-modal-tool" id="ffCard" hidden>
-    <h2>Hardware Video Encoder</h2>
+    <h2>Ffmpeg Video Compressor</h2>
     <p class="tool-intro">Pilih mode encoding, atur bitrate, lalu proses video langsung di perangkat. Video tidak dikirim ke server.</p>
     <label class="tool-file-pick ff-drop" for="ffFiles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><b id="ffFilesName">Pilih atau seret video ke sini</b><small>MP4, MOV, atau format video lain</small><input id="ffFiles" type="file" accept="video/*,audio/*,image/*,.mp4,.mov,.mkv,.webm,.avi,.m4v,.m4a,.mp3,.wav,.aac,.gif,.jpg,.jpeg,.png"></label>
     <div class="ff-chips" id="ffChips"></div>
@@ -2865,22 +2915,46 @@ function setFile(f){
   else {fileEl.value=""}
 }
 /* ---- Pemeriksa Video Lengkap ---- */
-let inspectorSelected=null,vrData=null,vrToken=0,vrBrowser={};
+let inspectorSelected=null,vrData=null,vrToken=0,vrBrowser={},vrCompareSelected=null,vrCompareToken=0,vrPickingB=false;
 const inspectorFileEl=$("inspectorFile");
+const vrResetTrigger=$("vrResetTrigger");
 const vrEl=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 const VR_EXT=/\.(mp4|mov|m4v|3gp|3g2|mkv|webm|avi|ogv|mts|ts|flv|wmv)$/i;
 inspectorFileEl.addEventListener("change",()=>{
   const f=inspectorFileEl.files&&inspectorFileEl.files[0];
-  inspectorSelected=f&&((f.type||"").startsWith("video/")||VR_EXT.test(f.name))?f:null;
+  const valid=f&&((f.type||"").startsWith("video/")||VR_EXT.test(f.name));
+  if(vrPickingB){
+    if(!valid){if(f)alert("Pilih file video yang valid.");return}
+    vrCompareSelected=f;vrPickingB=false;
+    // Setelah Video B dipilih, paksa pickzone hilang sampai Reset.
+    $("inspectorDrop").hidden=true;$("inspectorDrop").style.setProperty("display","none","important");
+    // Jangan tampilkan checker tunggal kedua untuk B; hanya hasil perbandingan A vs B.
+    $("vrExplain").hidden=true;$("vrStatus").hidden=true;$("vrReport").hidden=true;
+    $("inspectorFileName").textContent="Video B: "+f.name;
+    $("inspectorHint").textContent="Video B berhasil dipilih.";
+    $("vrCompareChoice").textContent="Video B: "+f.name+". Sedang dibandingkan dengan Video A: "+inspectorSelected.name+".";
+    $("vrCompareTrigger").textContent="Bandingkan video";
+    $("vrCompareTrigger").disabled=true;
+    $("vrCompareStatus").hidden=true;$("vrCompareTable").hidden=true;$("vrCompareSummary").hidden=true;
+    vrCompareRun(inspectorSelected,vrCompareSelected);return;
+  }
+  inspectorSelected=valid?f:null;
   if(f&&!inspectorSelected)alert("Pilih file video yang valid.");
   $("inspectorFileName").textContent=inspectorSelected?inspectorSelected.name:"Pilih atau seret video ke sini";
   $("fpsCheck").disabled=!inspectorSelected;
-  if(inspectorSelected)vrRun(inspectorSelected);else resetInspector();
+  $("vrCompareTrigger").disabled=!inspectorSelected;
+  vrResetTrigger.hidden=!inspectorSelected;
+  $("vrCompareHint").textContent=inspectorSelected?"Video A sudah dipilih. Tekan Bandingkan video, lalu pickzone yang sama akan digunakan untuk memilih Video B.":"Pilih Video A terlebih dahulu. Tombol Bandingkan video akan aktif setelah Video A dipilih.";
+  $("inspectorCard").classList.toggle("vr-picked",!!inspectorSelected);
+  $("vrExplain").hidden=!!inspectorSelected;
+  $("inspectorHint").textContent=inspectorSelected?"Ketuk untuk ganti video":"MP4, MOV, atau format video lain. Hasil muncul otomatis setelah video dipilih.";
+  if(inspectorSelected){vrPickingB=false;$("vrCompareTrigger").textContent="Bandingkan video";vrRun(inspectorSelected);if(vrCompareSelected)vrCompareRun(inspectorSelected,vrCompareSelected);}else resetInspector();
 });
 const _id=$("inspectorDrop");["dragenter","dragover"].forEach(e=>_id.addEventListener(e,ev=>{ev.preventDefault();_id.classList.add("over")}));["dragleave","drop"].forEach(e=>_id.addEventListener(e,ev=>{ev.preventDefault();_id.classList.remove("over")}));
 _id.addEventListener("drop",ev=>{const f=ev.dataTransfer&&ev.dataTransfer.files[0];if(f){const dt=new DataTransfer();dt.items.add(f);inspectorFileEl.files=dt.files;inspectorFileEl.dispatchEvent(new Event("change"))}});
 function resetInspector(){
-  vrToken++;vrData=null;$("vrReport").hidden=true;$("vrStatus").hidden=true;
+  vrResetTrigger.hidden=true;inspectorFileEl.value="";inspectorSelected=null;$("inspectorDrop").hidden=false;$("inspectorDrop").style.removeProperty("display");
+  vrToken++;vrData=null;vrCompareToken++;vrCompareSelected=null;vrPickingB=false;$("vrCompareTrigger").disabled=true;$("vrCompareTrigger").textContent="Bandingkan video";$("vrCompare").hidden=true;vrCompareTrigger.setAttribute("aria-expanded","false");$("vrCompareStatus").hidden=true;$("vrCompareTable").hidden=true;$("vrCompareSummary").hidden=true;$("vrReport").hidden=true;$("vrStatus").hidden=true;
 }
 async function vrRun(file){
   const token=++vrToken,st=$("vrStatus");
@@ -2935,6 +3009,64 @@ function vrRender(R){
     d.append(body);host.append(d);
   });
   $("vrToggle").textContent="Buka semua bagian";
+}
+const vrCompareTrigger=$("vrCompareTrigger"),vrComparePanel=$("vrCompare");
+vrCompareTrigger.addEventListener("click",()=>{
+  if(!inspectorSelected)return;
+  const opening=vrComparePanel.hidden;
+  vrComparePanel.hidden=!opening;vrCompareTrigger.setAttribute("aria-expanded",String(opening));
+  if(opening){
+    vrPickingB=true;
+    // Sembunyikan checker tunggal ketika memilih Video B; tombol berubah jadi opsi batal/kembali.
+    $("vrExplain").hidden=true;$("vrStatus").hidden=true;$("vrReport").hidden=true;
+    $("inspectorDrop").hidden=false;$("inspectorDrop").style.removeProperty("display");
+    $("inspectorFileName").textContent="Pilih Video B melalui pickzone ini";
+    $("inspectorHint").textContent="Video A ("+inspectorSelected.name+") tetap tersimpan sebagai acuan.";
+    $("vrCompareChoice").textContent="Pilih Video B melalui pickzone yang sama. Tekan Kembali untuk membatalkan.";
+    vrCompareTrigger.textContent="Kembali";
+  } else {
+    // Klik Kembali/Batalkan sebelum memilih B akan keluar dari mode bandingkan.
+    vrPickingB=false;vrComparePanel.hidden=true;vrCompareTrigger.setAttribute("aria-expanded","false");
+    $("vrExplain").hidden=!!inspectorSelected;
+    if(inspectorSelected && vrData){$("vrStatus").hidden=true;$("vrReport").hidden=false;}
+    $("inspectorDrop").hidden=false;$("inspectorDrop").style.removeProperty("display");
+    $("inspectorFileName").textContent=inspectorSelected?inspectorSelected.name:"Pilih atau seret video ke sini";
+    $("inspectorHint").textContent="Video A adalah acuan. Tekan Bandingkan video untuk memilih B.";
+    vrCompareTrigger.textContent="Bandingkan video";
+  }
+});
+vrResetTrigger.addEventListener("click",()=>{
+  inspectorSelected=null;vrCompareSelected=null;vrPickingB=false;inspectorFileEl.value="";
+  $("inspectorDrop").hidden=false;$("inspectorDrop").style.removeProperty("display");
+  resetInspector();
+  $("inspectorFileName").textContent="Pilih atau seret video ke sini";
+  $("inspectorHint").textContent="MP4, MOV, atau format video lain. Hasil muncul otomatis setelah video dipilih.";
+  $("vrCompareHint").textContent="Pilih Video A terlebih dahulu. Tombol Bandingkan video akan aktif setelah Video A dipilih.";
+  $("vrCompareChoice").textContent="Tekan pickzone di bawah untuk memilih Video B setelah Video A dipilih.";
+  $("fpsCheck").disabled=true;
+  $("inspectorCard").classList.remove("vr-picked");
+  $("vrExplain").hidden=false;
+});
+async function vrCompareRun(fileA,fileB){
+  const token=++vrCompareToken,st=$("vrCompareStatus");st.hidden=false;st.className="vr-compare-status";st.textContent="Menganalisis kedua video…";$("vrCompareTable").hidden=true;$("vrCompareSummary").hidden=true;
+  try{
+    const readFile=async f=>VideoReport.analyze({size:f.size,read:async(o,n)=>new Uint8Array(await f.slice(o,o+n).arrayBuffer())},{name:f.name,type:f.type,lastModified:f.lastModified});
+    const [A,B]=await Promise.all([readFile(fileA),readFile(fileB)]);if(token!==vrCompareToken)return;
+    const wanted=["Resolusi","Frame rate","Durasi","Ukuran file","Bitrate total","Codec","Letak moov","Container"];
+    const get=(R,k)=>{const x=(R.summary||[]).find(q=>q.k===k);return x?{v:x.v||"—",sub:x.sub||""}:{v:"Tidak tersedia",sub:""}};
+    const rows=wanted.map(k=>({k,a:get(A,k),b:get(B,k)}));
+    const normalize=x=>String(x.v).trim().toLowerCase();
+    const extra=[];
+    const tags=R=>JSON.stringify((R.raw&&R.raw.tags)||[]);
+    if(tags(A)!==tags(B))extra.push({k:"Metadata / tag encoder",a:{v:(A.raw.tags||[]).map(x=>x.k+": "+x.v).join("; ")||"Tidak ada tag",sub:""},b:{v:(B.raw.tags||[]).map(x=>x.k+": "+x.v).join("; ")||"Tidak ada tag",sub:""}});
+    const tracks=R=>JSON.stringify((R.raw&&R.raw.tracks||[]).map(t=>({handler:t.handler,codec:t.codec,nSamples:t.nSamples,bytes:t.bytes,channels:t.channels,arate:t.arate})));
+    if(tracks(A)!==tracks(B))extra.push({k:"Track audio/video",a:{v:(A.raw.tracks||[]).map(t=>(t.handler||"track")+" · "+(t.codec||"codec tidak diketahui")+(t.nSamples!=null?" · "+t.nSamples+" sampel":"")).join("; ")||"Tidak terbaca",sub:""},b:{v:(B.raw.tracks||[]).map(t=>(t.handler||"track")+" · "+(t.codec||"codec tidak diketahui")+(t.nSamples!=null?" · "+t.nSamples+" sampel":"")).join("; ")||"Tidak terbaca",sub:""}});
+    const all=rows.concat(extra),changed=all.filter(r=>normalize(r.a)!==normalize(r.b));
+    const host=$("vrCompareTable");host.innerHTML="";
+    all.forEach(r=>{const isDiff=normalize(r.a)!==normalize(r.b);const row=vrEl("div","vr-diff-row"+(isDiff?" changed":""));row.append(vrEl("div","vr-diff-key",r.k+(isDiff?" · BERUBAH":" · SAMA")));for(const [label,val] of [["Video A",r.a],["Video B",r.b]]){const cell=vrEl("div","vr-diff-val");cell.append(vrEl("small",null,label),document.createTextNode(val.v));if(val.sub)cell.append(vrEl("small",null,val.sub));row.append(cell)}host.append(row)});
+    host.hidden=false;const sum=$("vrCompareSummary");sum.hidden=false;sum.textContent=changed.length?`Ditemukan ${changed.length} bagian yang berbeda dari ${all.length} bagian yang dibandingkan. Baris berwarna menandakan perbedaan. Ini membandingkan informasi yang terbaca dari file, bukan membuktikan kualitas visual atau perubahan setiap frame.`:"Tidak ada perbedaan pada bagian yang berhasil dibaca dan dibandingkan. Ini bukan bukti bahwa seluruh byte kedua file identik.";
+    st.textContent=`Selesai: ${fileA.name} dibandingkan dengan ${fileB.name}.`;
+  }catch(e){if(token!==vrCompareToken)return;st.className="vr-compare-status err";st.textContent="Perbandingan gagal: "+(e&&e.message||e)}
 }
 $("vrToggle").addEventListener("click",()=>{
   const ds=[...document.querySelectorAll("#vrSections .vr-sec")],anyClosed=ds.some(d=>!d.open);
@@ -2994,8 +3126,8 @@ tabPatcher.addEventListener("click",()=>showWorkspace("patcher"));tabTools.addEv
 const toolModal=$("toolModal"),toolModalTitle=$("toolModalTitle"),toolModalDescription=$("toolModalDescription"),inspectorCard=$("inspectorCard");
 let lastToolOpener=null;
 function openTool(which,opener){lastToolOpener=opener||null;const isFf=which==="ffmpeg";inspectorCard.hidden=isFf;$("ffCard").hidden=!isFf;
-  toolModalTitle.textContent=isFf?"Hardware Video Encoder":"Pemeriksa Video Lengkap";toolModal.querySelector(".tool-modal-panel").classList.toggle("wide",!isFf);
-  toolModalDescription.textContent=isFf?"Pilih satu video lalu mulai konversi hardware-path WebCodecs. Tidak perlu mengetik perintah.":"Baca isi video secara lengkap: resolusi, FPS presisi, durasi, bitrate, codec, letak moov/mdat, tabel sampel, warna, audio, dan tag.";toolModal.hidden=false;document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
+  toolModalTitle.textContent=isFf?"Ffmpeg Video Compressor":"Resolution & Fps Video Checker";toolModal.querySelector(".tool-modal-panel").classList.toggle("wide",!isFf);
+  toolModalDescription.textContent=isFf?"Pilih video, pilih mode Hardware atau Software, lalu mulai kompresi. Tidak perlu mengetik perintah.":"Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov/mdat, warna, audio, dan tag.";toolModal.hidden=false;document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
 }
 function closeTool(){toolModal.hidden=true;document.body.classList.remove("modal-open");if(lastToolOpener)lastToolOpener.focus();}
 document.querySelectorAll("[data-open-tool]").forEach(btn=>btn.addEventListener("click",()=>openTool(btn.dataset.openTool,btn)));
