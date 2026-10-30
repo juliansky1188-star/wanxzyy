@@ -254,6 +254,21 @@ body.tools-mode #proc,body.tools-mode #download{display:none!important}
 #ffEngine,#ffLoad,#ffTpl,#ffTplDesc,#ffManual,#ffCmd,#ffRecent,.ff-label[for="ffTpl"],.ff-label[for="ffCmd"],.ff-cmdwrap,.ff-manual-toggle {display:none!important}
 #ffCard .tool-intro{margin-bottom:12px}
 #ffFiles{max-width:100%}
+.ff-drive-btn{width:100%;margin:-4px 0 14px;padding:12px;border-radius:12px;border:1px solid #555b63;background:#191b1f;color:#f3f4f5;font:inherit;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation}
+.ff-drive-btn:hover{border-color:#aeb4bc;background:#202226}.ff-drive-btn:disabled{opacity:.5;cursor:not-allowed}
+#gdOv{position:fixed;inset:0;z-index:2000;display:grid;place-items:end center;background:#050607e6}#gdOv[hidden]{display:none}
+.gd-panel{width:min(560px,100%);max-height:88vh;display:flex;flex-direction:column;gap:10px;background:#16181b;border:1px solid #3a3f45;border-radius:18px 18px 0 0;padding:16px;color:#f3f4f5;font-size:12px;line-height:1.5}
+.gd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px}
+.gd-head button{background:none;border:0;color:#969ca4;font-size:16px;cursor:pointer;padding:4px 8px}
+#gdBody{display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto}
+#gdBody input[type=text],#gdBody input[type=search]{width:100%;box-sizing:border-box;padding:11px;border-radius:10px;border:1px solid #3a3f45;background:#0f1113;color:#f3f4f5;font:inherit;font-size:13px}
+.gd-btn{padding:11px;border-radius:10px;border:1px solid #555b63;background:#23262b;color:#f3f4f5;font:inherit;font-weight:600;cursor:pointer;touch-action:manipulation}
+.gd-link{background:none;border:0;color:#969ca4;text-decoration:underline;font:inherit;cursor:pointer;padding:4px}
+.gd-item{display:grid;gap:2px;text-align:left;padding:10px;border-radius:10px;border:1px solid #2c3035;background:#1b1d21;color:#f3f4f5;font:inherit;cursor:pointer;width:100%}
+.gd-item b{overflow-wrap:anywhere;font-size:12px}.gd-item small{color:#969ca4;font-size:10px}
+.gd-list{display:flex;flex-direction:column;gap:8px}.gd-err{color:#ff8b8b}.gd-muted{color:#969ca4;font-size:11px}
+.gd-bar{height:6px;border-radius:99px;background:#2c3035;overflow:hidden}.gd-bar i{display:block;height:100%;width:0;background:#8c4fe0}
+
 #ffCard .ff-actions .ff-run{font-size:15px}
 #ffCard .ff-prefix{display:none!important}
 .ff-label[for="ffTpl"],.ff-manual-toggle,.ff-cmdwrap {display:none!important}
@@ -564,6 +579,53 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 .vr-body .secondary-btn{margin-top:10px}
 @media(max-width:520px){.vr-row{grid-template-columns:1fr;gap:3px}.vr-cards{gap:7px}.vr-card{padding:11px}}
 </style>
+
+<style id="gdrive-layout-only-fix">
+/* Layout-only fix for Google Drive picker; inherit original site colors and fonts. */
+#gdOv{padding:12px;place-items:center;box-sizing:border-box;background:#050607e6}
+#gdOv .gd-panel{width:min(560px,100%);max-height: min(84dvh,760px);min-height:0;box-sizing:border-box;display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden;border-radius:18px}
+#gdOv .gd-head{flex:0 0 auto;min-height:60px;padding:12px 16px;box-sizing:border-box;gap:12px;border-bottom:1px solid #3a3f45}
+#gdOv .gd-head b{display:block;flex:1;min-width:0;white-space:normal;overflow-wrap:normal;word-break:normal;font:inherit;font-weight:700;line-height:1.35}
+#gdOv .gd-head b:before{content:none!important;display:none!important}
+#gdOv .gd-head button{flex:0 0 38px;width:38px;height:38px;display:grid;place-items:center;box-sizing:border-box;border:1px solid #3a3f45;border-radius:10px;padding:0;font-size:22px;line-height:1}
+#gdOv #gdBody{display:flex;flex:1 1 auto;flex-direction:column;gap:10px;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px;box-sizing:border-box}
+#gdOv #gdBody input[type=text],#gdOv #gdBody input[type=search]{display:block;width:100%;min-width:0;min-height:44px;flex:0 0 auto;box-sizing:border-box;padding:0 14px;border-radius:12px}
+#gdOv .gd-list{display:flex;flex-direction:column;gap:8px;min-width:0;width:100%}
+#gdOv .gd-item{display:grid;grid-template-columns:32px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;row-gap:3px;align-items:center;width:100%;min-width:0;min-height:60px;box-sizing:border-box;padding:10px 12px;text-align:left;border-radius:12px}
+#gdOv .gd-item:before{content:"▶";grid-column:1;grid-row:1 / span 2;display:grid;place-items:center;width:30px;height:30px;box-sizing:border-box;border:1px solid #3a3f45;border-radius:9px;background:#23262b;color:inherit;font-size:10px}
+#gdOv .gd-item b{grid-column:2;grid-row:1;display:block;width:100%;min-width:0;max-width:100%;font-size:12px;line-height:1.4;white-space:normal;word-break:normal;overflow-wrap:anywhere}
+#gdOv .gd-item small{grid-column:2;grid-row:2;display:block;min-width:0;line-height:1.35;font-size:10px;white-space:normal}
+#gdOv .gd-btn{flex:0 0 auto}
+@media(max-width:520px){#gdOv{padding:10px}#gdOv .gd-panel{width:100%;max-height:82dvh;border-radius:18px}#gdOv .gd-head{min-height:58px;padding:12px 14px}#gdOv .gd-head b{font-size:13px}#gdOv #gdBody{padding:12px;gap:9px}#gdOv .gd-item{grid-template-columns:30px minmax(0,1fr);column-gap:9px;min-height:56px;padding:10px}#gdOv .gd-item:before{width:28px;height:28px}}
+
+/* Pembatasan Forge berdasarkan jumlah pengikut */
+.fg-modal{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;padding:18px}
+.fg-modal[hidden]{display:none!important}
+.fg-scrim{position:absolute;inset:0;background:#050607e6;backdrop-filter:blur(8px)}
+.fg-panel{position:relative;width:min(100%,420px);max-height:92dvh;overflow:auto;overscroll-behavior:contain;background:#101215;border:1px solid #42474e;border-radius:20px;padding:22px 20px 20px;box-shadow:0 24px 80px #000a;color:#f4f5f6;animation:fgIn .22s ease-out}
+@keyframes fgIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.fg-panel .fg-eyebrow{margin:0 0 6px;font:700 11px/1 "Inter",sans-serif;letter-spacing:.14em;color:#8c929a}
+.fg-panel h2{margin:0 0 8px;font:800 21px/1.2 "Plus Jakarta Sans",sans-serif;letter-spacing:-.03em}
+.fg-panel p{margin:0;font-size:13px;line-height:1.55;color:#a5aab1}
+.fg-sub{margin:16px 0 8px!important;font:700 11px/1 "Inter",sans-serif!important;letter-spacing:.12em;color:#8c929a!important}
+.fg-terms{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:6px;counter-reset:t}
+.fg-terms li{counter-increment:t;display:flex;gap:10px;font-size:12.5px;line-height:1.5;color:#c4c8ce}
+.fg-terms li::before{content:counter(t);flex:none;width:20px;height:20px;border-radius:6px;background:#25282d;border:1px solid #3a3f46;color:#f4f5f6;font-weight:700;font-size:11px;display:grid;place-items:center;margin-top:1px}
+.fg-rules{list-style:none;margin:14px 0 16px;padding:0;display:grid;gap:8px}
+.fg-rules li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid #30343a;border-radius:12px;background:#17191d;font-size:13px;line-height:1.45;color:#d9dce0}
+.fg-rules b{color:#fff}
+.fg-choices{display:grid;gap:8px}
+.fg-choices button{width:100%;min-height:48px;padding:12px 14px;border:1px solid #444950;border-radius:12px;background:#25282d;color:#f4f5f6;font-weight:700;font-size:14px;cursor:pointer;text-align:left;transition:background .15s,border-color .15s}
+.fg-choices button small{display:block;margin-top:2px;font-weight:500;font-size:11.5px;color:#9aa0a8}
+.fg-choices button:hover{background:#2e3238;border-color:#6a7078}
+.fg-ok{width:100%;min-height:48px;border:1px solid #fff;border-radius:12px;background:linear-gradient(180deg,#f5f6f7,#d7dbe0);color:#101215;font-weight:800;font-size:14px;cursor:pointer;transition:transform .15s,background .15s}
+.fg-ok:hover:not(:disabled){background:#fff;transform:translateY(-1px)}
+.fg-ok:disabled{opacity:.5;cursor:not-allowed}
+.fg-tier{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 2px 0;font-size:12.5px;color:#969ca4}
+.fg-tier button{border:0;background:none;color:#f4f5f6;text-decoration:underline;font-size:12.5px;cursor:pointer;padding:4px 0}
+.fg-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:2100;max-width:min(92vw,380px);padding:12px 16px;border-radius:12px;background:#f4f5f6;color:#101215;font-size:13px;font-weight:600;line-height:1.4;box-shadow:0 12px 40px #0008;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.fg-toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
 </head>
 <body>
 <main class="wrap">
@@ -642,6 +704,26 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan.</span></div>
   </section>
 
+  <div class="fg-modal" id="fgModal" hidden>
+    <div class="fg-scrim"></div>
+    <section class="fg-panel" role="dialog" aria-modal="true" aria-labelledby="fgTitle">
+      <h2 id="fgTitle">Pemberitahuan</h2>
+      <p>Gunakan metode yang sesuai dengan jumlah pengikut akun TikTok Anda:</p>
+      <ul class="fg-rules">
+        <li><span><b>Local Forge</b> — Khusus akun di bawah 10 ribu pengikut.</span></li>
+        <li><span><b>Cloud Forge</b> — Khusus akun 10 ribu pengikut ke atas.</span></li>
+      </ul>
+      <p class="fg-sub">KETENTUAN PENGGUNAAN</p>
+      <ol class="fg-terms">
+        <li><span>Dilarang memperjualbelikan website ini.</span></li>
+        <li><span>Dilarang mengklaim hak kepemilikan website.</span></li>
+        <li><span>Dilarang menggunakan website untuk tujuan yang melanggar aturan atau merugikan pihak lain.</span></li>
+      </ol>
+      <button type="button" class="fg-ok" id="fgOk">Saya Mengerti &amp; Lanjutkan</button>
+    </section>
+  </div>
+  <div class="fg-toast" id="fgToast" role="status" aria-live="polite"></div>
+
   <div class="tool-modal" id="toolModal" hidden>
     <button type="button" class="tool-modal-scrim" data-close-tool aria-label="Tutup jendela tools"></button>
     <section class="tool-modal-panel" role="dialog" aria-modal="true" aria-labelledby="toolModalTitle">
@@ -704,6 +786,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <h2>Ffmpeg Video Compressor</h2>
     <p class="tool-intro">Pilih mode encoding, atur bitrate, lalu proses video langsung di perangkat. Video tidak dikirim ke server.</p>
     <label class="tool-file-pick ff-drop" for="ffFiles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><b id="ffFilesName">Pilih atau seret video ke sini</b><small>MP4, MOV, atau format video lain</small><input id="ffFiles" type="file" accept="video/*,audio/*,image/*,.mp4,.mov,.mkv,.webm,.avi,.m4v,.m4a,.mp3,.wav,.aac,.gif,.jpg,.jpeg,.png"></label>
+    <button type="button" class="ff-drive-btn" id="ffDrive">☁ Pilih dari Google Drive</button>
     <div class="ff-chips" id="ffChips"></div>
     <p class="tool-note" id="ffMemNote" hidden></p>
     <span class="label ff-mode-label" id="ffModeLabel">Mode encoding</span>
@@ -3273,12 +3356,131 @@ function renderFiles(){
   if(total>300e6)el.ffMemNote.textContent="Total file "+mb(total)+" besar. Semua diproses di memori, jadi tab bisa crash di HP dengan RAM kecil.";
   renderTemplate();
 }
-el.ffFiles.addEventListener("change",async()=>{
-  files=Array.from(el.ffFiles.files||[]);
+async function useFiles(arr){
+  files=arr;
   if(inst){for(const n of Array.from(written.keys())){try{await inst.deleteFile(n)}catch{}}}
   written.clear();
   renderFiles();
-});
+}
+el.ffFiles.addEventListener("change",()=>useFiles(Array.from(el.ffFiles.files||[])));
+
+/* ---- Google Drive: pilih & ambil video langsung ke memori browser (tidak disimpan ke penyimpanan HP dulu) ---- */
+const GKEY="wanxzyy_gdrive_client_id",GSCOPE="https://www.googleapis.com/auth/drive.readonly";
+let gTok=null,gExp=0,gOv=null,gBody=null,gNext=null,gQuery="",gAbort=null,gList=null;
+const gGet=()=>{try{return localStorage.getItem(GKEY)||""}catch{return""}};
+const gSave=v=>{try{localStorage.setItem(GKEY,v)}catch{}};
+const gMk=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+function gClose(){if(gAbort){try{gAbort.abort()}catch{}gAbort=null}if(gOv)gOv.hidden=true}
+function gBuild(){
+  gOv=gMk("div");gOv.id="gdOv";gOv.hidden=true;
+  const panel=gMk("div","gd-panel"),head=gMk("div","gd-head"),x=gMk("button",null,"✕");
+  x.type="button";x.setAttribute("aria-label","Tutup");x.onclick=gClose;
+  head.append(gMk("b",null,"Pilih video dari Google Drive"),x);
+  gBody=gMk("div");gBody.id="gdBody";panel.append(head,gBody);gOv.append(panel);document.body.append(gOv);
+  gOv.addEventListener("click",e=>{if(e.target===gOv)gClose()});
+}
+function gToken(){
+  if(gTok&&Date.now()<gExp)return Promise.resolve(gTok);
+  return new Promise((res,rej)=>{
+    if(!(window.google&&google.accounts&&google.accounts.oauth2))return rej(new Error("Skrip Google belum termuat. Cek internet lalu buka lagi."));
+    const tc=google.accounts.oauth2.initTokenClient({client_id:gGet(),scope:GSCOPE,
+      callback:r=>{if(r.error)return rej(new Error(r.error_description||r.error));gTok=r.access_token;gExp=Date.now()+(Number(r.expires_in||3600)-60)*1000;res(gTok)},
+      error_callback:e=>rej(new Error(e&&e.type==="popup_closed"?"Login ditutup.":e&&e.type==="popup_failed_to_open"?"Popup login diblokir browser.":"Login gagal."))});
+    tc.requestAccessToken({});
+  });
+}
+function gSetup(msg){
+  gBody.replaceChildren();
+  const inp=gMk("input");inp.type="text";inp.placeholder="Client ID (xxxx.apps.googleusercontent.com)";inp.value=gGet();inp.autocapitalize="off";inp.autocomplete="off";inp.spellcheck=false;
+  const ok=gMk("button","gd-btn","Simpan & lanjut");ok.type="button";
+  ok.onclick=()=>{const v=inp.value.trim();if(!/\.apps\.googleusercontent\.com$/.test(v)){gSetup("Client ID tidak valid. Harus berakhiran .apps.googleusercontent.com");return}gSave(v);gTok=null;gSignin()};
+  const help=gMk("div","gd-muted","Sekali saja: di Google Cloud Console buat OAuth Client ID (tipe Web application), aktifkan Google Drive API, lalu isi Authorized JavaScript origins dengan alamat web ini. Kalau app masih mode Testing, tambahkan emailmu di Test users.");
+  gBody.append(...(msg?[gMk("div","gd-err",msg)]:[]),inp,ok,help);
+}
+function gSignin(msg){
+  gBody.replaceChildren();
+  const go=gMk("button","gd-btn","Masuk dengan Google");go.type="button";
+  go.onclick=async()=>{go.disabled=true;try{
+    if(!(window.google&&google.accounts&&google.accounts.oauth2)){
+      try{await loadScript("https://accounts.google.com/gsi/client")}catch(e){return gSignin("Gagal memuat skrip Google. Cek internet atau matikan pemblokir iklan/DNS.")}
+      return gSignin("Skrip Google sudah termuat. Tap Masuk dengan Google sekali lagi.");
+    }
+    await gToken();gShowList()}catch(e){gSignin(e.message||String(e))}};
+  const chg=gMk("button","gd-link","Ganti Client ID");chg.type="button";chg.onclick=()=>gSetup();
+  gBody.append(...(msg?[gMk("div","gd-err",msg)]:[]),gMk("div","gd-muted","Akses hanya baca (read-only). Video diambil langsung ke memori browser, tidak lewat server lain."),go,chg);
+}
+function gShowList(){
+  gBody.replaceChildren();gNext=null;gQuery="";
+  const q=gMk("input");q.type="search";q.placeholder="Cari nama video…";q.autocomplete="off";
+  gList=gMk("div","gd-list");
+  let tm=null;q.addEventListener("input",()=>{clearTimeout(tm);tm=setTimeout(()=>{gQuery=q.value.trim();gLoad(true)},400)});
+  gBody.append(q,gList);gLoad(true);
+}
+async function gLoad(reset){
+  if(reset){gNext=null;gList.replaceChildren(gMk("div","gd-muted","Memuat…"))}
+  const qs=["mimeType contains 'video/'","trashed=false"];
+  if(gQuery)qs.push("name contains '"+gQuery.replace(/\\/g,"\\\\").replace(/'/g,"\\'")+"'");
+  const prm={q:qs.join(" and "),fields:"nextPageToken,files(id,name,size,mimeType,modifiedTime)",pageSize:"30",orderBy:"modifiedTime desc",supportsAllDrives:"true",includeItemsFromAllDrives:"true"};
+  if(!reset&&gNext)prm.pageToken=gNext;
+  try{
+    const tok=await gToken();
+    const r=await fetch("https://www.googleapis.com/drive/v3/files?"+new URLSearchParams(prm),{headers:{Authorization:"Bearer "+tok}});
+    if(r.status===401){gTok=null;throw new Error("Sesi Google habis. Masuk lagi.")}
+    if(!r.ok)throw new Error("Drive error HTTP "+r.status+(r.status===403?" (cek Google Drive API sudah aktif)":""));
+    const d=await r.json();
+    if(reset)gList.replaceChildren();
+    gList.querySelectorAll(".gd-more").forEach(n=>n.remove());
+    if(reset&&!(d.files||[]).length)gList.append(gMk("div","gd-muted","Tidak ada video ditemukan."));
+    for(const f of d.files||[]){
+      const b=gMk("button","gd-item");b.type="button";
+      b.append(gMk("b",null,f.name),gMk("small",null,(f.size?mb(Number(f.size))+" · ":"")+(f.modifiedTime||"").slice(0,10)));
+      b.onclick=()=>gDownload(f);gList.append(b);
+    }
+    gNext=d.nextPageToken||null;
+    if(gNext){const m=gMk("button","gd-btn gd-more","Muat lebih banyak");m.type="button";m.onclick=()=>gLoad(false);gList.append(m)}
+  }catch(e){
+    if(!gTok)return gSignin(e.message||String(e));
+    gList.replaceChildren(gMk("div","gd-err",e.message||String(e)));
+  }
+}
+async function gDownload(f){
+  gBody.replaceChildren();
+  const info=gMk("div",null,"Mengambil: "+f.name),bar=gMk("div","gd-bar"),fill=gMk("i"),pct=gMk("div","gd-muted","0 MB"),cancel=gMk("button","gd-btn","Batal");
+  bar.append(fill);cancel.type="button";gBody.append(info,bar,pct,cancel);
+  gAbort=new AbortController();cancel.onclick=()=>{try{gAbort.abort()}catch{}};
+  try{
+    const tok=await gToken();
+    const r=await fetch("https://www.googleapis.com/drive/v3/files/"+encodeURIComponent(f.id)+"?alt=media&supportsAllDrives=true",{headers:{Authorization:"Bearer "+tok},signal:gAbort.signal});
+    if(r.status===401){gTok=null;throw new Error("Sesi Google habis. Masuk lagi.")}
+    if(!r.ok)throw new Error("Gagal ambil file (HTTP "+r.status+")");
+    const total=Number(f.size)||Number(r.headers.get("content-length"))||0;
+    const rd=r.body.getReader(),parts=[];let n=0,last=0;
+    for(;;){
+      const {done,value}=await rd.read();if(done)break;
+      parts.push(value);n+=value.length;
+      const now=Date.now();if(now-last>150){last=now;fill.style.width=(total?Math.min(100,n/total*100):0)+"%";pct.textContent=mb(n)+(total?" / "+mb(total):"")}
+    }
+    gAbort=null;
+    const file=new File(parts,f.name,{type:f.mimeType||"video/mp4"});
+    gClose();await useFiles([file]);
+    setStatus("Video dari Google Drive siap: "+f.name+" ("+mb(file.size)+")");
+  }catch(e){
+    const aborted=e&&e.name==="AbortError";gAbort=null;
+    if(!gTok&&!aborted)return gSignin(e.message||String(e));
+    gShowList();if(!aborted)gBody.prepend(gMk("div","gd-err",e.message||String(e)));
+  }
+}
+async function gOpen(){
+  if(!gOv)gBuild();
+  gOv.hidden=false;gBody.replaceChildren(gMk("div","gd-muted","Memuat…"));
+  if(!/^https?:$/.test(location.protocol)){gBody.replaceChildren(gMk("div","gd-err","Halaman ini dibuka dari file lokal ("+location.protocol+"). Login Google cuma bisa dari alamat web. Buka lewat https://wanxzyy.vercel.app"));return}
+  if(!gGet())return gSetup();
+  if(!(window.google&&google.accounts&&google.accounts.oauth2)){
+    try{await loadScript("https://accounts.google.com/gsi/client")}catch(e){return gSignin("Gagal memuat skrip Google. Cek internet.")}
+  }
+  if(gTok&&Date.now()<gExp)gShowList();else gSignin();
+}
+$("ffDrive").addEventListener("click",gOpen);
 
 /* template */
 el.ffTpl.innerHTML='';
@@ -3350,7 +3552,7 @@ function renderRecent(){
 /* jalankan */
 const MIME={mp4:"video/mp4",m4v:"video/mp4",mov:"video/quicktime",webm:"video/webm",mkv:"video/x-matroska",m4a:"audio/mp4",mp3:"audio/mpeg",wav:"audio/wav",aac:"audio/aac",ogg:"audio/ogg",gif:"image/gif",jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png",webp:"image/webp",txt:"text/plain"};
 function setBusy(b){
-  busy=b;el.ffRun.disabled=b;el.ffStop.hidden=!b;el.ffFiles.disabled=b;el.ffTpl.disabled=b;el.ffCmd.readOnly=b||!el.ffManual.checked;
+  busy=b;el.ffRun.disabled=b;el.ffStop.hidden=!b;el.ffFiles.disabled=b;$("ffDrive").disabled=b;el.ffTpl.disabled=b;el.ffCmd.readOnly=b||!el.ffManual.checked;
   clearInterval(tick);
   if(b){t0=Date.now();const u=()=>el.ffTime.textContent=fmtT(Math.floor((Date.now()-t0)/1000));u();tick=setInterval(u,1000)}
 }
@@ -3873,6 +4075,57 @@ const applyMode=()=>{const lo=getForge()==="local";$("forgeDesc").textContent=FO
 const lockMode=b=>{modeEls.forEach(r=>r.disabled=b);forgeEls.forEach(r=>r.disabled=b);profEls.forEach(r=>r.disabled=b||r.value==="ios")};
 modeEls.forEach(r=>r.addEventListener("change",applyMode));forgeEls.forEach(r=>r.addEventListener("change",applyMode));profEls.forEach(r=>r.addEventListener("change",applyMode));applyMode();
 
+/* ---- Pemberitahuan (tampil sekali per browser) ---- */
+const FG_SEEN="wp_notice_seen";
+const fgModal=$("fgModal");
+const fgOk=$("fgOk"),FG_LABEL="Saya Mengerti & Lanjutkan";let fgTimer=0;
+function openFg(){
+  fgModal.hidden=false;document.body.classList.add("modal-open");
+  let left=3;fgOk.disabled=true;fgOk.textContent=FG_LABEL+" ("+left+")";
+  clearInterval(fgTimer);
+  fgTimer=setInterval(()=>{left--;if(left>0){fgOk.textContent=FG_LABEL+" ("+left+")"}else{clearInterval(fgTimer);fgOk.disabled=false;fgOk.textContent=FG_LABEL}},1000);
+}
+function closeFg(){if(fgOk.disabled)return;try{localStorage.setItem(FG_SEEN,"1")}catch(e){}fgModal.hidden=true;document.body.classList.remove("modal-open")}
+fgOk.addEventListener("click",closeFg);
+let fgSeen="";try{fgSeen=localStorage.getItem(FG_SEEN)||""}catch(e){}
+if(!fgSeen)openFg();
+
+/* ---- Cloud Forge: tulis tag @wanx.prstt (©too) ke hasil server, tanpa ubah video/audio ---- */
+async function tagCloudBlob(blob,tag){
+  tag=tag||"@wanx.prstt";
+  const buf=new Uint8Array(await blob.arrayBuffer());
+  const dv=new DataView(buf.buffer,buf.byteOffset,buf.byteLength);
+  const t4=p=>String.fromCharCode(buf[p],buf[p+1],buf[p+2],buf[p+3]);
+  const list=(s,e)=>{const o=[];let p=s;while(p+8<=e){let sz=dv.getUint32(p),h=8;if(sz===1){sz=Number(dv.getBigUint64(p+8));h=16}else if(sz===0)sz=e-p;if(sz<h||p+sz>e)break;o.push({type:t4(p+4),s:p,e:p+sz,h});p+=sz}return o};
+  const u32=n=>new Uint8Array([n>>>24&255,n>>>16&255,n>>>8&255,n&255]);
+  const cat=a=>{let n=0;a.forEach(x=>n+=x.length);const o=new Uint8Array(n);let p=0;a.forEach(x=>{o.set(x,p);p+=x.length});return o};
+  const mk=(t,...parts)=>{const body=cat(parts);return cat([u32(body.length+8),new Uint8Array([t.charCodeAt(0),t.charCodeAt(1),t.charCodeAt(2),t.charCodeAt(3)]),body])};
+  const CONT=new Set(["trak","mdia","minf","stbl","edts","dinf"]);
+  const tops=list(0,buf.length);
+  const moov=tops.find(b=>b.type==="moov"),mdat=tops.find(b=>b.type==="mdat");
+  if(!moov)throw new Error("moov tidak ditemukan");
+  if(list(moov.s+moov.h,moov.e).some(b=>b.type==="udta"&&indexOfBytes(buf,tag,b.s,b.e)>=0))return blob;
+  function indexOfBytes(a,str,s,e){const n=new TextEncoder().encode(str);outer:for(let i=s;i<=e-n.length;i++){for(let j=0;j<n.length;j++)if(a[i+j]!==n[j])continue outer;return i}return -1}
+  const rebuild=(b,delta)=>{
+    if(CONT.has(b.type)){return mk(b.type,...list(b.s+b.h,b.e).map(c=>rebuild(c,delta)))}
+    if(delta&&(b.type==="stco"||b.type==="co64")){
+      const c=buf.slice(b.s,b.e),d=new DataView(c.buffer),n=d.getUint32(b.h+4),w=b.type==="stco"?4:8;
+      for(let i=0;i<n;i++){const o=b.h+8+i*w;if(w===4)d.setUint32(o,d.getUint32(o)+delta);else d.setBigUint64(o,d.getBigUint64(o)+BigInt(delta))}
+      return c;
+    }
+    return buf.subarray(b.s,b.e);
+  };
+  const txt=new TextEncoder().encode(tag);
+  const udta=mk("udta",mk("meta",u32(0),mk("hdlr",u32(0),u32(0),new Uint8Array([109,100,105,114]),new Uint8Array(13)),mk("ilst",mk("\u00a9too",mk("data",u32(1),u32(0),txt)))));
+  const build=delta=>mk("moov",...list(moov.s+moov.h,moov.e).filter(c=>c.type!=="udta").map(c=>rebuild(c,delta)),udta);
+  const before=build(0);
+  const delta=(mdat&&moov.s<mdat.s)?before.length-(moov.e-moov.s):0;
+  const nm=delta?build(delta):before;
+  const parts=[];
+  for(const b of tops)parts.push(b===moov?nm:buf.subarray(b.s,b.e));
+  return new Blob(parts,{type:"video/mp4"});
+}
+
 /* ---- Local Forge: patch header MP4 di HP (tanpa server, tanpa decode/encode) ---- */
 async function localForge(file,ios){
   progress(5);
@@ -3958,6 +4211,7 @@ start.addEventListener("click",async()=>{
       finalBlob=await withRetry("Hasil akhir",()=>downloadFile(encId,encEnd,100,"Hasil akhir"),encRetry);await cleanup(encId);stage(enc,"done");
     }
     }
+    if(!local){try{say("Menambahkan tag @wanx.prstt…");finalBlob=await tagCloudBlob(finalBlob,"@wanx.prstt")}catch(e){console.warn("Tag Cloud Forge gagal:",e)}}
     if(objUrl)URL.revokeObjectURL(objUrl);
     lastBlob=finalBlob;objUrl=URL.createObjectURL(finalBlob);downloadLink.href=objUrl;
     const outName=(local?"Local":"Cloud")+" Forge Engine by Wanx.prstt.mp4";downloadLink.download=outName;
