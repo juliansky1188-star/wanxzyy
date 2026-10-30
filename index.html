@@ -265,6 +265,18 @@ body.tools-mode #proc,body.tools-mode #download{display:none!important}
 #ff1080Config{display:block!important}
 #ff1080Config .ff-label[for="ffBitrate"]{display:block!important}
 
+
+.zf{display:grid;gap:12px;margin-top:12px}
+.zf>div{display:grid;gap:10px}
+.zf label{display:grid;gap:5px;font-size:12px;color:#989ea6}
+.zf input[type=password],.zf input[type=text]{width:100%;box-sizing:border-box;padding:12px;border-radius:12px;background:#1a1d21;border:1px solid #3b4047;color:#e8eaed;font:14px var(--body)}
+.zf textarea{width:100%;box-sizing:border-box;padding:12px;border-radius:12px;background:#1a1d21;border:1px solid #3b4047;color:#e8eaed;font:14px/1.5 var(--body);resize:vertical}
+.zf input:focus,.zf textarea:focus{outline:0;border-color:#626871}
+.zacc{display:grid;gap:8px}
+.zwho{margin:0;font-size:12.5px;color:#c4c8ce}
+.zbar{height:6px;border-radius:9px;background:#24272c;overflow:hidden}
+.zbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f5f6f7,#9aa0a8);transition:width .2s}
+.zf .btn:disabled{opacity:.5;cursor:default}
 </style>
 <style>
 /* OBSIDIAN PRO v2: refined monochrome layout */
@@ -764,12 +776,26 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     </a>
     <div class="next" id="tiktokTools">
       <h3>Lanjut ke TikTok</h3>
-      <div class="pair">
-        <a class="btn ghost" href="https://www.tiktok.com/upload?lang=id-ID" target="_blank" rel="noopener">Atur sampul</a>
-        <a class="btn ghost" href="https://www.tiktok.com/upload?lang=id-ID" target="_blank" rel="noopener">Atur sound</a>
+      <button type="button" class="btn ghost again" id="postNow">Posting Sekarang</button>
+      <div class="zf" id="zFlow" hidden>
+        <div id="zS1">
+          <label>API key Zernio<input type="password" id="zKey" placeholder="sk_..." autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <button type="button" class="btn ghost" id="zNext1">Lanjut</button>
+        </div>
+        <div id="zS2" hidden>
+          <label>Pilih akun TikTok</label>
+          <div class="zacc" id="zAccList"></div>
+        </div>
+        <div id="zS3" hidden>
+          <p class="zwho" id="zWho"></p>
+          <button type="button" class="btn ghost" id="zBack" hidden>Ganti akun</button>
+          <label>Caption<textarea id="zTag" rows="6" maxlength="2200" placeholder="Bebas, boleh banyak baris, hashtag, mention, dll."></textarea></label>
+          <button type="button" class="btn main" id="zGo">Posting</button>
+          <p class="note">Video diposting publik. Dengan menekan Posting, kamu setuju video ini diunggah ke akun TikTok di atas.</p>
+        </div>
+        <div class="zbar" id="zBar" hidden><i id="zFill"></i></div>
       </div>
-      <button type="button" class="btn ghost again" id="again">Proses video lain</button>
-      <p class="note">Upload hasil akhir ke TikTok, lalu pilih sampul dan sound sendiri. Web ini tidak mengubah keduanya.</p>
+      <p class="note" id="zStatus"></p>
     </div>
   </section>
 
@@ -787,7 +813,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
       <li><span><b>Pilih metode.</b> HQ + Encode menjalankan keduanya berurutan, tanpa pengaturan tambahan.</span></li>
       <li><span><b>Tekan Proses video</b> dan tunggu. Upload, rendering, dan download berjalan lewat server.</span></li>
       <li><span><b>Unduh hasilnya</b> setelah status selesai.</span></li>
-      <li><span><b>Upload ke TikTok,</b> lalu atur sampul dan sound secara manual.</span></li>
+      <li><span><b>Posting ke TikTok</b> lewat tombol Posting Sekarang (butuh API key Zernio).</span></li>
     </ol>
   </details>
 
@@ -2830,7 +2856,7 @@ const $=id=>document.getElementById(id);
 const fileEl=$("file"),drop=$("drop"),picked=$("picked"),start=$("start"),statusEl=$("status");
 const fill=$("fill"),pctNum=$("pctNum"),proc=$("proc"),setup=$("setup"),result=$("download"),downloadLink=$("downloadLink");
 const hq=$("hq"),enc=$("enc");
-let selected=null,running=false,objUrl=null;
+let selected=null,running=false,objUrl=null,lastBlob=null;
 
 const mb=n=>(n/1048576).toFixed(1)+" MB";
 const say=(s,cls="")=>{statusEl.textContent=s;statusEl.className=cls};
@@ -3750,7 +3776,83 @@ async function downloadFile(fileId,startPct,endPct,label="DOWNLOAD RESULT",parts
 async function cleanup(id){fetch(`${API}/cleanup/${encodeURIComponent(id)}`,{method:"DELETE"}).catch(()=>{})}
 
 
-$("again").addEventListener("click",()=>{if(running)return;setFile(null);proc.hidden=true;result.hidden=true;window.scrollTo({top:0,behavior:"smooth"})});
+/* ===== Posting ke TikTok lewat Zernio ===== */
+(function(){
+  const ZAPI="https://zernio.com/api/v1";
+  const flow=$("zFlow"),s1=$("zS1"),s2=$("zS2"),s3=$("zS3"),zKey=$("zKey"),zTag=$("zTag"),list=$("zAccList"),who=$("zWho"),bar=$("zBar"),fill=$("zFill"),st=$("zStatus");
+  const ls={get(k){try{return localStorage.getItem(k)||""}catch(e){return ""}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+  let acc=null,accs=[];
+  const say2=(t,err)=>{st.textContent=t||"";st.style.color=err?"#ff8a8a":""};
+  const pg=p=>{bar.hidden=false;fill.style.width=Math.max(0,Math.min(100,p))+"%"};
+  const hdr=()=>({"Authorization":"Bearer "+zKey.value.trim(),"Content-Type":"application/json"});
+  async function call(path,opt){
+    let r;
+    try{r=await fetch(ZAPI+path,opt)}catch(e){throw new Error("Tidak bisa terhubung ke Zernio (kemungkinan diblokir CORS atau koneksi putus).")}
+    let j=null;try{j=await r.json()}catch(e){}
+    if(!r.ok)throw new Error((j&&(j.error||j.message))||("Zernio error "+r.status));
+    return j||{};
+  }
+  function putFile(url,blob,onp){
+    return new Promise((res,rej)=>{
+      const x=new XMLHttpRequest();x.open("PUT",url);x.setRequestHeader("Content-Type","video/mp4");
+      x.upload.onprogress=e=>{if(e.lengthComputable)onp(e.loaded/e.total)};
+      x.onload=()=>x.status>=200&&x.status<300?res():rej(new Error("Upload ke Zernio gagal ("+x.status+")."));
+      x.onerror=()=>rej(new Error("Upload ke Zernio gagal (jaringan/CORS)."));
+      x.send(blob);
+    });
+  }
+  function pick(a){acc=a;$("zBack").hidden=accs.length<2;who.textContent="Akun: "+(a.displayName||a.username||a._id)+(a.username&&a.displayName?" ("+a.username+")":"");s1.hidden=true;s2.hidden=true;s3.hidden=false;say2("");zTag.focus()}
+  $("postNow").addEventListener("click",()=>{
+    if(!lastBlob){say2("Belum ada video hasil.",true);return}
+    $("postNow").hidden=true;flow.hidden=false;s1.hidden=false;s2.hidden=true;s3.hidden=true;bar.hidden=true;
+    zKey.value=ls.get("zernio_key");say2("API key disimpan di browser ini saja.");
+  });
+  $("zNext1").addEventListener("click",async()=>{
+    const key=zKey.value.trim();
+    if(!key){say2("Isi API key dulu.",true);return}
+    const b=$("zNext1");b.disabled=true;say2("Mengambil akun TikTok…");
+    try{
+      const j=await call("/accounts?platform=tiktok",{headers:hdr()});
+      const all=(j.accounts||(j.data&&j.data.accounts)||[]).filter(a=>a.platform==="tiktok"&&a.isActive!==false);
+      if(!all.length)throw new Error("Tidak ada akun TikTok yang tersambung di Zernio.");
+      ls.set("zernio_key",key);
+      accs=all;if(all.length===1){pick(all[0]);return}
+      list.innerHTML="";
+      all.forEach(a=>{
+        const bt=document.createElement("button");bt.type="button";bt.className="btn ghost";
+        bt.textContent=(a.displayName||a.username||a._id)+(a.username&&a.displayName?" · "+a.username:"");
+        bt.addEventListener("click",()=>pick(a));list.appendChild(bt);
+      });
+      s1.hidden=true;s2.hidden=false;say2("");
+    }catch(e){say2(e.message||"Gagal mengambil akun.",true)}
+    finally{b.disabled=false}
+  });
+  $("zBack").addEventListener("click",()=>{s3.hidden=true;s2.hidden=false;bar.hidden=true;say2("Pilih akun TikTok yang benar.")});
+  $("zGo").addEventListener("click",async()=>{
+    if(!lastBlob||!acc)return;
+    const tags=zTag.value.trim();
+    const b=$("zGo");b.disabled=true;pg(0);say2("Menyiapkan upload…");
+    try{
+      const pre=await call("/media/presign",{method:"POST",headers:hdr(),body:JSON.stringify({filename:"video-"+Date.now()+".mp4",contentType:"video/mp4"})});
+      const d=pre.data||pre;
+      if(!d.uploadUrl||!d.publicUrl)throw new Error("Respons presign tidak lengkap.");
+      await putFile(d.uploadUrl,lastBlob,f=>{pg(f*85);say2("Mengunggah video… "+Math.round(f*100)+"%")});
+      pg(90);say2("Memposting ke TikTok…");
+      const res=await call("/posts",{method:"POST",headers:hdr(),body:JSON.stringify({
+        content:tags,
+        mediaItems:[{type:"video",url:d.publicUrl}],
+        platforms:[{platform:"tiktok",accountId:acc._id}],
+        tiktokSettings:{privacy_level:"PUBLIC_TO_EVERYONE",allow_comment:true,allow_duet:true,allow_stitch:true,content_preview_confirmed:true,express_consent_given:true},
+        publishNow:true
+      })});
+      pg(100);
+      const post=res.post||res.data||res;
+      say2("Terkirim ke TikTok"+(post&&post._id?" (ID "+post._id+")":"")+". Cek akun TikTok kamu.");
+    }catch(e){say2(e.message||"Gagal posting.",true);bar.hidden=true}
+    finally{b.disabled=false}
+  });
+  window.__resetZernio=()=>{flow.hidden=true;$("postNow").hidden=false;say2("");bar.hidden=true;acc=null};
+})();
 const modeEls=document.querySelectorAll('input[name="mode"]');
 const MODES={
   both:"HQ Method dulu, lalu hasilnya di-encode ulang. Paling lengkap.",
@@ -3857,10 +3959,10 @@ start.addEventListener("click",async()=>{
     }
     }
     if(objUrl)URL.revokeObjectURL(objUrl);
-    objUrl=URL.createObjectURL(finalBlob);downloadLink.href=objUrl;
+    lastBlob=finalBlob;objUrl=URL.createObjectURL(finalBlob);downloadLink.href=objUrl;
     const outName=(local?"Local":"Cloud")+" Forge Engine by Wanx.prstt.mp4";downloadLink.download=outName;
     $("outMeta").textContent=outName+" · "+mb(finalBlob.size);
-    result.hidden=false;progress(100);say("Selesai","ok");
+    result.hidden=false;progress(100);say("Selesai","ok");window.__resetZernio&&window.__resetZernio();
     saveHistory({name:selected?.name||"Video",date:new Date().toLocaleString("id-ID"),size:mb(finalBlob.size),status:"Selesai"});
     result.scrollIntoView({behavior:"smooth",block:"nearest"});
   }catch(e){
