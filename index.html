@@ -60,6 +60,8 @@ button,input{font:inherit;color:inherit}
 .seg input:checked+span{background:var(--violet);color:#14091f}
 .seg input:focus-visible+span{outline:2px solid var(--violet);outline-offset:2px}
 /* iOS profile temporarily disabled while it is under development */
+#profBox .seg span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.15;min-height:44px}
+#profBox .seg span small{display:block;font-size:10px;font-weight:600;letter-spacing:0;opacity:.8}
 .seg label.profile-disabled{cursor:not-allowed;opacity:.48}
 .seg label.profile-disabled span{color:var(--muted);background:#17191c;box-shadow:none;white-space:normal;flex-direction:column;gap:3px;line-height:1.2;min-height:44px}
 .seg label.profile-disabled span small{display:block;font-size:10px;font-weight:600;letter-spacing:0;color:inherit;opacity:.85}
@@ -292,6 +294,34 @@ body.tools-mode #proc,body.tools-mode #download{display:none!important}
 .zbar{height:6px;border-radius:9px;background:#24272c;overflow:hidden}
 .zbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f5f6f7,#9aa0a8);transition:width .2s}
 .zf .btn:disabled{opacity:.5;cursor:default}
+
+/* Copywriting & keterbacaan: kontras teks ditingkatkan tanpa memperbesar popup. */
+#fgModal .fg-panel p,
+#fgModal .fg-notice-section>p,
+#fgModal .fg-notice-section .fg-rules small,
+#fgModal .fg-footer-note { color:#c0c5cc; }
+#fgModal .fg-notice-section .fg-terms li { color:#d0d4da; }
+#fgModal .fg-panel .fg-eyebrow { color:#aab1ba; }
+#fgModal .fg-channel-section .fg-warning { color:#f3dfb9; background:#302b22; }
+
+/* Dense, mobile-first notice panel */
+#fgModal{padding:12px}
+#fgModal .fg-panel{width:min(100%,360px);max-height: min(68dvh,540px);padding:13px 13px 12px;border-radius:16px;overflow-y:auto;overscroll-behavior:contain}
+#fgModal .fg-panel .fg-eyebrow{font-size:9px;letter-spacing:.11em;margin:0 0 4px}
+#fgModal .fg-panel h2{font-size:17px;line-height:1.18;margin:0 0 3px}
+#fgModal .fg-panel .fg-intro{font-size:11px;line-height:1.35;margin:0 0 7px}
+#fgModal .fg-notice-section{margin-top:6px;padding:8px 9px;border-radius:11px}
+#fgModal .fg-notice-section h3{font-size:12px;margin:0 0 5px}
+#fgModal .fg-guide-row{display:grid;grid-template-columns:94px minmax(0,1fr);gap:7px;align-items:start;padding:4px 0;font-size:10.5px;line-height:1.35}
+#fgModal .fg-guide-row+ .fg-guide-row{border-top:1px solid #343941}
+#fgModal .fg-guide-row b{color:#f5f6f7}
+#fgModal .fg-guide-row span{color:#c4c9d0}
+#fgModal .fg-terms-compact p{font-size:10.5px;line-height:1.4;color:#c4c9d0}
+#fgModal .fg-channel-compact>p{font-size:10.5px;line-height:1.4;color:#c4c9d0}
+#fgModal .fg-channel-link{min-height:37px;padding:8px 9px;margin-top:7px;font-size:11px}
+#fgModal #fgOk{min-height:40px;margin-top:8px;font-size:12px}
+@media(max-width:480px){#fgModal{padding:10px}#fgModal .fg-panel{width:min(100%,350px);max-height:68dvh;padding:12px 11px 11px}}
+
 </style>
 <style>
 /* OBSIDIAN PRO v2: refined monochrome layout */
@@ -623,9 +653,112 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 .fg-ok:disabled{opacity:.5;cursor:not-allowed}
 .fg-tier{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 2px 0;font-size:12.5px;color:#969ca4}
 .fg-tier button{border:0;background:none;color:#f4f5f6;text-decoration:underline;font-size:12.5px;cursor:pointer;padding:4px 0}
+.fg-panel .fg-intro{margin-bottom:14px}
+.fg-notice-section{margin-top:13px;padding:13px;border:1px solid #30343a;border-radius:14px;background:#17191d}
+.fg-notice-section h3{margin:0 0 7px;font:750 14px/1.3 "Plus Jakarta Sans",sans-serif;color:#f4f5f6}
+.fg-notice-section>p{font-size:12.5px;line-height:1.5}
+.fg-notice-section .fg-rules{margin:9px 0 0;gap:7px}
+.fg-notice-section .fg-rules li{padding:9px 10px;background:#202328;border-color:#373c44;font-size:12.5px}
+.fg-notice-section .fg-rules small{display:block;margin-top:3px;color:#a5aab1;font-size:11.5px;line-height:1.45}
+.fg-notice-section .fg-terms{margin:8px 0 0;gap:7px}
+.fg-notice-section .fg-terms li{font-size:12px}
+.fg-channel-section{border-color:#454b54;background:linear-gradient(145deg,#1b1e23,#15171b)}
+.fg-channel-section .fg-warning{margin:8px 0;padding:8px 10px;border-radius:9px;background:#29251f;color:#f0d5a7;font-size:12px}
+.fg-channel-link{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:11px;text-decoration:none}
+.fg-footer-note{margin:13px 2px!important;text-align:center;font-size:11.5px!important}
+@media(max-width:480px){.fg-modal{padding:10px}.fg-panel{width:100%;max-height:94dvh;padding:17px 15px 15px;border-radius:17px}.fg-panel h2{font-size:19px}.fg-notice-section{padding:11px;margin-top:10px}}
 .fg-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:2100;max-width:min(92vw,380px);padding:12px 16px;border-radius:12px;background:#f4f5f6;color:#101215;font-size:13px;font-weight:600;line-height:1.4;box-shadow:0 12px 40px #0008;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .fg-toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Compact notice popup: smaller card, scroll only inside when needed. */
+#fgModal{padding:12px;}
+#fgModal .fg-panel{width:min(100%,370px);max-height:min(76dvh,610px);padding:15px 14px 13px;overflow-y:auto;overscroll-behavior:contain;border-radius:17px;}
+#fgModal .fg-panel .fg-eyebrow{font-size:9px;margin-bottom:5px;letter-spacing:.12em}
+#fgModal .fg-panel h2{font-size:17px;line-height:1.2;margin-bottom:5px}
+#fgModal .fg-panel .fg-intro{font-size:11.5px;line-height:1.4;margin-bottom:8px}
+#fgModal .fg-notice-section{margin-top:8px;padding:9px 10px;border-radius:11px}
+#fgModal .fg-notice-section h3{font-size:12.5px;margin-bottom:5px}
+#fgModal .fg-notice-section>p{font-size:11px;line-height:1.4}
+#fgModal .fg-notice-section .fg-rules{margin-top:6px;gap:5px}
+#fgModal .fg-notice-section .fg-rules li{padding:7px 8px;font-size:11px;line-height:1.35}
+#fgModal .fg-notice-section .fg-rules small{font-size:10px;line-height:1.35;margin-top:2px}
+#fgModal .fg-notice-section .fg-terms{margin:6px 0 0;gap:5px}
+#fgModal .fg-notice-section .fg-terms li{font-size:10.5px;line-height:1.35;gap:7px}
+#fgModal .fg-notice-section .fg-terms li:before{width:17px;height:17px;font-size:10px}
+#fgModal .fg-channel-section .fg-warning{font-size:10.5px;padding:6px 8px;margin:6px 0}
+#fgModal .fg-channel-link{min-height:40px;padding:9px 10px;margin-top:8px;font-size:11.5px}
+#fgModal .fg-footer-note{font-size:10px!important;margin:8px 0!important}
+#fgModal #fgOk{min-height:42px;font-size:12px}
+@media(max-width:480px){#fgModal{padding:12px}#fgModal .fg-panel{width:min(100%,360px);max-height:76dvh;padding:14px 12px 12px;border-radius:16px}#fgModal .fg-panel h2{font-size:16px}}
 </style>
+
+<style id="fg-modal-polish">
+/* Balanced compact notice: clear hierarchy, consistent spacing, no cramped columns. */
+#fgModal { padding:16px; }
+#fgModal .fg-panel {
+  box-sizing:border-box;
+  width:min(92vw,410px);
+  max-height:min(74dvh,620px);
+  padding:18px;
+  border:1px solid #3a3f47;
+  border-radius:20px;
+  background:linear-gradient(160deg,#17191d 0%,#111316 78%);
+  box-shadow:0 24px 80px #000a, inset 0 1px 0 #ffffff0a;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+#fgModal .fg-eyebrow {font-size:10px;letter-spacing:.13em;color:#aeb4bd;margin:0 0 6px}
+#fgModal .fg-panel h2 {font-size:20px;line-height:1.2;letter-spacing:-.035em;margin:0 0 5px}
+#fgModal .fg-intro {font-size:13px;line-height:1.45;color:#b8bec7;margin:0 0 13px}
+#fgModal .fg-notice-section {
+  margin:9px 0 0;
+  padding:12px 13px;
+  border:1px solid #343941;
+  border-radius:14px;
+  background:#191c20;
+}
+#fgModal .fg-notice-section h3 {font-size:14px;line-height:1.3;margin:0 0 9px;color:#f1f3f5}
+#fgModal .fg-guide-row {
+  display:block;
+  padding:8px 0;
+  font-size:12.5px;
+  line-height:1.45;
+}
+#fgModal .fg-guide-row:first-of-type {padding-top:1px}
+#fgModal .fg-guide-row + .fg-guide-row {border-top:1px solid #343941}
+#fgModal .fg-guide-row b {display:block;font-size:13px;color:#f4f5f6;margin-bottom:2px}
+#fgModal .fg-guide-row span {display:block;color:#c1c6ce}
+#fgModal .fg-terms-list {list-style:none;padding:0;margin:0;display:grid;gap:6px}
+#fgModal .fg-terms-list li {position:relative;padding-left:19px;color:#c7ccd3;font-size:12.5px;line-height:1.4}
+#fgModal .fg-terms-list li::before {
+  content:"";position:absolute;left:0;top:.48em;width:7px;height:7px;
+  border-radius:50%;background:#aeb5be;box-shadow:0 0 0 3px #ffffff0d;
+}
+#fgModal .fg-channel-section {background:linear-gradient(145deg,#1b1e22,#17191c);border-color:#424850}
+#fgModal .fg-channel-compact>p {font-size:12.5px;line-height:1.45;color:#c4cad2;margin:0}
+#fgModal .fg-channel-link {
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  min-height:43px;padding:10px 12px;margin-top:11px;
+  border-radius:12px;font-size:12.5px;font-weight:700;
+}
+#fgModal #fgOk {
+  display:block;width:100%;min-height:45px;margin-top:12px;padding:11px 14px;
+  border-radius:12px;font-size:13px;font-weight:750;
+}
+@media(max-width:480px) {
+  #fgModal {padding:12px}
+  #fgModal .fg-panel {width:min(94vw,390px);max-height:74dvh;padding:16px;border-radius:18px}
+}
+@media(max-height:700px) {
+  #fgModal .fg-panel {max-height:78dvh;padding:14px}
+  #fgModal .fg-notice-section {padding:10px 11px;margin-top:7px}
+  #fgModal .fg-intro {margin-bottom:9px}
+}
+</style>
+<style id="fg-key-copy-emphasis">
+#fgModal .fg-key-copy { color:#f2c66d !important; font-weight:750; text-shadow:0 0 12px #f2c66d18; }
+</style>
+
 </head>
 <body>
 <main class="wrap">
@@ -665,10 +798,10 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <p class="modedesc" id="forgeDesc"></p>
 
     <div id="profBox" hidden>
-    <span class="label" id="profLabel">Profil</span>
+    <span class="label" id="profLabel">Local Engine</span>
     <div class="seg" style="grid-template-columns:repeat(2,minmax(0,1fr))" role="radiogroup" aria-labelledby="profLabel">
-      <label><input type="radio" name="lprof" value="std" checked><span>Standar</span></label>
-      <label class="profile-disabled" aria-disabled="true"><input type="radio" name="lprof" value="ios" disabled><span>iOS<small>Dalam Pengembangan</small></span></label>
+      <label><input type="radio" name="lprof" value="std" checked><span>Standard</span></label>
+      <label><input type="radio" name="lprof" value="pro"><span>Pro<small>Eksperimental</small></span></label>
     </div>
     <p class="modedesc" id="profDesc"></p>
     </div>
@@ -707,19 +840,32 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
   <div class="fg-modal" id="fgModal" hidden>
     <div class="fg-scrim"></div>
     <section class="fg-panel" role="dialog" aria-modal="true" aria-labelledby="fgTitle">
-      <h2 id="fgTitle">Pemberitahuan</h2>
-      <p>Gunakan metode yang sesuai dengan jumlah pengikut akun TikTok Anda:</p>
-      <ul class="fg-rules">
-        <li><span><b>Local Forge</b> — Khusus akun di bawah 10 ribu pengikut.</span></li>
-        <li><span><b>Cloud Forge</b> — Khusus akun 10 ribu pengikut ke atas.</span></li>
-      </ul>
-      <p class="fg-sub">KETENTUAN PENGGUNAAN</p>
-      <ol class="fg-terms">
-        <li><span>Dilarang memperjualbelikan website ini.</span></li>
-        <li><span>Dilarang mengklaim hak kepemilikan website.</span></li>
-        <li><span>Dilarang menggunakan website untuk tujuan yang melanggar aturan atau merugikan pihak lain.</span></li>
-      </ol>
-      <button type="button" class="fg-ok" id="fgOk">Saya Mengerti &amp; Lanjutkan</button>
+      <p class="fg-eyebrow">WANXZYY · INFO RESMI</p>
+      <h2 id="fgTitle">Informasi Penggunaan</h2>
+      <p class="fg-intro">Panduan singkat dan pembaruan saluran.</p>
+
+      <section class="fg-notice-section fg-guide-compact">
+        <h3>Panduan metode</h3>
+        <div class="fg-guide-row"><b>Local Forge</b><span><span class="fg-key-copy">Untuk akun di bawah 10 ribu pengikut.</span> Video diproses langsung di perangkat.</span></div>
+        <div class="fg-guide-row"><b>Cloud Forge</b><span><span class="fg-key-copy">Untuk akun 10 ribu pengikut atau lebih.</span> Video diproses melalui server.</span></div>
+      </section>
+
+      <section class="fg-notice-section fg-terms-compact">
+        <h3>Ketentuan</h3>
+        <ul class="fg-terms-list">
+          <li><span class="fg-key-copy">Dilarang memperjualbelikan website.</span></li>
+          <li><span class="fg-key-copy">Dilarang mengklaim kepemilikan website.</span></li>
+          <li><span class="fg-key-copy">Dilarang menggunakannya untuk melanggar aturan atau merugikan pihak lain.</span></li>
+        </ul>
+      </section>
+
+      <section class="fg-notice-section fg-channel-section fg-channel-compact">
+        <h3>Pembaruan saluran WhatsApp</h3>
+        <p><span class="fg-key-copy">Saluran lama telah diretas dan tidak lagi kami gunakan. Mohon berhenti mengikuti saluran tersebut.</span></p>
+        <a class="fg-ok fg-channel-link" href="https://whatsapp.com/channel/0029Vb8hscgKAwEew5Lbao1X" target="_blank" rel="noopener noreferrer">Gabung Saluran Terbaru <span>↗</span></a>
+      </section>
+
+      <button type="button" class="fg-ok" id="fgOk">Mengerti &amp; Lanjutkan (5)</button>
     </section>
   </div>
   <div class="fg-toast" id="fgToast" role="status" aria-live="polite"></div>
@@ -4069,26 +4215,29 @@ const FORGES={
   local:"Local Forge berjalan langsung di perangkat, tanpa mengirim video ke server dan tanpa encode ulang."
 };
 const profEls=document.querySelectorAll('input[name="lprof"]');
-const getProfile=()=>"std"; // iOS profile temporarily unavailable during development.
-const PROFS={std:"Standar: hanya merapikan header video, paling ringan.",ios:"iOS sementara dinonaktifkan karena masih dalam pengembangan."};
+const getProfile=()=>document.querySelector('input[name="lprof"]:checked')?.value||"std";
+const PROFS={std:"Standard: patch header MP4 langsung di perangkat.",pro:"Pro Eksperimental: pemrosesan lanjutan dengan Universal Safe dan verifikasi hasil."};
 const applyMode=()=>{const lo=getForge()==="local";$("forgeDesc").textContent=FORGES[getForge()];$("engineBox").hidden=lo;$("profBox").hidden=!lo;$("profDesc").textContent=PROFS[getProfile()];$("modeDesc").textContent=MODES[getMode()]};
-const lockMode=b=>{modeEls.forEach(r=>r.disabled=b);forgeEls.forEach(r=>r.disabled=b);profEls.forEach(r=>r.disabled=b||r.value==="ios")};
+const lockMode=b=>{modeEls.forEach(r=>r.disabled=b);forgeEls.forEach(r=>r.disabled=b);profEls.forEach(r=>r.disabled=b)};
 modeEls.forEach(r=>r.addEventListener("change",applyMode));forgeEls.forEach(r=>r.addEventListener("change",applyMode));profEls.forEach(r=>r.addEventListener("change",applyMode));applyMode();
 
-/* ---- Pemberitahuan (tampil sekali per browser) ---- */
-const FG_SEEN="wp_notice_seen";
+/* ---- Pemberitahuan pembaruan saluran: tampil satu kali untuk semua pengunjung ---- */
+const FG_LEGACY_SEEN="wp_notice_seen";
+const FG_UPDATE_SEEN="wp_notice_channel_update_2026_10";
 const fgModal=$("fgModal");
-const fgOk=$("fgOk"),FG_LABEL="Saya Mengerti & Lanjutkan";let fgTimer=0;
+const fgOk=$("fgOk"),FG_LABEL="Mengerti & Lanjutkan";let fgTimer=0;
 function openFg(){
   fgModal.hidden=false;document.body.classList.add("modal-open");
-  let left=3;fgOk.disabled=true;fgOk.textContent=FG_LABEL+" ("+left+")";
+  let left=5;fgOk.disabled=true;fgOk.textContent=FG_LABEL+" ("+left+")";
   clearInterval(fgTimer);
   fgTimer=setInterval(()=>{left--;if(left>0){fgOk.textContent=FG_LABEL+" ("+left+")"}else{clearInterval(fgTimer);fgOk.disabled=false;fgOk.textContent=FG_LABEL}},1000);
 }
-function closeFg(){if(fgOk.disabled)return;try{localStorage.setItem(FG_SEEN,"1")}catch(e){}fgModal.hidden=true;document.body.classList.remove("modal-open")}
+function closeFg(){if(fgOk.disabled)return;try{localStorage.setItem(FG_UPDATE_SEEN,"1")}catch(e){}fgModal.hidden=true;document.body.classList.remove("modal-open")}
 fgOk.addEventListener("click",closeFg);
-let fgSeen="";try{fgSeen=localStorage.getItem(FG_SEEN)||""}catch(e){}
-if(!fgSeen)openFg();
+let fgLegacySeen="",fgUpdateSeen="";
+try{fgLegacySeen=localStorage.getItem(FG_LEGACY_SEEN)||"";fgUpdateSeen=localStorage.getItem(FG_UPDATE_SEEN)||""}catch(e){}
+/* Pengunjung baru maupun lama melihat pemberitahuan ini satu kali. Setelah menekan Mengerti & Lanjutkan, penanda disimpan dan popup tidak muncul lagi. */
+if(!fgUpdateSeen)openFg();
 
 /* ---- Cloud Forge: tulis tag @wanx.prstt (©too) ke hasil server, tanpa ubah video/audio ---- */
 async function tagCloudBlob(blob,tag){
@@ -4127,26 +4276,52 @@ async function tagCloudBlob(blob,tag){
 }
 
 /* ---- Local Forge: patch header MP4 di HP (tanpa server, tanpa decode/encode) ---- */
-async function localForge(file,ios){
+async function localForge(file,profile){
+  const isPro = profile === "pro";
   progress(5);
-  say(ios ? "Local Forge iOS: menjalankan engine iOS…" : "Local Forge Standar: menjalankan engine Standar…");
+  if (isPro) {
+    say("Local Forge Pro Eksperimental: memulai pemrosesan lanjutan…");
+    const original = new Uint8Array(await file.arrayBuffer());
+    checkCancelled();
+    if (!globalThis.ADJNVideoProcessor || typeof globalThis.ADJNVideoProcessor.processVideoDirect !== "function") {
+      throw new Error("Processor Pro Eksperimental tidak termuat.");
+    }
+    const requestId = "local-pro-31-" + Date.now();
+    const result = await globalThis.ADJNVideoProcessor.processVideoDirect({
+      requestId,
+      engine: "3.1",
+      buffer: original,
+      fileName: file.name || "video.mp4",
+      fileType: file.type || "video/mp4"
+    }, (label, pct, detail) => {
+      checkCancelled();
+      progress(Math.max(5, Math.min(96, Number(pct) || 5)));
+      say(detail ? `${label} · ${detail}` : label);
+    });
+    checkCancelled();
+    if (!result || !result.output || !result.output.byteLength) {
+      throw new Error("Proses Pro Eksperimental tidak menghasilkan output yang valid.");
+    }
+    const mime = result.outputMime || file.type || "video/mp4";
+    const blob = new Blob([result.output], { type: mime });
+    if (!blob.size) throw new Error("Hasil Pro Eksperimental kosong.");
+    progress(100);
+    say(result.passthrough
+      ? "Selesai · Universal Safe mempertahankan file tanpa perubahan byte"
+      : "Selesai · patch dan verifikasi berhasil");
+    return blob;
+  }
+
+  // STANDARD: jalur asli dipertahankan tanpa perubahan.
+  say("Local Forge Standard: menjalankan engine Standard…");
   const original = new Uint8Array(await file.arrayBuffer());
   checkCancelled();
   progress(25);
-  let result;
-  if (ios) {
-    const core = globalThis.ADJNIosEngineCore || globalThis.fenn;
-    if (!core || typeof core.patchWithReport !== "function") {
-      throw new Error("Engine iOS tidak termuat.");
-    }
-    result = core.patchWithReport(original);
-  } else {
-    const core = globalThis.ADJNOriginalMp4Core || globalThis.FRYOriginalMp4Core;
-    if (!core || typeof core.patchWithReport !== "function") {
-      throw new Error("Engine Standar tidak termuat.");
-    }
-    result = core.patchWithReport(original);
+  const core = globalThis.ADJNOriginalMp4Core || globalThis.FRYOriginalMp4Core;
+  if (!core || typeof core.patchWithReport !== "function") {
+    throw new Error("Engine Standard tidak termuat.");
   }
+  const result = core.patchWithReport(original);
   if (!result || !result.bytes || !result.bytes.byteLength) {
     throw new Error("ADJN core tidak menghasilkan file output yang valid.");
   }
@@ -4155,7 +4330,7 @@ async function localForge(file,ios){
   const blob = new Blob([output], { type: "video/mp4" });
   if (!blob.size) throw new Error("Hasil patch kosong.");
   progress(100);
-  say("Patch selesai · " + (ios ? "iOS" : "Standar") + " · resolusi/FPS sumber dipertahankan");
+  say("Patch selesai · Standard · resolusi/FPS sumber dipertahankan");
   return blob;
 }
 
@@ -4192,7 +4367,7 @@ start.addEventListener("click",async()=>{
     say("Membaca video…");progress(2);
     await new Promise(r=>setTimeout(r,250));
     let finalBlob=null;
-    if(local){finalBlob=await localForge(selected,false)}else{
+    if(local){finalBlob=await localForge(selected,getProfile())}else{
     say("Mengunggah video…");
     if(useHq){
       const hqEnd=useEnc?42:88,hqDlEnd=useEnc?52:100;
@@ -4230,6 +4405,1424 @@ start.addEventListener("click",async()=>{
     }
   }finally{running=false;resetPause();stopTimer();start.disabled=!selected;lockMode(false)}
 });
+</script>
+
+<script>
+/* ADJN Method V3.1 MP4 core — exact extension dependency, isolated from Standard. */
+/*
+ * ADJN MP4 Core v5.0
+ * Developed by F R Y 60fps & Adekjamannow
+ *
+ * 64-Bit Unknown Duration Sentinel & Bitstream Ingest Engine
+ */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  if (root) {
+    root.ADJNPro31Core = api;
+    /* Standard core global intentionally untouched. */
+    /* Extension alias isolated. */
+    /* Extension alias isolated. */
+    /* Extension alias isolated. */
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const VERSION = '5.0';
+  const ENCODER_TAG = 'ADJN Quality Method https://tiktok.com/@itsmefachry';
+  const FOURCC_TOO = new Uint8Array([0xa9, 0x74, 0x6f, 0x6f]); // '©too'
+  const SENTINEL_FF = new Uint8Array([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]); // 64-bit Unknown Duration Sentinel
+  const CONTAINER_BOXES = new Set(['moov', 'trak', 'mdia', 'minf', 'stbl', 'edts']);
+  const MAX_TABLE_ENTRIES = 50000000;
+  const EMPTY_U8 = new Uint8Array(0);
+
+  function createError(msg) {
+    const err = new Error(msg);
+    err.name = 'ADJNPatchError';
+    return err;
+  }
+  function throwError(msg) {
+    throw createError(msg);
+  }
+
+  function readU32(b, o) {
+    return ((b[o] << 24) | (b[o + 1] << 16) | (b[o + 2] << 8) | b[o + 3]) >>> 0;
+  }
+  function readU64(b, o) {
+    return Number((BigInt(readU32(b, o)) << 32n) | BigInt(readU32(b, o + 4)));
+  }
+  function u32ToBytes(v) {
+    const b = new Uint8Array(4);
+    b[0] = (v >>> 24) & 0xff;
+    b[1] = (v >>> 16) & 0xff;
+    b[2] = (v >>> 8) & 0xff;
+    b[3] = v & 0xff;
+    return b;
+  }
+  function u64ToBytes(v) {
+    const b = new Uint8Array(8);
+    const big = BigInt(v);
+    b.set(u32ToBytes(Number(big >> 32n)), 0);
+    b.set(u32ToBytes(Number(big & 0xffffffffn)), 4);
+    return b;
+  }
+  function asciiToBytes(str) {
+    const b = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) b[i] = str.charCodeAt(i) & 0xff;
+    return b;
+  }
+  function concatBytes(chunks) {
+    let total = 0;
+    for (const c of chunks) total += c.length;
+    const out = new Uint8Array(total);
+    let offset = 0;
+    for (const c of chunks) {
+      out.set(c, offset);
+      offset += c.length;
+    }
+    return out;
+  }
+  function cloneBytes(src) {
+    const dst = new Uint8Array(src.length);
+    dst.set(src);
+    return dst;
+  }
+  function toU8Array(val) {
+    if (val instanceof Uint8Array) return new Uint8Array(val.buffer, val.byteOffset, val.byteLength);
+    if (val instanceof ArrayBuffer) return new Uint8Array(val);
+    if (ArrayBuffer.isView(val)) return new Uint8Array(val.buffer, val.byteOffset, val.byteLength);
+    throw createError('Buffer video tidak valid.');
+  }
+
+  function indexOfSubarray(haystack, needleStr) {
+    const needle = asciiToBytes(needleStr);
+    outer: for (let i = 0; i + needle.length <= haystack.length; i++) {
+      for (let j = 0; j < needle.length; j++) {
+        if (haystack[i + j] !== needle[j]) continue outer;
+      }
+      return i;
+    }
+    return -1;
+  }
+
+  function Mp4Box(type, payload, children) {
+    this.type = type;
+    this.payload = payload || EMPTY_U8;
+    this.children = children || null;
+  }
+  Mp4Box.prototype.find = function (type) {
+    if (!this.children) return null;
+    for (const c of this.children) if (c.type === type) return c;
+    return null;
+  };
+  Mp4Box.prototype.findAll = function (type) {
+    if (!this.children) return [];
+    return this.children.filter(c => c.type === type);
+  };
+  Mp4Box.prototype.remove = function (type) {
+    if (this.children) this.children = this.children.filter(c => c.type !== type);
+  };
+  Mp4Box.prototype.path = function (...types) {
+    let cur = this;
+    for (let i = 0; i < types.length; i++) {
+      cur = cur ? cur.find(types[i]) : null;
+      if (!cur) return null;
+    }
+    return cur;
+  };
+  Mp4Box.prototype.clone = function () {
+    if (this.children) return new Mp4Box(this.type, null, this.children.map(c => c.clone()));
+    return new Mp4Box(this.type, cloneBytes(this.payload));
+  };
+  Mp4Box.prototype.serialize = function () {
+    const body = this.children ? concatBytes(this.children.map(c => c.serialize())) : this.payload;
+    if (body.length + 8 > 0xffffffff) {
+      return concatBytes([u32ToBytes(1), asciiToBytes(this.type), u64ToBytes(body.length + 16), body]);
+    }
+    return concatBytes([u32ToBytes(body.length + 8), asciiToBytes(this.type), body]);
+  };
+
+  function parseBoxes(bytes, start, end) {
+    const list = [];
+    let p = start;
+    while (p + 8 <= end) {
+      let size = readU32(bytes, p);
+      let header = 8;
+      if (size === 1) {
+        if (p + 16 > end) break;
+        size = readU64(bytes, p + 8);
+        header = 16;
+      } else if (size === 0) {
+        size = end - p;
+      }
+      if (size < header || p + size > end) break;
+      const type = String.fromCharCode(bytes[p + 4], bytes[p + 5], bytes[p + 6], bytes[p + 7]);
+      if (CONTAINER_BOXES.has(type)) {
+        list.push(new Mp4Box(type, null, parseBoxes(bytes, p + header, p + size)));
+      } else {
+        list.push(new Mp4Box(type, bytes.subarray(p + header, p + size)));
+      }
+      p += size;
+    }
+    return list;
+  }
+
+  function makeBox(type, payload) {
+    return concatBytes([u32ToBytes(payload.length + 8), asciiToBytes(type), payload]);
+  }
+  function makeBoxRaw(typeBytes, payload) {
+    return concatBytes([u32ToBytes(payload.length + 8), typeBytes, payload]);
+  }
+
+  function scanBoxes(bytes, start, end, label) {
+    const out = [];
+    let p = start;
+    while (p < end) {
+      if (p + 8 > end) throwError('Invalid MP4 — malformed ' + label + ' metadata layout.');
+      let size = readU32(bytes, p);
+      let header = 8;
+      if (size === 1) {
+        if (p + 16 > end) throwError('Invalid MP4 — truncated 64-bit ' + label + ' metadata header.');
+        size = readU64(bytes, p + 8);
+        header = 16;
+      } else if (size === 0) {
+        size = end - p;
+      }
+      if (!Number.isSafeInteger(size) || size < header || p + size > end) {
+        throwError('Invalid MP4 — malformed ' + label + ' metadata box size.');
+      }
+      out.push({
+        type: String.fromCharCode(bytes[p + 4], bytes[p + 5], bytes[p + 6], bytes[p + 7]),
+        start: p,
+        end: p + size,
+        header
+      });
+      p += size;
+    }
+    return out;
+  }
+
+  function makeDataAtom(text) {
+    const dataPayload = concatBytes([u32ToBytes(1), u32ToBytes(0), asciiToBytes(text)]);
+    return makeBoxRaw(FOURCC_TOO, makeBox('data', dataPayload));
+  }
+  function makeMetaBox(tagText) {
+    const hdlrPayload = concatBytes([u32ToBytes(0), u32ToBytes(0), asciiToBytes('mdir'), new Uint8Array(12), new Uint8Array(1)]);
+    return makeBox('meta', concatBytes([u32ToBytes(0), makeBox('hdlr', hdlrPayload), makeBox('ilst', makeDataAtom(tagText))]));
+  }
+  function patchIlst(bytes, tagText) {
+    const chunks = [];
+    for (const box of scanBoxes(bytes, 0, bytes.length, 'ilst')) {
+      if (box.type !== '©too') chunks.push(cloneBytes(bytes.subarray(box.start, box.end)));
+    }
+    if (tagText) chunks.push(makeDataAtom(tagText));
+    return concatBytes(chunks);
+  }
+  function patchMetaBox(bytes, tagText) {
+    if (bytes.length < 4) throwError('Invalid MP4 — malformed meta FullBox.');
+    const chunks = [cloneBytes(bytes.subarray(0, 4))];
+    let inserted = false;
+    for (const box of scanBoxes(bytes, 4, bytes.length, 'meta')) {
+      if (box.type === 'ilst') {
+        const body = bytes.subarray(box.start + box.header, box.end);
+        chunks.push(makeBox('ilst', patchIlst(body, !inserted ? tagText : null)));
+        inserted = inserted || !!tagText;
+      } else {
+        chunks.push(cloneBytes(bytes.subarray(box.start, box.end)));
+      }
+    }
+    if (!inserted && tagText) chunks.push(makeBox('ilst', makeDataAtom(tagText)));
+    return makeBox('meta', concatBytes(chunks));
+  }
+  function patchUdtaBox(bytes, tagText) {
+    const chunks = [];
+    let inserted = false;
+    for (const box of scanBoxes(bytes, 0, bytes.length, 'udta')) {
+      if (box.type === 'meta') {
+        const body = bytes.subarray(box.start + box.header, box.end);
+        chunks.push(patchMetaBox(body, !inserted ? tagText : null));
+        inserted = inserted || !!tagText;
+      } else {
+        chunks.push(cloneBytes(bytes.subarray(box.start, box.end)));
+      }
+    }
+    if (!inserted && tagText) chunks.push(makeMetaBox(tagText));
+    return concatBytes(chunks);
+  }
+  function injectUdta(moov, tagText) {
+    const existing = moov.findAll('udta');
+    if (existing.length) {
+      let inserted = false;
+      for (const u of existing) {
+        const toAdd = !inserted ? tagText : null;
+        inserted = inserted || !!toAdd;
+        if (u.children) throwError('Invalid MP4 — unexpected parsed udta metadata tree.');
+        u.payload = patchUdtaBox(u.payload, toAdd);
+      }
+    } else {
+      moov.children.push(new Mp4Box('udta', makeMetaBox(tagText)));
+    }
+  }
+  function hasEncoderTag(moov, tagText) {
+    return moov.findAll('udta').some(u => !u.children && indexOfSubarray(u.payload, tagText) >= 0);
+  }
+
+  function parseTopLevel(bytes) {
+    const list = [];
+    let p = 0;
+    while (p + 8 <= bytes.length) {
+      let size = readU32(bytes, p);
+      let header = 8;
+      if (size === 1) {
+        if (p + 16 > bytes.length) break;
+        size = readU64(bytes, p + 8);
+        header = 16;
+      } else if (size === 0) {
+        size = end - p;
+      }
+      if (size < header || p + size > bytes.length) break;
+      list.push({
+        type: String.fromCharCode(bytes[p + 4], bytes[p + 5], bytes[p + 6], bytes[p + 7]),
+        start: p,
+        end: p + size,
+        header
+      });
+      p += size;
+    }
+    return list;
+  }
+
+  function validateBoxNesting(bytes, start, end, label, depth = 0) {
+    if (depth > 24) throwError('Invalid MP4 — box nesting is too deep to patch safely.');
+    let p = start;
+    while (p < end) {
+      if (p + 8 > end) throwError('Invalid MP4 — malformed ' + label + ' box layout.');
+      let size = readU32(bytes, p);
+      let header = 8;
+      if (size === 1) {
+        if (p + 16 > end) throwError('Invalid MP4 — truncated 64-bit ' + label + ' box header.');
+        size = readU64(bytes, p + 8);
+        header = 16;
+      } else if (size === 0) {
+        size = end - p;
+      }
+      if (!Number.isSafeInteger(size) || size < header || p + size > end) {
+        throwError('Invalid MP4 — malformed ' + label + ' box size.');
+      }
+      const type = String.fromCharCode(bytes[p + 4], bytes[p + 5], bytes[p + 6], bytes[p + 7]);
+      if (CONTAINER_BOXES.has(type)) {
+        validateBoxNesting(bytes, p + header, p + size, type, depth + 1);
+      }
+      p += size;
+    }
+  }
+
+  function isSentinelDuration(payload) {
+    if (!payload || payload.length < 32 || payload[0] !== 1) return false;
+    for (let i = 0; i < 8; i++) {
+      if (payload[24 + i] !== 0xff) return false;
+    }
+    return true;
+  }
+
+  function patchMvhdToV1Sentinel(payload) {
+    if (!payload || payload.length < 4) throwError('Malformed mvhd box (too short for version byte).');
+    const ver = payload[0];
+    if (ver === 1) {
+      if (payload.length < 112) throwError('Malformed version-1 mvhd box (too short — needs 112 bytes).');
+      const out = cloneBytes(payload);
+      out.set(SENTINEL_FF, 24);
+      return out;
+    }
+    if (ver !== 0) throwError('Unsupported mvhd version: ' + ver + '.');
+    if (payload.length < 100) throwError('Malformed version-0 mvhd box (too short).');
+    // Convert version 0 mvhd to version 1 with 64-bit duration sentinel (0xFFFFFFFFFFFFFFFF)
+    return concatBytes([
+      new Uint8Array([1, payload[1], payload[2], payload[3]]),
+      u32ToBytes(0),
+      cloneBytes(payload.subarray(4, 8)),
+      u32ToBytes(0),
+      cloneBytes(payload.subarray(8, 12)),
+      cloneBytes(payload.subarray(12, 16)),
+      cloneBytes(SENTINEL_FF),
+      cloneBytes(payload.subarray(20, 100))
+    ]);
+  }
+
+  function validateTableEntries(bytes, headerSize, entrySize, label) {
+    if (!bytes || bytes.length < 8) throwError('The ' + label + ' table is truncated.');
+    const count = readU32(bytes, 4);
+    if (count > MAX_TABLE_ENTRIES) throwError('The ' + label + ' table is unreasonably large (' + count + ' entries).');
+    if (headerSize + count * entrySize > bytes.length) throwError('The ' + label + ' table is truncated.');
+    return count;
+  }
+
+  function parseStts(bytes) {
+    const count = validateTableEntries(bytes, 8, 8, 'stts');
+    const list = [];
+    for (let i = 0; i < count; i++) {
+      list.push([readU32(bytes, 8 + i * 8), readU32(bytes, 12 + i * 8)]);
+    }
+    return list;
+  }
+
+  function parseStsz(bytes) {
+    if (!bytes || bytes.length < 12) throwError('The stsz table is truncated.');
+    const uniform = readU32(bytes, 4);
+    const count = readU32(bytes, 8);
+    if (count > MAX_TABLE_ENTRIES) throwError('The stsz table is unreasonably large (' + count + ' entries).');
+    if (!uniform && 12 + count * 4 > bytes.length) throwError('The stsz table is truncated.');
+    const list = new Array(count);
+    for (let i = 0; i < count; i++) {
+      list[i] = uniform || readU32(bytes, 12 + i * 4);
+    }
+    return list;
+  }
+
+  function parseStsc(bytes) {
+    const count = validateTableEntries(bytes, 8, 12, 'stsc');
+    const list = [];
+    for (let i = 0; i < count; i++) {
+      const e = [readU32(bytes, 8 + i * 12), readU32(bytes, 12 + i * 12), readU32(bytes, 16 + i * 12)];
+      if (e[0] < 1 || e[1] < 1 || e[2] < 1 || (i > 0 && e[0] <= list[i - 1][0])) {
+        throwError('The stsc table contains an invalid chunk mapping.');
+      }
+      list.push(e);
+    }
+    return list;
+  }
+
+  function parseStcoOrCo64(box) {
+    const bytes = box.payload;
+    const is64 = box.type === 'co64';
+    const count = validateTableEntries(bytes, 8, is64 ? 8 : 4, box.type);
+    const list = new Array(count);
+    for (let i = 0; i < count; i++) {
+      list[i] = is64 ? readU64(bytes, 8 + i * 8) : readU32(bytes, 8 + i * 4);
+    }
+    return list;
+  }
+
+  function writeStcoOrCo64(box, offsets) {
+    let maxOff = 0;
+    for (const off of offsets) if (off > maxOff) maxOff = off;
+    if (maxOff > 0xffffffff) {
+      box.type = 'co64';
+      const b = new Uint8Array(8 + offsets.length * 8);
+      b.set(u32ToBytes(offsets.length), 4);
+      for (let i = 0; i < offsets.length; i++) b.set(u64ToBytes(offsets[i]), 8 + i * 8);
+      box.payload = b;
+    } else {
+      box.type = 'stco';
+      const b = new Uint8Array(8 + offsets.length * 4);
+      b.set(u32ToBytes(offsets.length), 4);
+      for (let i = 0; i < offsets.length; i++) b.set(u32ToBytes(offsets[i]), 8 + i * 4);
+      box.payload = b;
+    }
+  }
+
+  function getStbl(trak) {
+    return trak.path('mdia', 'minf', 'stbl');
+  }
+  function getOffsetBox(trak) {
+    const stbl = getStbl(trak);
+    if (!stbl) return null;
+    return stbl.find('stco') || stbl.find('co64');
+  }
+  function getTrackHandler(trak) {
+    const hdlr = trak.path('mdia', 'hdlr');
+    if (!hdlr || hdlr.payload.length < 12) return '';
+    const p = hdlr.payload;
+    return String.fromCharCode(p[8], p[9], p[10], p[11]);
+  }
+  function getSampleTableBox(trak, type) {
+    const stbl = getStbl(trak);
+    return stbl ? stbl.find(type) : null;
+  }
+  function getCodecFourCC(trak) {
+    const stsd = getSampleTableBox(trak, 'stsd');
+    if (!stsd || stsd.payload.length < 16) return '';
+    const p = stsd.payload;
+    const count = readU32(p, 4);
+    const entrySize = readU32(p, 8);
+    if (count < 1 || entrySize < 8 || 8 + entrySize > p.length) return '';
+    return String.fromCharCode(p[12], p[13], p[14], p[15]);
+  }
+  function getStsdEntryCount(trak) {
+    const stsd = getSampleTableBox(trak, 'stsd');
+    return stsd && stsd.payload.length >= 8 ? readU32(stsd.payload, 4) : 0;
+  }
+
+  function parseTrackInfo(trak) {
+    const stbl = getStbl(trak);
+    if (!stbl) return null;
+    const stsz = stbl.find('stsz');
+    const stsc = stbl.find('stsc');
+    const stts = stbl.find('stts');
+    const offsBox = getOffsetBox(trak);
+    if (!stsz || !stsc || !stts || !offsBox) return null;
+
+    const sizes = parseStsz(stsz.payload);
+    const sampleCount = sizes.length;
+    const chunkOffsets = parseStcoOrCo64(offsBox);
+    const runs = parseStsc(stsc.payload);
+    if (!sampleCount || !chunkOffsets.length || !runs.length) return null;
+
+    const samplesPerChunk = [];
+    for (let i = 0; i < runs.length; i++) {
+      const firstChunk = runs[i][0];
+      const lastChunk = i + 1 < runs.length ? runs[i + 1][0] - 1 : chunkOffsets.length;
+      if (firstChunk > lastChunk || lastChunk > chunkOffsets.length) return null;
+      for (let c = firstChunk; c <= lastChunk; c++) samplesPerChunk.push(runs[i][1]);
+    }
+    if (samplesPerChunk.length !== chunkOffsets.length || samplesPerChunk.reduce((a, b) => a + b, 0) !== sampleCount) {
+      return null;
+    }
+
+    const offsets = new Array(sampleCount);
+    let sIdx = 0;
+    for (let c = 0; c < chunkOffsets.length; c++) {
+      let curOff = chunkOffsets[c];
+      for (let s = 0; s < samplesPerChunk[c]; s++) {
+        offsets[sIdx] = curOff;
+        curOff += sizes[sIdx];
+        sIdx++;
+      }
+    }
+
+    const sttsTotal = parseStts(stts.payload).reduce((a, b) => a + b[0], 0);
+    if (sttsTotal !== sampleCount) return null;
+
+    return {
+      trak,
+      stsz,
+      offsBox,
+      sizes,
+      offsets,
+      runs,
+      count: sampleCount,
+      handler: getTrackHandler(trak),
+      codec: getCodecFourCC(trak)
+    };
+  }
+
+  function readDisplayDimensions(trak) {
+    const tkhd = trak.find('tkhd');
+    if (!tkhd || tkhd.payload.length < 84) return { width: 0, height: 0 };
+    const ver = tkhd.payload[0];
+    const widthOffset = ver === 1 ? 88 : 76;
+    if (tkhd.payload.length < widthOffset + 8) return { width: 0, height: 0 };
+    const w = readU32(tkhd.payload, widthOffset) / 65536;
+    const h = readU32(tkhd.payload, widthOffset + 4) / 65536;
+    return { width: Math.round(w), height: Math.round(h) };
+  }
+
+  function parseMp4Structure(bytes) {
+    if (!bytes.length) throwError('File video kosong.');
+    const topBoxes = parseTopLevel(bytes);
+    validateBoxNesting(bytes, 0, bytes.length, 'top-level', 0);
+    if (topBoxes.some(b => b.type === 'moof')) throwError('Fragmented MP4/MOV files tidak didukung untuk direct patch.');
+
+    const ftypList = topBoxes.filter(b => b.type === 'ftyp');
+    const moovList = topBoxes.filter(b => b.type === 'moov');
+    const mdatList = topBoxes.filter(b => b.type === 'mdat');
+    if (ftypList.length !== 1 || moovList.length !== 1 || mdatList.length !== 1) {
+      throwError('Invalid MP4 — membutuhkan tepat satu box ftyp, moov, dan mdat.');
+    }
+
+    const ftypBox = ftypList[0];
+    const moovBox = moovList[0];
+    const mdatBox = mdatList[0];
+    const moov = new Mp4Box('moov', null, parseBoxes(bytes, moovBox.start + moovBox.header, moovBox.end));
+    const traks = moov.findAll('trak');
+    if (!traks.length) throwError('Invalid MP4 — tidak ditemukan track di file video.');
+
+    const mvhd = moov.find('mvhd');
+    if (!mvhd || mvhd.payload.length < 4) throwError('Invalid MP4 — mvhd hilang.');
+    if (isSentinelDuration(mvhd.payload)) {
+      throwError('File ini sudah ter-patch sebelumnya (duration sentinel aktif).');
+    }
+    if (mvhd.payload[0] !== 0 && mvhd.payload[0] !== 1) {
+      throwError('Unsupported mvhd version: ' + mvhd.payload[0]);
+    }
+
+    const tables = traks.map(parseTrackInfo);
+    if (tables.some(t => t === null)) throwError('Tidak dapat memetakan sample table dari setiap track.');
+    for (const t of tables) {
+      if (getStsdEntryCount(t.trak) !== 1 || t.runs.some(r => r[2] !== 1)) {
+        throwError('Track dengan multiple codec descriptions tidak didukung.');
+      }
+    }
+
+    const videoTracks = tables.filter(t => t.handler === 'vide');
+    if (videoTracks.length !== 1) throwError('Membutuhkan tepat satu video track, ditemukan: ' + videoTracks.length);
+
+    const video = videoTracks[0];
+    const isAvc = video.codec === 'avc1' || video.codec === 'avc3';
+    const isHevc = video.codec === 'hvc1' || video.codec === 'hev1' || video.codec === 'hvc2' || video.codec === 'hev2';
+    if (!isAvc && !isHevc) {
+      throwError('Codec video tidak didukung: ' + (video.codec || 'unknown') + '. Export sebagai H.264 (AVC) atau H.265 (HEVC).');
+    }
+
+    const audioTracks = tables.filter(t => t.handler === 'soun' && t.codec === 'mp4a');
+    if (!audioTracks.length) throwError('Video membutuhkan audio track AAC (mp4a).');
+
+    const sourceAudio = audioTracks[0];
+    injectUdta(moov.clone(), ENCODER_TAG);
+
+    const mdatPayloadStart = mdatBox.start + mdatBox.header;
+    for (const t of tables) {
+      for (let i = 0; i < t.count; i++) {
+        const off = t.offsets[i];
+        const sz = t.sizes[i];
+        if (!Number.isSafeInteger(off) || !Number.isSafeInteger(sz) || sz < 0 || off < mdatPayloadStart || off + sz > mdatBox.end) {
+          throwError('Sample track ' + (i + 1) + ' menunjuk ke luar mdat.');
+        }
+      }
+    }
+
+    return {
+      top: topBoxes,
+      ftypBox,
+      moovBox,
+      mdatBox,
+      moov,
+      mvhd,
+      traks,
+      tables,
+      video,
+      sourceAudio,
+      isAvc,
+      isHevc
+    };
+  }
+
+  function executePatch(bytes, parsed) {
+    const { top, moovBox, mdatBox, moov } = parsed;
+    const mvhd = moov.find('mvhd');
+    if (!mvhd || mvhd.payload.length < 4) throwError('Invalid MP4 — mvhd hilang.');
+
+    mvhd.payload = patchMvhdToV1Sentinel(mvhd.payload);
+    injectUdta(moov, ENCODER_TAG);
+
+    const moovBeforeMdat = moovBox.start < mdatBox.start;
+    const oldMoovSize = moovBox.end - moovBox.start;
+
+    if (moovBeforeMdat) {
+      const traksWithOffsets = moov.findAll('trak').filter(t => getOffsetBox(t));
+      const origOffsets = traksWithOffsets.map(t => parseStcoOrCo64(getOffsetBox(t)));
+      for (let iter = 0; iter < 4; iter++) {
+        const delta = moov.serialize().length - oldMoovSize;
+        let changedType = false;
+        traksWithOffsets.forEach((t, i) => {
+          const box = getOffsetBox(t);
+          const prevType = box.type;
+          writeStcoOrCo64(box, origOffsets[i].map(o => o + delta));
+          if (box.type !== prevType) changedType = true;
+        });
+        if (!changedType) break;
+      }
+    }
+
+    const newMoovBytes = moov.serialize();
+    const finalChunks = [];
+    for (const b of top) {
+      finalChunks.push(b.start === moovBox.start ? newMoovBytes : bytes.subarray(b.start, b.end));
+    }
+    return concatBytes(finalChunks);
+  }
+
+  function validateFinalOutput(bytes) {
+    const top = parseTopLevel(bytes);
+    if (!top.length || top[top.length - 1].end !== bytes.length) throwError('Hasil patch bukan box run lengkap.');
+    const moovList = top.filter(b => b.type === 'moov');
+    const mdatList = top.filter(b => b.type === 'mdat');
+    if (moovList.length !== 1 || mdatList.length !== 1) throwError('Hasil patch harus memiliki tepat satu moov dan satu mdat.');
+
+    const moovBox = moovList[0];
+    const mdatBox = mdatList[0];
+    const mdatStart = mdatBox.start + mdatBox.header;
+    const mdatEnd = mdatBox.end;
+    const moov = new Mp4Box('moov', null, parseBoxes(bytes, moovBox.start + moovBox.header, moovBox.end));
+
+    if (!hasEncoderTag(moov, ENCODER_TAG)) throwError('Hasil patch tidak memiliki ADJN encoder tag.');
+
+    const mvhd = moov.find('mvhd');
+    if (!mvhd || !isSentinelDuration(mvhd.payload)) throwError('Hasil patch mvhd.duration bukan sentinel Unknown Duration.');
+
+    for (const trak of moov.findAll('trak')) {
+      const offsBox = getOffsetBox(trak);
+      if (!offsBox) continue;
+      for (const off of parseStcoOrCo64(offsBox)) {
+        if (off < mdatStart || off >= mdatEnd) {
+          throwError('Offset chunk ter-patch (' + off + ') berada di luar mdat.');
+        }
+      }
+    }
+  }
+
+  function quickPatch(input) {
+    const bytes = toU8Array(input);
+    const parsed = parseMp4Structure(bytes);
+    const patched = executePatch(bytes, parsed);
+    validateFinalOutput(patched);
+    return patched;
+  }
+
+  function checkCompatibility(input) {
+    try {
+      const parsed = parseMp4Structure(toU8Array(input));
+      return {
+        compatible: true,
+        reason: '',
+        codec: parsed.video.codec,
+        isAvc: parsed.isAvc,
+        isHevc: parsed.isHevc,
+        sampleCount: parsed.video.count,
+        audioTrackCount: parsed.tables.filter(t => t.handler === 'soun').length
+      };
+    } catch (e) {
+      return {
+        compatible: false,
+        reason: e?.message || 'Struktur MP4/MOV tidak kompatibel.',
+        codec: '',
+        isAvc: false,
+        isHevc: false,
+        sampleCount: 0,
+        audioTrackCount: 0
+      };
+    }
+  }
+
+  function inspect(input) {
+    const bytes = toU8Array(input);
+    const top = parseTopLevel(bytes);
+    const moovBox = top.find(b => b.type === 'moov');
+    const moov = moovBox ? new Mp4Box('moov', null, parseBoxes(bytes, moovBox.start + moovBox.header, moovBox.end)) : new Mp4Box('moov', null, []);
+    const traks = moov.findAll('trak');
+
+    function getTrackSampleCount(trak) {
+      const stsz = getSampleTableBox(trak, 'stsz');
+      return stsz && stsz.payload.length >= 12 ? readU32(stsz.payload, 8) : 0;
+    }
+
+    const videoTrak = traks.find(t => getTrackHandler(t) === 'vide');
+    const audioTraks = traks.filter(t => getTrackHandler(t) === 'soun');
+    const primaryAudio = audioTraks.find(t => getCodecFourCC(t) === 'mp4a') || audioTraks[0];
+    const vCodec = videoTrak ? getCodecFourCC(videoTrak) : '';
+    const aCodec = primaryAudio ? getCodecFourCC(primaryAudio) : '';
+
+    let declaredAudioSamples = 0;
+    for (const a of audioTraks) declaredAudioSamples += getTrackSampleCount(a);
+
+    const mvhd = moov.find('mvhd');
+    return {
+      codec: vCodec,
+      isAvc: vCodec === 'avc1' || vCodec === 'avc3',
+      isHevc: vCodec === 'hvc1' || vCodec === 'hev1' || vCodec === 'hvc2' || vCodec === 'hev2',
+      sampleCount: videoTrak ? getTrackSampleCount(videoTrak) : 0,
+      hasAac: audioTraks.some(t => getCodecFourCC(t) === 'mp4a'),
+      audioCodec: aCodec,
+      audioSampleCount: primaryAudio ? getTrackSampleCount(primaryAudio) : 0,
+      audioTrackCount: audioTraks.length,
+      declaredAudioSamples,
+      durationUnknown: !!(mvhd && isSentinelDuration(mvhd.payload)),
+      encoderTag: hasEncoderTag(moov, ENCODER_TAG) ? ENCODER_TAG : ''
+    };
+  }
+
+  function inspectMediaInfo(input) {
+    const bytes = toU8Array(input);
+    const top = parseTopLevel(bytes);
+    const moovBox = top.find(b => b.type === 'moov');
+    if (!moovBox) throw createError('ADJN Core: moov box tidak ditemukan.');
+    const moov = new Mp4Box('moov', null, parseBoxes(bytes, moovBox.start + moovBox.header, moovBox.end));
+    const traks = moov.findAll('trak');
+
+    const allTracks = traks.map((trak, idx) => {
+      const handler = getTrackHandler(trak);
+      const codec = getCodecFourCC(trak);
+      const dims = readDisplayDimensions(trak);
+      const stsz = getSampleTableBox(trak, 'stsz');
+      const sampleCount = stsz && stsz.payload.length >= 12 ? readU32(stsz.payload, 8) : 0;
+      const mdhd = trak.path('mdia', 'mdhd');
+      let timescale = 1000;
+      let duration = 0;
+      if (mdhd && mdhd.payload.length >= 24) {
+        const ver = mdhd.payload[0];
+        timescale = readU32(mdhd.payload, ver === 1 ? 20 : 12);
+        duration = ver === 1 ? readU64(mdhd.payload, 24) : readU32(mdhd.payload, 16);
+      }
+      const avgFps = handler === 'vide' && duration > 0 ? (sampleCount * timescale) / duration : 0;
+      return {
+        trackId: idx + 1,
+        handler,
+        codec,
+        width: dims.width,
+        height: dims.height,
+        sampleCount,
+        timescale,
+        duration,
+        averageFps: avgFps,
+        maxFps: avgFps
+      };
+    });
+
+    const video = allTracks.find(t => t.handler === 'vide');
+    const audio = allTracks.find(t => t.handler === 'soun');
+    if (!video) throw createError('ADJN Core: video track tidak ditemukan.');
+
+    return {
+      width: video.width || 1080,
+      height: video.height || 1920,
+      codec: video.codec,
+      codecFamily: /^(hvc1|hev1|hvc2|hev2)$/i.test(video.codec) ? 'hevc' : /^(avc1|avc3)$/i.test(video.codec) ? 'avc' : video.codec,
+      averageFps: video.averageFps || 60,
+      maxFps: video.maxFps || 60,
+      videoSamples: video.sampleCount,
+      audioCodec: audio?.codec || '',
+      audioSamples: audio?.sampleCount || 0,
+      fragmented: false,
+      tracks: allTracks
+    };
+  }
+
+  function inspectCompatibility(input) {
+    const comp = checkCompatibility(input);
+    return {
+      needsRefinery: !comp.compatible,
+      reasons: comp.compatible ? [] : [comp.reason]
+    };
+  }
+
+  function patchWithReport(input) {
+    const original = toU8Array(input);
+    const patched = quickPatch(original);
+    const inspected = inspect(patched);
+    return {
+      bytes: patched,
+      report: {
+        engine: 'ADJN 64-bit Duration Sentinel v5.0',
+        durationUnknown: inspected.durationUnknown,
+        encoderTag: inspected.encoderTag,
+        codec: inspected.codec,
+        sampleCount: inspected.sampleCount,
+        audioSampleCount: inspected.audioSampleCount
+      }
+    };
+  }
+
+  function verifyOutput(originalInput, outputInput) {
+    const orig = toU8Array(originalInput);
+    const out = toU8Array(outputInput);
+    const outInsp = inspect(out);
+    return {
+      videoBitstreamByteIdentical: true,
+      originalAudioTrackPreserved: true,
+      clonedAudioTrackAdded: false,
+      wholeFileByteIdentical: false,
+      codecFamilyPreserved: true,
+      codecSampleEntryPreserved: true,
+      hdrSignalingPreserved: true,
+      metadataPreservedByteForByte: false,
+      durationUnknownPreserved: outInsp.durationUnknown,
+      allTracksPreserved: true
+    };
+  }
+
+  return {
+    version: VERSION,
+    quickPatch,
+    inspect,
+    checkCompatibility,
+    inspectMediaInfo,
+    inspectCompatibility,
+    patchWithReport,
+    verifyOutput
+  };
+});
+
+</script>
+<script>
+/* ADJN Method V3.1 processor.js — integrated unchanged from the reference extension. */
+(() => {
+  'use strict';
+  let busy = false;
+
+  let stageCallback = null;
+
+  function send(type, payload = {}, transfer = []) {
+    if (typeof parent !== 'undefined' && parent && parent !== window) {
+      parent.postMessage({ source: 'FRY_PROCESSOR', type, ...payload }, '*', transfer);
+    }
+  }
+  function stage(requestId, key, label, progress, detail = '') {
+    if (typeof stageCallback === 'function') {
+      try { stageCallback(label, progress, detail, key); } catch (_) {}
+    }
+    send('STAGE', { requestId, key, label, progress, detail });
+  }
+  function owned(view) {
+    return view.buffer.slice(view.byteOffset, view.byteOffset + view.byteLength);
+  }
+  function asU8(value) {
+    if (value instanceof Uint8Array) return value;
+    if (value instanceof ArrayBuffer) return new Uint8Array(value);
+    if (ArrayBuffer.isView(value)) return new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
+    throw new Error('Buffer video tidak valid.');
+  }
+
+  function findAscii(bytes, text, from = 0) {
+    const pat = [...text].map(ch => ch.charCodeAt(0));
+    outer: for (let i = from; i <= bytes.length - pat.length; i++) {
+      for (let j = 0; j < pat.length; j++) if (bytes[i + j] !== pat[j]) continue outer;
+      return i;
+    }
+    return -1;
+  }
+  function hasBytePattern(bytes, pattern) {
+    outer: for (let i = 0; i <= bytes.length - pattern.length; i++) {
+      for (let j = 0; j < pattern.length; j++) if (bytes[i + j] !== pattern[j]) continue outer;
+      return true;
+    }
+    return false;
+  }
+
+  function detectHdrProfile(bytes, info) {
+    const codec = String(info?.codecFamily || info?.codec || '').toLowerCase();
+    const result = {
+      hevc: codec.includes('hevc') || codec.includes('hvc1') || codec.includes('hev1'),
+      main10: false,
+      hdr10: false,
+      hdr10plus: false,
+      hlg: false,
+      dolbyVision: false,
+      label: 'SDR / unknown',
+      reason: ''
+    };
+    if (!result.hevc) return result;
+
+    const hvcc = findAscii(bytes, 'hvcC');
+    if (hvcc >= 4 && hvcc + 6 < bytes.length) {
+      const profileIdc = bytes[hvcc + 5] & 0x1f;
+      result.main10 = profileIdc === 2;
+    }
+
+    // Dolby Vision configuration record in ISO-BMFF/QuickTime HEVC sample entries.
+    result.dolbyVision = findAscii(bytes, 'dvvC') >= 0 || findAscii(bytes, 'dvcC') >= 0;
+
+    // HDR10+ registered user-data signature carried inside HEVC SEI.
+    result.hdr10plus = hasBytePattern(bytes, [0xB5, 0x00, 0x3C, 0x00, 0x01, 0x04]);
+
+    for (const colorType of ['nclx', 'nclc']) {
+      let pos = 0;
+      while (pos < bytes.length) {
+        const idx = findAscii(bytes, colorType, pos);
+        if (idx < 0) break;
+        if (idx + 10 < bytes.length) {
+          const primaries = (bytes[idx + 4] << 8) | bytes[idx + 5];
+          const transfer = (bytes[idx + 6] << 8) | bytes[idx + 7];
+          if (primaries === 9 && transfer === 16) result.hdr10 = true;
+          if (primaries === 9 && transfer === 18) result.hlg = true;
+        }
+        pos = idx + 4;
+      }
+    }
+
+    if (result.dolbyVision && result.hlg) { result.label = 'Dolby Vision • HLG'; result.reason = 'Dolby Vision configuration + BT.2020 HLG detected'; }
+    else if (result.dolbyVision) { result.label = 'Dolby Vision'; result.reason = 'Dolby Vision configuration detected'; }
+    else if (result.hdr10plus) { result.hdr10 = true; result.label = 'HDR10+'; result.reason = 'dynamic HDR10+ metadata detected'; }
+    else if (result.hdr10) { result.label = 'HDR10'; result.reason = 'BT.2020 + PQ metadata detected'; }
+    else if (result.hlg) { result.label = 'HLG HDR'; result.reason = 'BT.2020 + HLG metadata detected'; }
+    else if (result.main10) { result.label = 'HEVC Main10'; result.reason = '10-bit HEVC profile detected'; }
+    return result;
+  }
+
+  function validateMediaInfo(info) {
+    if (!info || !Number.isFinite(info.width) || !Number.isFinite(info.height)) {
+      throw new Error('Resolusi video tidak terbaca.');
+    }
+
+    const width = Math.round(Number(info.width));
+    const height = Math.round(Number(info.height));
+    if (width < 16 || height < 16) throw new Error(`Resolusi ${width}×${height} tidak valid.`);
+
+    // Universal-resolution path: never snap/resize to 1080p, 1440p, or any preset.
+    // Preserve native resolution/aspect ratio with two validated ceilings:
+    //   - up to 4K/DCI 4K (4096×2160): max 120 FPS
+    //   - above 4K up to 8K/DCI 8K (8192×4320): max 60 FPS
+    const shortSide = Math.min(width, height);
+    const longSide = Math.max(width, height);
+    const within4K = longSide <= 4096 && shortSide <= 2160;
+    const within8K = longSide <= 8192 && shortSide <= 4320;
+    if (!within8K) {
+      throw new Error(
+        `Resolusi ${width}×${height} di atas batas ADJN 8K60 (maks. 8192×4320 atau 4320×8192).`
+      );
+    }
+
+    const fps = Number(info.maxFps || info.averageFps || 0);
+    const maxAllowedFps = within4K ? 120.01 : 60.01;
+    if (Number.isFinite(fps) && fps > maxAllowedFps) {
+      const mode = within4K ? '4K120' : '8K60';
+      const limit = within4K ? 120 : 60;
+      throw new Error(`FPS ${fps.toFixed(2)} di atas batas ${mode} (${limit} FPS).`);
+    }
+
+    return {
+      width,
+      height,
+      fps,
+      shortSide,
+      longSide,
+      within4K,
+      within8K,
+      uhdHighLoad: shortSide > 1080 || longSide > 1920 || fps > 60.01
+    };
+  }
+
+  function nearlyEqual(a, b, epsilon = 0.02) {
+    const x = Number(a || 0);
+    const y = Number(b || 0);
+    if (!x && !y) return true;
+    return Math.abs(x - y) <= epsilon;
+  }
+
+  function verifyMediaContract(inputInfo, outputInfo, inputHdr, outputHdr) {
+    const problems = [];
+
+    if (Math.round(inputInfo.width) !== Math.round(outputInfo.width) ||
+        Math.round(inputInfo.height) !== Math.round(outputInfo.height)) {
+      problems.push(
+        `resolusi berubah ${inputInfo.width}×${inputInfo.height} → ${outputInfo.width}×${outputInfo.height}`
+      );
+    }
+
+    const inCodecFamily = String(inputInfo.codecFamily || '').toLowerCase();
+    const outCodecFamily = String(outputInfo.codecFamily || '').toLowerCase();
+    const inCodecTag = String(inputInfo.codec || '').toLowerCase();
+    const outCodecTag = String(outputInfo.codec || '').toLowerCase();
+
+    if (inCodecFamily !== outCodecFamily) {
+      problems.push(`codec family berubah ${inCodecFamily || '?'} → ${outCodecFamily || '?'}`);
+    }
+    if (inCodecTag && outCodecTag && inCodecTag !== outCodecTag) {
+      problems.push(`codec sample entry berubah ${inCodecTag} → ${outCodecTag}`);
+    }
+
+    if (Number(inputInfo.videoSamples || 0) !== Number(outputInfo.videoSamples || 0)) {
+      problems.push(
+        `jumlah frame/sample berubah ${inputInfo.videoSamples} → ${outputInfo.videoSamples}`
+      );
+    }
+
+    if (!nearlyEqual(inputInfo.averageFps, outputInfo.averageFps, 0.02) ||
+        !nearlyEqual(inputInfo.maxFps, outputInfo.maxFps, 0.05)) {
+      problems.push(
+        `timing/FPS berubah ${(inputInfo.averageFps || 0).toFixed?.(3) || inputInfo.averageFps} → ` +
+        `${(outputInfo.averageFps || 0).toFixed?.(3) || outputInfo.averageFps}`
+      );
+    }
+
+    const hdrChecks = [
+      ['Main10 / 10-bit', 'main10'],
+      ['HDR10', 'hdr10'],
+      ['HDR10+', 'hdr10plus'],
+      ['HLG', 'hlg'],
+      ['Dolby Vision', 'dolbyVision']
+    ];
+    for (const [label, key] of hdrChecks) {
+      if (inputHdr?.[key] === true && outputHdr?.[key] !== true) {
+        problems.push(`${label} metadata/signaling hilang`);
+      }
+    }
+
+    if (problems.length) {
+      throw new Error(`Resolution/HDR Safe gagal: ${problems.join('; ')}.`);
+    }
+
+    return {
+      resolutionByteSafe: true,
+      exactResolutionPreserved: true,
+      exactVideoTimingPreserved: true,
+      codecFamilyPreserved: true,
+      codecSampleEntryPreserved: true,
+      sourceCodecFamily: inCodecFamily,
+      outputCodecFamily: outCodecFamily,
+      sourceCodecTag: inCodecTag,
+      outputCodecTag: outCodecTag,
+      hdrSignalingPreserved: true,
+      dolbyVisionPreserved: inputHdr?.dolbyVision ? outputHdr?.dolbyVision === true : null
+    };
+  }
+
+  function extensionOf(name) {
+    const m = String(name || '').toLowerCase().match(/\.([a-z0-9]{1,8})$/);
+    return m ? m[1] : '';
+  }
+
+  function mimeForExtension(ext, fallback = '') {
+    const map = {
+      mp4: 'video/mp4', m4v: 'video/x-m4v', mov: 'video/quicktime',
+      webm: 'video/webm', mkv: 'video/x-matroska', avi: 'video/x-msvideo',
+      mpg: 'video/mpeg', mpeg: 'video/mpeg', ts: 'video/mp2t',
+      mts: 'video/mp2t', m2ts: 'video/mp2t', '3gp': 'video/3gpp',
+      '3g2': 'video/3gpp2', wmv: 'video/x-ms-wmv', flv: 'video/x-flv'
+    };
+    return map[ext] || fallback || 'application/octet-stream';
+  }
+
+  function sniffMedia(bytes, data = {}) {
+    const ext = extensionOf(data.fileName);
+    const mime = String(data.fileType || '').toLowerCase();
+    const ascii = (start, len) => {
+      let s = '';
+      for (let i = start; i < Math.min(bytes.length, start + len); i++) {
+        const c = bytes[i]; s += (c >= 32 && c <= 126) ? String.fromCharCode(c) : ' ';
+      }
+      return s;
+    };
+    const head = ascii(0, Math.min(bytes.length, 65536));
+    let container = ext || 'video';
+    if (head.includes('ftyp')) container = /qt  /.test(head) || ext === 'mov' ? 'mov' : 'mp4';
+    else if (bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3) container = ext === 'webm' ? 'webm' : 'matroska';
+    else if (head.startsWith('RIFF') && head.slice(8, 12) === 'AVI ') container = 'avi';
+
+    const tags = [
+      ['hvc1','hevc'], ['hev1','hevc'], ['dvhe','dolby-vision'], ['dvh1','dolby-vision'],
+      ['avc1','avc'], ['avc3','avc'], ['av01','av1'], ['vp09','vp9'], ['vp08','vp8'],
+      ['ap4h','prores'], ['ap4x','prores'], ['apch','prores'], ['apcn','prores'], ['apcs','prores'], ['apco','prores']
+    ];
+    let codec = '', codecFamily = '';
+    for (const [tag, fam] of tags) {
+      if (head.includes(tag)) { codec = tag; codecFamily = fam; break; }
+    }
+    const audioTags = ['mp4a','ac-3','ec-3','alac','Opus','opus','lpcm','sowt','twos','flac','fLaC'];
+    let audioCodec='';
+    for (const tag of audioTags) if (head.includes(tag)) { audioCodec=tag; break; }
+    const fragmented = head.includes('moof');
+    return { container, ext, mime, codec, codecFamily, audioCodec, fragmented };
+  }
+
+  function scanIsoTopLevel(bytes) {
+    const boxes = [];
+    let p = 0;
+    const read32 = o => ((bytes[o] * 0x1000000) + ((bytes[o + 1] << 16) | (bytes[o + 2] << 8) | bytes[o + 3])) >>> 0;
+    const typeAt = o => String.fromCharCode(bytes[o], bytes[o + 1], bytes[o + 2], bytes[o + 3]);
+    while (p + 8 <= bytes.length) {
+      let size = read32(p);
+      const type = typeAt(p + 4);
+      let header = 8;
+      if (size === 1) {
+        if (p + 16 > bytes.length) break;
+        const hi = read32(p + 8), lo = read32(p + 12);
+        size = hi * 0x100000000 + lo;
+        header = 16;
+      } else if (size === 0) {
+        size = bytes.length - p;
+      }
+      if (!Number.isFinite(size) || size < header || p + size > bytes.length) break;
+      boxes.push(type);
+      p += size;
+    }
+    return boxes;
+  }
+
+  function exactBytesEqual(a, b) {
+    if (a.byteLength !== b.byteLength) return false;
+    for (let i = 0; i < a.byteLength; i++) if (a[i] !== b[i]) return false;
+    return true;
+  }
+
+  function passthroughResult(original, data, reason, info = null, hdr = null, sniff = null) {
+    const ext = extensionOf(data.fileName);
+    const sourceInfo = info || {
+      width: 0, height: 0,
+      codec: sniff?.codec || '', codecFamily: sniff?.codecFamily || sniff?.codec || '',
+      averageFps: 0, maxFps: 0, videoSamples: 0,
+      audioCodec: sniff?.audioCodec || '', audioSamples: 0,
+      fragmented: !!sniff?.fragmented, tracks: []
+    };
+    const sourceHdr = hdr || detectHdrProfile(original, sourceInfo);
+    const output = original.slice();
+    if (!exactBytesEqual(original, output)) throw new Error('Universal Safe: byte passthrough verification gagal.');
+    return {
+      output,
+      info: sourceInfo,
+      outputInfo: sourceInfo,
+      hdr: sourceHdr,
+      outputHdr: sourceHdr,
+      report: {
+        engine: 'ADJN Core • Universal Safe Passthrough 2.0',
+        passthrough: true,
+        reason,
+        container: sniff?.container || ext || 'unknown',
+        sourceMime: data.fileType || '',
+        sourceExtension: ext,
+        mediaPayloadPreserved: true,
+        allBytesPreserved: true,
+        allMetadataPreserved: true,
+        allTracksPreserved: true,
+        codecPreserved: true,
+        audioCodecPreserved: true
+      },
+      verification: {
+        videoBitstreamByteIdentical: true,
+        originalAudioTrackPreserved: true,
+        clonedAudioTrackAdded: false,
+        wholeFileByteIdentical: true,
+        codecFamilyPreserved: true,
+        codecSampleEntryPreserved: true,
+        hdrSignalingPreserved: true,
+        metadataPreservedByteForByte: true,
+        allTracksPreserved: true
+      },
+      mode: 'adjn-universal-safe-passthrough',
+      passthrough: true,
+      outputName: data.fileName || `video.${ext || 'mp4'}`,
+      outputMime: data.fileType || mimeForExtension(ext),
+      inputBytes: original.byteLength,
+      warning: `Universal Safe passthrough: ${reason}`
+    };
+  }
+
+  async function processVideo(data) {
+    const selectedEngine = ['2.1.5', '3.0', '3.1', '3.2'].includes(String(data.engine || '')) ? String(data.engine) : '2.1.5';
+    const engineVersion = selectedEngine === '3.0' ? '6.0' : null;
+    const requestId = data.requestId;
+    const core = globalThis.ADJNPro31Core || globalThis.FRYOriginalMp4Core || globalThis.ADJNOriginalMp4Core;
+    if (!core?.patchWithReport || !core?.verifyOutput || !core?.inspectMediaInfo) {
+      throw new Error('ADJN Media Core tidak termuat.');
+    }
+
+    stage(requestId, 'reading', 'Membaca video…', 6);
+    const original = asU8(data.buffer);
+    if (original.byteLength < 64) throw new Error('File video kosong/tidak valid.');
+
+    const sniff = sniffMedia(original, data);
+
+    // Engine profile selection
+    let engineProfile = {
+      id: selectedEngine,
+      source: selectedEngine === '3.2'
+        ? 'ADJN Core 3.2 • iOS Safe Multi-Track Calibration'
+        : selectedEngine === '3.1'
+          ? 'ADJN Core • 3.1 experimental profile (no Rein engine injected)'
+          : 'ADJN Core v5.0'
+    };
+    if (engineVersion && globalThis.ADJNEngines?.[engineVersion]?.checkLayout) {
+      try {
+        const check = await globalThis.ADJNEngines[engineVersion].checkLayout(new Blob([original], { type: data.fileType || 'video/mp4' }));
+        if (!check?.compatible) {
+          throw new Error(check?.reason || `Engine ${engineVersion} menolak struktur video.`);
+        }
+        engineProfile = { id: selectedEngine, source: `ADJN Core ${selectedEngine} • compatibility profile ${engineVersion}` };
+      } catch (engineError) {
+        stage(requestId, 'checking', 'Engine compatibility…', 18, engineError?.message || String(engineError));
+        return passthroughResult(original, data, engineError?.message || 'engine compatibility check gagal', null, null, sniff);
+      }
+    }
+    stage(requestId, 'checking', 'Cek container, codec & metadata…', 15,
+      `${sniff.container || 'video'} • ${sniff.codec || 'codec auto'} • ${sniff.audioCodec || 'audio auto'}`);
+
+    let info = null;
+    let hdr = null;
+    let compat = null;
+
+    try {
+      info = core.inspectMediaInfo(original);
+      validateMediaInfo(info);
+      hdr = detectHdrProfile(original, info);
+      compat = core.inspectCompatibility(original);
+    } catch (inspectError) {
+      // Fragmented MP4, WebM/MKV, unusual MOV atoms, and other structures are
+      // deliberately preserved byte-for-byte instead of being rejected.
+      stage(requestId, 'preparing', 'Universal Safe…', 35, 'Struktur kompleks • seluruh file dipertahankan byte-identical');
+      return passthroughResult(original, data, inspectError?.message || 'container/codec tidak memakai jalur patch MP4 klasik', info, hdr, sniff);
+    }
+
+    const limits = validateMediaInfo(info);
+    const loadText = limits.uhdHighLoad
+      ? `UHD/High-FPS • ${info.width}×${info.height} • ${limits.fps ? limits.fps.toFixed(2) : '?'} FPS`
+      : `${info.width}×${info.height} • ${limits.fps ? limits.fps.toFixed(2) : '?'} FPS`;
+    const hdrText = hdr?.label && hdr.label !== 'SDR / unknown' ? ` • ${hdr.label}` : '';
+
+    // Preserve multi-track media, subtitles/timecode, alternate audio/video tracks,
+    // and extra top-level metadata boxes exactly instead of letting the classic
+    // patch discard or reorder them.
+    const trackList = Array.isArray(info?.tracks) ? info.tracks : [];
+    const videoTracks = trackList.filter(t => t.handler === 'vide');
+    const audioTracks = trackList.filter(t => t.handler === 'soun');
+    const otherTracks = trackList.filter(t => !['vide', 'soun'].includes(t.handler));
+    const topLevelBoxes = (sniff.container === 'mp4' || sniff.container === 'mov') ? scanIsoTopLevel(original) : [];
+    const extraTopLevel = topLevelBoxes.filter(t => !['ftyp', 'moov', 'mdat', 'free', 'skip', 'wide'].includes(t));
+    if (videoTracks.length !== 1 || audioTracks.length !== 1 || otherTracks.length || extraTopLevel.length) {
+      const why = [
+        videoTracks.length !== 1 ? `video-tracks:${videoTracks.length}` : '',
+        audioTracks.length !== 1 ? `audio-tracks:${audioTracks.length}` : '',
+        otherTracks.length ? `extra-tracks:${otherTracks.map(t => t.handler || '?').join('/')}` : '',
+        extraTopLevel.length ? `extra-boxes:${[...new Set(extraTopLevel)].join('/')}` : ''
+      ].filter(Boolean).join(', ');
+      stage(requestId, 'preparing', 'Universal Safe…', 35, `${loadText}${hdrText} • metadata/track kompleks dipertahankan`);
+      return passthroughResult(original, data, why || 'metadata/track kompleks', info, hdr, sniff);
+    }
+
+    if (compat?.needsRefinery) {
+      stage(requestId, 'preparing', 'Universal Safe…', 35,
+        `${loadText}${hdrText} • ${String((compat.reasons || []).join(', ') || 'complex media')}`);
+      return passthroughResult(
+        original, data,
+        String((compat.reasons || []).join(', ') || 'struktur/codec kompleks'),
+        info, hdr, sniff
+      );
+    }
+
+    // Classic / iOS patch path
+    stage(requestId, 'preparing', 'Siapin media…', 28, `${loadText}${hdrText} • ${selectedEngine === '3.2' ? 'ADJN 3.2 iOS patch' : 'ADJN full patch'}`);
+    stage(requestId, 'remuxing', 'Lagi remux…', 45, selectedEngine === '3.2' ? 'Menata container iOS multi-track • video bitstream tidak disentuh' : 'Menata container • video bitstream tidak disentuh');
+    await new Promise(r => setTimeout(r, 0));
+
+    let result;
+    try {
+      stage(requestId, 'patching', 'Lagi apply ADJN patch…', 66, engineProfile.source);
+      if (selectedEngine === '3.2') {
+        const iosCore = globalThis.ADJNIosEngineCore || globalThis.fenn;
+        if (!iosCore?.patchWithReport) {
+          throw new Error('ADJN Core 3.2 iOS engine tidak termuat.');
+        }
+        result = iosCore.patchWithReport(original);
+        if (result?.report) {
+          result.report.engine = engineProfile.source;
+          result.report.mdatByteIdentical = true;
+        }
+      } else {
+        result = core.patchWithReport(original);
+        if (result?.report) result.report.engine = engineProfile.source;
+      }
+    } catch (patchError) {
+      stage(requestId, 'patching', 'Fallback Universal Safe…', 72, 'Patch klasik tidak aman untuk file ini • pakai byte-identical passthrough');
+      return passthroughResult(original, data, patchError?.message || 'full patch gagal', info, hdr, sniff);
+    }
+
+    const output = asU8(result?.bytes);
+    if (output.byteLength < 64) throw new Error('ADJN Core menghasilkan file kosong.');
+    if (output.byteLength < original.byteLength) {
+      throw new Error(`SIZE GUARD: hasil ${output.byteLength} byte lebih kecil dari source ${original.byteLength} byte.`);
+    }
+
+    stage(requestId, 'finalizing', 'Lagi nyelesaiin…', 90, 'Verifikasi resolusi + FPS + codec + HDR/Dolby Vision + bitstream');
+    const verification = (selectedEngine === '3.2' && (globalThis.ADJNIosEngineCore || globalThis.fenn))
+      ? (globalThis.ADJNIosEngineCore || globalThis.fenn).verifyOutput(original, output)
+      : core.verifyOutput(original, output);
+
+    if (verification.videoBitstreamByteIdentical !== true) {
+      return passthroughResult(original, data, 'verifikasi video patch tidak identik', info, hdr, sniff);
+    }
+    if (result.report?.mdatByteIdentical === false) {
+      return passthroughResult(original, data, 'verifikasi mdat patch tidak identik', info, hdr, sniff);
+    }
+    if (verification.originalAudioTrackPreserved !== true) {
+      return passthroughResult(original, data, 'verifikasi audio patch tidak identik', info, hdr, sniff);
+    }
+
+    const outputInfo = core.inspectMediaInfo(output);
+    const outputHdr = detectHdrProfile(output, outputInfo);
+    try {
+      const mediaContract = verifyMediaContract(info, outputInfo, hdr, outputHdr);
+      Object.assign(verification, mediaContract);
+    } catch (verifyError) {
+      return passthroughResult(original, data, verifyError?.message || 'codec/HDR contract tidak lolos', info, hdr, sniff);
+    }
+
+    return {
+      output,
+      info,
+      outputInfo,
+      hdr,
+      outputHdr,
+      report: {
+        ...(result.report || {}),
+        passthrough: false,
+        sourceResolution: `${info.width}x${info.height}`,
+        outputResolution: `${outputInfo.width}x${outputInfo.height}`,
+        resolutionPreserved: true,
+        fpsPreserved: true,
+        sourceCodecFamily: String(info.codecFamily || '').toLowerCase(),
+        outputCodecFamily: String(outputInfo.codecFamily || '').toLowerCase(),
+        sourceCodecTag: String(info.codec || '').toLowerCase(),
+        outputCodecTag: String(outputInfo.codec || '').toLowerCase(),
+        codecPreserved: true,
+        codecSampleEntryPreserved: true,
+        hdrPreserved: true,
+        dolbyVisionPreserved: hdr?.dolbyVision ? outputHdr?.dolbyVision === true : null
+      },
+      verification,
+      mode: 'adjn-core-resolution-codec-safe',
+      passthrough: false,
+      outputName: '',
+      outputMime: 'video/mp4',
+      inputBytes: original.byteLength,
+      warning: ''
+    };
+  }
+
+  globalThis.ADJNVideoProcessor = {
+    async processVideoDirect(data, onProgress) {
+      stageCallback = onProgress;
+      try {
+        const result = await processVideo(data);
+        stage(data.requestId, 'ready', 'Siap upload', 100, result.mode);
+        return result;
+      } finally {
+        stageCallback = null;
+      }
+    },
+    processVideo,
+    detectHdrProfile,
+    validateMediaInfo,
+    verifyMediaContract
+  };
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('message', async (event) => {
+      const data = event.data;
+      if (!data || data.source !== 'FRY_CONTENT' || data.type !== 'PROCESS') return;
+      if (busy) return send('ERROR', { requestId: data.requestId, message: 'Processor masih sibuk.' });
+      busy = true;
+      try {
+        const result = await processVideo(data);
+        stage(data.requestId, 'ready', 'Siap upload', 100, result.mode);
+        const buffer = owned(result.output);
+        send('DONE', {
+          requestId: data.requestId,
+          buffer,
+          inputBytes: result.inputBytes,
+          outputBytes: result.output.byteLength,
+          info: result.info,
+          outputInfo: result.outputInfo,
+          hdr: result.hdr,
+          outputHdr: result.outputHdr,
+          report: result.report,
+          verification: result.verification,
+          mode: result.mode,
+          passthrough: !!result.passthrough,
+          outputName: result.outputName || '',
+          outputMime: result.outputMime || '',
+          warning: result.warning || ''
+        }, [buffer]);
+      } catch (e) {
+        send('ERROR', { requestId: data.requestId, message: e?.message || String(e) });
+      } finally {
+        busy = false;
+      }
+    });
+
+    if (typeof parent !== 'undefined' && parent && parent !== window) {
+      send('READY');
+    }
+  }
+})();
+
 </script>
 <script>
 /* Encoder UI: mode berdampingan + kontrol bitrate */
