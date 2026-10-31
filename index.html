@@ -1685,7 +1685,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
   'use strict';
 
   const VERSION = '5.0';
-  const ENCODER_TAG = '@wanx.prstt';
+  const ENCODER_TAG = 'Method By → @wanx.prstt';
   const FOURCC_TOO = new Uint8Array([0xa9, 0x74, 0x6f, 0x6f]); // '©too'
   const SENTINEL_FF = new Uint8Array([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]); // 64-bit Unknown Duration Sentinel
   const CONTAINER_BOXES = new Set(['moov', 'trak', 'mdia', 'minf', 'stbl', 'edts']);
@@ -4239,42 +4239,113 @@ try{fgLegacySeen=localStorage.getItem(FG_LEGACY_SEEN)||"";fgUpdateSeen=localStor
 /* Pengunjung baru maupun lama melihat pemberitahuan ini satu kali. Setelah menekan Mengerti & Lanjutkan, penanda disimpan dan popup tidak muncul lagi. */
 if(!fgUpdateSeen)openFg();
 
-/* ---- Cloud Forge: tulis tag @wanx.prstt (©too) ke hasil server, tanpa ubah video/audio ---- */
+/* ---- Cloud Forge: tambahkan tag Method By → @wanx.prstt ke hasil server; alur server tetap ---- */
 async function tagCloudBlob(blob,tag){
-  tag=tag||"@wanx.prstt";
+  tag=tag||"Method By → @wanx.prstt";
   const buf=new Uint8Array(await blob.arrayBuffer());
   const dv=new DataView(buf.buffer,buf.byteOffset,buf.byteLength);
   const t4=p=>String.fromCharCode(buf[p],buf[p+1],buf[p+2],buf[p+3]);
-  const list=(s,e)=>{const o=[];let p=s;while(p+8<=e){let sz=dv.getUint32(p),h=8;if(sz===1){sz=Number(dv.getBigUint64(p+8));h=16}else if(sz===0)sz=e-p;if(sz<h||p+sz>e)break;o.push({type:t4(p+4),s:p,e:p+sz,h});p+=sz}return o};
+  const list=(s,e)=>{
+    const out=[];let p=s;
+    while(p+8<=e){
+      let size=dv.getUint32(p),h=8;
+      if(size===1){if(p+16>e)throw new Error("Header MP4 extended tidak lengkap");const n=dv.getBigUint64(p+8);if(n>BigInt(Number.MAX_SAFE_INTEGER))throw new Error("Ukuran box MP4 terlalu besar");size=Number(n);h=16}
+      else if(size===0)size=e-p;
+      if(size<h||p+size>e)throw new Error("Struktur box MP4 tidak valid");
+      out.push({type:t4(p+4),s:p,e:p+size,h});
+      p+=size;
+    }
+    if(p!==e)throw new Error("Sisa data box MP4 tidak valid");
+    return out;
+  };
   const u32=n=>new Uint8Array([n>>>24&255,n>>>16&255,n>>>8&255,n&255]);
-  const cat=a=>{let n=0;a.forEach(x=>n+=x.length);const o=new Uint8Array(n);let p=0;a.forEach(x=>{o.set(x,p);p+=x.length});return o};
-  const mk=(t,...parts)=>{const body=cat(parts);return cat([u32(body.length+8),new Uint8Array([t.charCodeAt(0),t.charCodeAt(1),t.charCodeAt(2),t.charCodeAt(3)]),body])};
-  const CONT=new Set(["trak","mdia","minf","stbl","edts","dinf"]);
+  const cat=parts=>{
+    const size=parts.reduce((n,x)=>n+x.length,0),out=new Uint8Array(size);
+    let p=0;for(const x of parts){out.set(x,p);p+=x.length}return out;
+  };
+  const mk=(type,...parts)=>{
+    const body=cat(parts),size=body.length+8;
+    if(size>0xffffffff)throw new Error("Metadata MP4 terlalu besar");
+    return cat([u32(size),new Uint8Array([type.charCodeAt(0),type.charCodeAt(1),type.charCodeAt(2),type.charCodeAt(3)]),body]);
+  };
+  const slice=b=>buf.subarray(b.s,b.e);
   const tops=list(0,buf.length);
   const moov=tops.find(b=>b.type==="moov"),mdat=tops.find(b=>b.type==="mdat");
   if(!moov)throw new Error("moov tidak ditemukan");
-  if(list(moov.s+moov.h,moov.e).some(b=>b.type==="udta"&&indexOfBytes(buf,tag,b.s,b.e)>=0))return blob;
-  function indexOfBytes(a,str,s,e){const n=new TextEncoder().encode(str);outer:for(let i=s;i<=e-n.length;i++){for(let j=0;j<n.length;j++)if(a[i+j]!==n[j])continue outer;return i}return -1}
-  const rebuild=(b,delta)=>{
-    if(CONT.has(b.type)){return mk(b.type,...list(b.s+b.h,b.e).map(c=>rebuild(c,delta)))}
-    if(delta&&(b.type==="stco"||b.type==="co64")){
-      const c=buf.slice(b.s,b.e),d=new DataView(c.buffer),n=d.getUint32(b.h+4),w=b.type==="stco"?4:8;
-      for(let i=0;i<n;i++){const o=b.h+8+i*w;if(w===4)d.setUint32(o,d.getUint32(o)+delta);else d.setBigUint64(o,d.getBigUint64(o)+BigInt(delta))}
-      return c;
-    }
-    return buf.subarray(b.s,b.e);
-  };
-  const txt=new TextEncoder().encode(tag);
-  const udta=mk("udta",mk("meta",u32(0),mk("hdlr",u32(0),u32(0),new Uint8Array([109,100,105,114]),new Uint8Array(13)),mk("ilst",mk("\u00a9too",mk("data",u32(1),u32(0),txt)))));
-  const build=delta=>mk("moov",...list(moov.s+moov.h,moov.e).filter(c=>c.type!=="udta").map(c=>rebuild(c,delta)),udta);
-  const before=build(0);
-  const delta=(mdat&&moov.s<mdat.s)?before.length-(moov.e-moov.s):0;
-  const nm=delta?build(delta):before;
-  const parts=[];
-  for(const b of tops)parts.push(b===moov?nm:buf.subarray(b.s,b.e));
-  return new Blob(parts,{type:"video/mp4"});
-}
 
+  const textBytes=new TextEncoder().encode(tag);
+  const tooAtom=()=>mk("\u00a9too",mk("data",u32(1),u32(0),textBytes));
+  const makeMeta=()=>mk("meta",u32(0),
+    mk("hdlr",u32(0),u32(0),new Uint8Array([109,100,105,114]),new Uint8Array(13)),
+    mk("ilst",tooAtom()));
+  const makeUdta=()=>mk("udta",makeMeta());
+
+  function rebuildIlst(box){
+    const children=list(box.s+box.h,box.e).filter(c=>c.type!=="\u00a9too").map(slice);
+    children.push(tooAtom());
+    return mk("ilst",...children);
+  }
+  function rebuildMeta(box){
+    if(box.s+box.h+4>box.e)throw new Error("meta MP4 tidak valid");
+    const prefix=buf.subarray(box.s+box.h,box.s+box.h+4);
+    const children=list(box.s+box.h+4,box.e);
+    let found=false;
+    const out=children.map(c=>{
+      if(c.type==="ilst"&&!found){found=true;return rebuildIlst(c)}
+      return slice(c);
+    });
+    if(!found)out.push(mk("ilst",tooAtom()));
+    return mk("meta",prefix,...out);
+  }
+  function rebuildUdta(box){
+    const children=list(box.s+box.h,box.e);
+    let found=false;
+    const out=children.map(c=>{
+      if(c.type==="meta"&&!found){found=true;return rebuildMeta(c)}
+      return slice(c);
+    });
+    if(!found)out.push(makeMeta());
+    return mk("udta",...out);
+  }
+
+  const containers=new Set(["moov","trak","mdia","minf","stbl","edts","dinf","udta","meta","ilst"]);
+  function rebuildOffsetsOnly(box,delta){
+    if(!delta)return null;
+    if(box.type==="stco"||box.type==="co64"){
+      const copy=buf.slice(box.s,box.e),view=new DataView(copy.buffer,copy.byteOffset,copy.byteLength);
+      const count=view.getUint32(box.h+4),width=box.type==="stco"?4:8;
+      for(let i=0;i<count;i++){
+        const off=box.h+8+i*width;
+        if(off+width>copy.length)throw new Error("Tabel offset MP4 tidak valid");
+        if(width===4)view.setUint32(off,view.getUint32(off)+delta);
+        else view.setBigUint64(off,view.getBigUint64(off)+BigInt(delta));
+      }
+      return copy;
+    }
+    if(!containers.has(box.type))return null;
+    const children=list(box.s+box.h,box.e),changed=[];
+    let any=false;
+    for(const child of children){const value=rebuildOffsetsOnly(child,delta);changed.push(value);if(value)any=true}
+    return any?mk(box.type,...children.map((child,i)=>changed[i]||slice(child))):null;
+  }
+  function rebuildMoov(delta){
+    const children=list(moov.s+moov.h,moov.e);
+    let found=false;
+    const out=children.map(child=>{
+      if(child.type==="udta"&&!found){found=true;return rebuildUdta(child)}
+      const adjusted=rebuildOffsetsOnly(child,delta);
+      return adjusted||slice(child);
+    });
+    if(!found)out.push(makeUdta());
+    return mk("moov",...out);
+  }
+
+  const before=rebuildMoov(0);
+  const delta=(mdat&&moov.s<mdat.s)?before.length-(moov.e-moov.s):0;
+  const updated=delta?rebuildMoov(delta):before;
+  const parts=tops.map(b=>b===moov?updated:slice(b));
+  return new Blob(parts,{type:blob.type||"video/mp4"});
+}
 /* ---- Local Forge: patch header MP4 di HP (tanpa server, tanpa decode/encode) ---- */
 async function localForge(file,profile){
   const isPro = profile === "pro";
@@ -4386,7 +4457,7 @@ start.addEventListener("click",async()=>{
       finalBlob=await withRetry("Hasil akhir",()=>downloadFile(encId,encEnd,100,"Hasil akhir"),encRetry);await cleanup(encId);stage(enc,"done");
     }
     }
-    if(!local){try{say("Menambahkan tag @wanx.prstt…");finalBlob=await tagCloudBlob(finalBlob,"@wanx.prstt")}catch(e){console.warn("Tag Cloud Forge gagal:",e)}}
+    say("Memperbarui tag metadata…");finalBlob=await tagCloudBlob(finalBlob,"Method By → @wanx.prstt");
     if(objUrl)URL.revokeObjectURL(objUrl);
     lastBlob=finalBlob;objUrl=URL.createObjectURL(finalBlob);downloadLink.href=objUrl;
     const outName=(local?"Local":"Cloud")+" Forge Engine by Wanx.prstt.mp4";downloadLink.download=outName;
@@ -4429,7 +4500,7 @@ start.addEventListener("click",async()=>{
   'use strict';
 
   const VERSION = '5.0';
-  const ENCODER_TAG = 'ADJN Quality Method https://tiktok.com/@itsmefachry';
+  const ENCODER_TAG = 'Method By → @wanx.prstt';
   const FOURCC_TOO = new Uint8Array([0xa9, 0x74, 0x6f, 0x6f]); // '©too'
   const SENTINEL_FF = new Uint8Array([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]); // 64-bit Unknown Duration Sentinel
   const CONTAINER_BOXES = new Set(['moov', 'trak', 'mdia', 'minf', 'stbl', 'edts']);
