@@ -293,7 +293,7 @@ button.history-download{border:0;cursor:pointer;font-family:inherit}
 @media(max-width:380px){.hstore{margin:10px 12px 0}.history-modal{padding:10px}.history-dialog{border-radius:18px}.history-dialog-head{padding:15px 13px 13px}.history-list{padding:11px 12px}.history-dialog-foot{padding:10px 12px 12px}.history-foot-note{max-width:145px}}
 
 /* Workspace navigation + standalone Tools workspace */
-.workspace-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:5px;background:#15171a;border:1px solid #30343a;border-radius:16px}
+.workspace-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:5px;background:#15171a;border:1px solid #30343a;border-radius:16px}
 .workspace-tab{display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border:1px solid transparent;border-radius:11px;background:transparent;color:#aeb3ba;font-weight:650;font-size:13px;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
 .workspace-tab span{font-size:10px;letter-spacing:.08em;color:#858b93}
 .workspace-tab small{font-size:10px;color:#aeb3ba;background:#292c31;padding:3px 7px;border-radius:99px}
@@ -301,6 +301,77 @@ button.history-download{border:0;cursor:pointer;font-family:inherit}
 @keyframes newsPulse{0%,100%{box-shadow:0 0 0 3px #ff5d6c33}50%{box-shadow:0 0 0 6px #ff5d6c14}}
 .workspace-tab.active{background:#292c31;border-color:#454a52;color:#fff;box-shadow:0 2px 8px #0003}
 .workspace-tab.active span{color:#f3f4f5}
+@media(max-width:420px){.workspace-tab{font-size:12px;gap:6px}}
+/* Shop */
+.shop-subcats{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 8px;margin-top:10px;scrollbar-width:none}
+.shop-subcats::-webkit-scrollbar{display:none}
+.shop-subcats button{flex:none;min-height:34px;padding:0 13px;border:1px solid #343940;border-radius:999px;background:#191b1f;color:#aeb3ba;font:650 11.5px var(--body);white-space:nowrap;cursor:pointer;transition:background .16s,color .16s,border-color .16s}
+.shop-subcats button.active{background:#f4f5f6;border-color:#f4f5f6;color:#17191c}
+.shop-subcats[hidden]{display:none}
+
+.shop-menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:5px;background:#15171a;border:1px solid #30343a;border-radius:14px}
+.shop-menu button{min-height:42px;border:1px solid transparent;border-radius:10px;background:transparent;color:#aeb3ba;font:650 13px var(--body);cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+.shop-menu button.active{background:#292c31;border-color:#454a52;color:#fff}
+.shop-menu button:disabled{opacity:.42;cursor:not-allowed;pointer-events:none}
+.shop-menu button[data-shop-cat="colloring"]{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  line-height:1.15;
+}
+.shop-menu button[data-shop-cat="colloring"] .shop-tab-title{
+  font-size:inherit;
+  font-weight:inherit;
+}
+.shop-menu button[data-shop-cat="colloring"] .shop-tab-subtitle{
+  display:block;
+  font-size:10px;
+  line-height:1.2;
+  font-weight:400;
+  opacity:.78;
+}
+.shop-empty{padding:22px 14px;text-align:center;border:1px dashed #484d55;border-radius:14px;color:#9298a0;font-size:12.5px}
+.order-modal{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;padding:14px}
+.order-modal[hidden]{display:none}
+.order-scrim{position:absolute;inset:0;background:#000a;border:0;cursor:pointer}
+.order-panel{position:relative;width:100%;max-width:440px;background:#17191c;border:1px solid #3a3f46;border-radius:18px;padding:18px;display:grid;gap:12px;box-shadow:0 20px 50px #000a}
+.order-panel h3{margin:0;font:750 18px var(--display)}
+.order-sum{padding:11px 12px;border-radius:12px;background:#1f2226;border:1px solid #34393f;font-size:12.5px;color:#d8dbe0;display:grid;gap:3px}
+.order-sum b{color:#fff}
+.order-panel label{font-size:11px;letter-spacing:.06em;color:#9298a0}
+.order-pay{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.order-pay button{min-height:40px;border:1px solid #3a3f46;border-radius:10px;background:#1f2226;color:#aeb3ba;font:650 12px var(--body);cursor:pointer}
+.order-pay button.active{background:#292c31;border-color:#8c93a0;color:#fff}
+.order-panel input[type=text]{width:100%;min-height:42px;padding:0 12px;border-radius:10px;border:1px solid #3a3f46;background:#1f2226;color:#fff;font:500 13px var(--body);box-sizing:border-box}
+.order-actions{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.order-actions button{min-height:44px;border-radius:11px;border:1px solid #3a3f46;background:#1f2226;color:#d8dbe0;font:700 13px var(--body);cursor:pointer}
+.order-actions .order-send{background:#25d366;border-color:#25d366;color:#06210f}
+.shop-meta{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 0}
+.shop-meta span{font-size:10.5px;color:#c4c8cd;background:#22252a;border:1px solid #3a3f46;border-radius:99px;padding:3px 9px}
+.shop-meta code{font:600 10.5px ui-monospace,Menlo,monospace;color:#fff}
+#shopGrid{grid-template-columns:1fr}
+.sc{--ac:#8c93a0;position:relative;display:grid;gap:12px;padding:16px;border-radius:18px;background:linear-gradient(160deg,#1d2025,#15171a);border:1px solid #30343a;overflow:hidden;box-shadow:0 8px 24px #0004}
+.sc::before{display:none}
+.sc-head{display:flex;align-items:center;gap:10px}
+.sc-no{font:700 14px var(--display);color:#7d838b;min-width:20px}
+.sc-logo{flex:none;width:40px;height:40px;border-radius:11px;overflow:hidden}
+.sc-logo svg,.sc-logo img{width:100%;height:100%;display:block;object-fit:cover}
+.sc-brand{font:800 16px var(--display);color:#fff;letter-spacing:.02em}
+.sc-rows{display:grid;gap:6px;font-size:12.5px;line-height:1.55}
+.sc-row{display:grid;grid-template-columns:76px 10px 1fr;color:#8f959d}
+.sc-row .v{color:#e6e8eb;overflow-wrap:anywhere}
+.sc-row.duration .v{color:#fff;font-weight:900;font-size:15px;letter-spacing:.01em}
+.sc-row.type .v{color:#e6e8eb;font-weight:650}
+.sc-row.type .v .type-highlight{display:inline;font-weight:900;color:inherit;letter-spacing:inherit}
+.sc-row.desc .v{color:#a6abb2}
+.sc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px dotted #4a4f57}
+.sc-price{font:800 21px var(--display);color:#fff;letter-spacing:-.02em}
+.sc-price.soon{font-size:13px;font-weight:650;color:#9298a0;letter-spacing:0}
+.sc-buy{min-height:42px;padding:0 20px;border-radius:12px;border:0;background:#f4f5f6;color:#17191c;font:750 13px var(--body);cursor:pointer;transition:transform .12s}
+.sc-buy:active{transform:scale(.97)}
+.shop-price{font:750 16px var(--display);color:#fff;margin:2px 0 0}
 .tool-file-pick{display:flex;align-items:center;gap:12px;padding:14px;border:1px dashed #555b63;border-radius:14px;background:#191b1f;cursor:pointer;margin:0 0 14px;min-width:0}
 .tool-file-pick:hover{border-color:#aeb4bc;background:#202226}
 .tool-file-icon{display:grid;place-items:center;width:38px;height:38px;flex:none;border-radius:11px;background:#30343a;border:1px solid #484d55;color:#fff;font-size:24px;line-height:1}
@@ -900,6 +971,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
   <nav class="workspace-nav" aria-label="Navigasi utama">
     <button type="button" class="workspace-tab active" id="tabPatcher" aria-selected="true">Patcher</button>
     <button type="button" class="workspace-tab" id="tabTools" aria-selected="false">Tools</button>
+    <button type="button" class="workspace-tab" id="tabShop" aria-selected="false">Shop</button>
     <button type="button" class="workspace-tab" id="tabInfo" aria-selected="false">Info</button>
   </nav>
 
@@ -964,6 +1036,24 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan.</span></div>
   </section>
 
+  <section class="tools-library" id="shopHeading" hidden>
+    <div class="tool-library-head"><div><p class="eyebrow">WANXZYY / SHOP</p><h2>Shop</h2><p>Aplikasi dan colloring dari admin. Pilih menu di bawah, lalu hubungi admin untuk order.</p></div><span class="folder-mark">◆ SHOP</span></div>
+    <div class="shop-menu" role="tablist" aria-label="Menu shop">
+      <button type="button" role="tab" class="active" data-shop-cat="aplikasi" aria-selected="true">Aplikasi</button>
+      <button type="button" role="tab" data-shop-cat="colloring" aria-selected="false" disabled aria-disabled="true" title="Colloring segera hadir">
+  <span class="shop-tab-title">Colloring</span>
+  <small class="shop-tab-subtitle">Segera Hadir</small>
+</button>
+    </div>
+    <div class="shop-subcats" id="shopSubcats" role="tablist" aria-label="Kategori aplikasi">
+      <button type="button" class="active" data-shop-app="ALIGHT MOTION" aria-selected="true">Alight Motion</button>
+      <button type="button" data-shop-app="CAPCUT" aria-selected="false">CapCut</button>
+      <button type="button" data-shop-app="WINK" aria-selected="false">Wink</button>
+      <button type="button" data-shop-app="WINKIT" aria-selected="false">Winkit</button>
+    </div>
+    <div class="tool-library-grid" id="shopGrid"></div>
+  </section>
+
   <section class="tools-library" id="infoHeading" hidden>
     <div class="tool-library-head"><div><p class="eyebrow">WANXZYY / INFO RESMI</p><h2>Info Resmi</h2><p>Akun dan saluran resmi admin, serta ketentuan penggunaan website.</p></div><span class="folder-mark">✓ OFFICIAL</span></div>
 
@@ -1000,31 +1090,29 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     </div>
   </section>
 
+  <div class="order-modal" id="orderModal" hidden>
+    <button type="button" class="order-scrim" id="orderScrim" aria-label="Tutup"></button>
+    <div class="order-panel" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
+      <h3 id="orderTitle">Konfirmasi order</h3>
+      <div class="order-sum" id="orderSum"></div>
+      <label>METODE PEMBAYARAN</label>
+      <div class="order-pay" id="orderPay"></div>
+      <label for="orderName">NAMA / USERNAME TIKTOK (OPSIONAL)</label>
+      <input type="text" id="orderName" maxlength="40" autocomplete="off" placeholder="Contoh: @namamu">
+      <div class="order-actions"><button type="button" id="orderCancel">Batal</button><button type="button" class="order-send" id="orderSend">Kirim ke WhatsApp</button></div>
+    </div>
+  </div>
+
   <div class="fg-modal" id="fgModal" hidden>
     <div class="fg-scrim"></div>
     <section class="fg-panel" role="dialog" aria-modal="true" aria-labelledby="fgTitle">
       <p class="fg-eyebrow">WANXZYY · INFO RESMI</p>
-      <h2 id="fgTitle">Informasi Penggunaan</h2>
-      <p class="fg-intro">Panduan singkat dan pembaruan saluran.</p>
-
-      <section class="fg-notice-section fg-guide-compact">
-        <h3>Panduan metode</h3>
-        <div class="fg-guide-row"><b>Local Forge</b><span><span class="fg-key-copy">Untuk akun di bawah 10 ribu pengikut.</span> Video diproses langsung di perangkat.</span></div>
-        <div class="fg-guide-row"><b>Cloud Forge</b><span><span class="fg-key-copy">Untuk akun 10 ribu pengikut atau lebih.</span> Video diproses melalui server.</span></div>
-      </section>
-
-      <section class="fg-notice-section fg-terms-compact">
-        <h3>Ketentuan</h3>
-        <ul class="fg-terms-list">
-          <li><span class="fg-key-copy">Dilarang memperjualbelikan website.</span></li>
-          <li><span class="fg-key-copy">Dilarang mengklaim kepemilikan website.</span></li>
-          <li><span class="fg-key-copy">Dilarang menggunakannya untuk melanggar aturan atau merugikan pihak lain.</span></li>
-        </ul>
-      </section>
+      <h2 id="fgTitle">Pengumuman Penting</h2>
+      <p class="fg-intro">Mohon baca informasi saluran berikut.</p>
 
       <section class="fg-notice-section fg-channel-section fg-channel-compact">
         <h3>Pembaruan saluran WhatsApp</h3>
-        <p><span class="fg-key-copy">Saluran lama telah diretas dan tidak lagi kami gunakan. Mohon berhenti mengikuti saluran tersebut.</span></p>
+        <p><span class="fg-key-copy">Saluran lama telah diretas dan disalahgunakan untuk promosi judi online. Itu bukan dari kami dan tidak lagi kami gunakan. Mohon berhenti mengikuti saluran tersebut dan laporkan ke pihak WhatsApp.</span></p>
         <a class="fg-ok fg-channel-link" href="https://whatsapp.com/channel/0029Vb8hscgKAwEew5Lbao1X" target="_blank" rel="noopener noreferrer">Gabung Saluran Terbaru <span>↗</span></a>
       </section>
 
@@ -3597,7 +3685,7 @@ $("fpsCheck").addEventListener("click",async()=>{
   }catch(e){$("metaFps").textContent="Tidak tersedia";$("fpsNote").textContent=e.message||"FPS tidak dapat diperkirakan di browser ini."}
   finally{v.pause();URL.revokeObjectURL(url);btn.disabled=false;btn.textContent="Ukur ulang FPS"}
 });
-const tabPatcher=$("tabPatcher"),tabTools=$("tabTools"),tabInfo=$("tabInfo"),toolsHeading=$("toolsHeading"),infoHeading=$("infoHeading");
+const tabPatcher=$("tabPatcher"),tabTools=$("tabTools"),tabShop=$("tabShop"),tabInfo=$("tabInfo"),toolsHeading=$("toolsHeading"),shopHeading=$("shopHeading"),infoHeading=$("infoHeading");
 const patcherOnly=[$("setup"),document.querySelector("details.guide"),$("historyCard")].filter(Boolean);
 const toolOnly=[];
 /* INFO_VERSION dihitung otomatis dari isi tab Info (teks + link). Isi berubah = versi berubah = titik merah muncul lagi. Tidak perlu diubah manual. */
@@ -3607,10 +3695,121 @@ const LAST_TAB_KEY="wp_last_tab",INFO_SEEN_KEY="wp_info_seen";
 const lsGet=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 function setNews(on){tabInfo.classList.toggle("has-news",on);tabInfo.setAttribute("aria-label",on?"Info, ada pembaruan baru":"Info")}
-function showWorkspace(which,remember){const tools=which==="tools",info=which==="info",off=tools||info;document.body.classList.toggle("tools-mode",off);patcherOnly.forEach(el=>{el.hidden=off});toolOnly.forEach(el=>{el.hidden=!tools});toolsHeading.hidden=!tools;infoHeading.hidden=!info;[[tabPatcher,!off],[tabTools,tools],[tabInfo,info]].forEach(([t,on])=>{t.classList.toggle("active",on);t.setAttribute("aria-selected",String(on))});if(info){lsSet(INFO_SEEN_KEY,INFO_VERSION);setNews(false)}if(remember)lsSet(LAST_TAB_KEY,which);if(off)window.scrollTo({top:0,behavior:"smooth"});}
-tabPatcher.addEventListener("click",()=>showWorkspace("patcher",true));tabTools.addEventListener("click",()=>showWorkspace("tools",true));tabInfo.addEventListener("click",()=>showWorkspace("info",true));
+function showWorkspace(which,remember){const tools=which==="tools",shop=which==="shop",info=which==="info",off=tools||shop||info;document.body.classList.toggle("tools-mode",off);patcherOnly.forEach(el=>{el.hidden=off});toolOnly.forEach(el=>{el.hidden=!tools});toolsHeading.hidden=!tools;shopHeading.hidden=!shop;infoHeading.hidden=!info;[[tabPatcher,!off],[tabTools,tools],[tabShop,shop],[tabInfo,info]].forEach(([t,on])=>{t.classList.toggle("active",on);t.setAttribute("aria-selected",String(on))});if(info){lsSet(INFO_SEEN_KEY,INFO_VERSION);setNews(false)}if(remember)lsSet(LAST_TAB_KEY,which);if(off)window.scrollTo({top:0,behavior:"smooth"});}
+tabPatcher.addEventListener("click",()=>showWorkspace("patcher",true));tabTools.addEventListener("click",()=>showWorkspace("tools",true));tabShop.addEventListener("click",()=>showWorkspace("shop",true));tabInfo.addEventListener("click",()=>showWorkspace("info",true));
+
+/* ---------- SHOP ----------
+   Edit produk di SHOP_ITEMS. Tiap produk: {tag, name, desc, price, btn (opsional, teks tombol)}.
+   Kosongkan array [] kalau belum ada produk di kategori itu. */
+const SHOP_WA_NUMBER="6281947983044"; /* GANTI: nomor WhatsApp admin, format 62 tanpa + dan tanpa 0 di depan */
+const SHOP_PAY=["QRIS","E-Wallet","Transfer Bank"]; /* pilihan metode bayar yang tampil */
+const SHOP_CAT_LABEL={aplikasi:"Aplikasi",colloring:"Colloring"};
+const SHOP_ITEMS={
+  aplikasi:[
+    {"plan": "Alight Motion Premium", "tag": "ALIGHT MOTION · 1 TAHUN", "name": "Alight Motion · Akun dari Pembeli", "type": "Akun dari Pembeli", "dur": "1 Tahun", "code": "amcust", "price": "Rp6.000", "desc": "Private Account, Siapkan Email baru, Full Garansi."},
+    {"plan": "Alight Motion Premium", "tag": "ALIGHT MOTION · 1 TAHUN", "name": "Alight Motion · Akun dari Website", "type": "Akun dari Website", "dur": "1 Tahun", "code": "amgene", "price": "Rp4.000", "desc": "Private Account, Email dari website “generator.email”, Garansi 3 Bulan."},
+    {"tag": "WINK · 1 MINGGU", "name": "Wink · Akun dari Pembeli", "type": "Akun dari Pembeli", "dur": "1 Minggu", "code": "winkcust", "price": "Rp5.000", "desc": "Private Account, Email dari pembeli (wajib fresh/baru buat), Garansi Backfree/Limit (Garansi limit & backfree hanya berlaku di android). iOS maksa beli?, limit bukan tanggung jawab admin."},
+    {"tag": "WINK · 1 MINGGU", "name": "Wink · Akun dari Penjual", "type": "Akun dari Penjual", "dur": "1 Minggu", "code": "winkseler", "price": "Rp8.000", "desc": "Private Account, Email dari penjual, Garansi Backfree/Limit (Garansi limit & backfree hanya berlaku di android). iOS maksa beli?, limit bukan tanggung jawab admin."},
+    {"tag": "WINK · 14 HARI", "name": "Wink · Akun dari Penjual", "type": "Akun dari Penjual", "dur": "14 Hari", "code": "winks2m", "price": "Rp15.000", "desc": "RENEW/PEMBARUAN 2×, Private Account, Email dari penjual, Garansi Backfree/Limit (Garansi limit & backfree hanya berlaku di android). iOS maksa beli?, limit bukan tanggung jawab admin."},
+    {"tag": "WINK · 21 HARI", "name": "Wink · Akun dari Penjual", "type": "Akun dari Penjual", "dur": "21 Hari", "code": "winks3m", "price": "Rp20.000", "desc": "RENEW/PEMBARUAN 3×, Private Account, Email dari penjual, Garansi Backfree/Limit (Garansi limit & backfree hanya berlaku di android). iOS maksa beli?, limit bukan tanggung jawab admin."},
+    {"tag": "WINK · 1 BULAN", "name": "Wink · Akun dari Penjual", "type": "Akun dari Penjual", "dur": "1 Bulan", "code": "winks1bln", "price": "Rp30.000", "desc": "RENEW/PEMBARUAN 4×, Private Account, Email dari penjual, Garansi Backfree/Limit (Garansi limit & backfree hanya berlaku di android). iOS maksa beli?, limit bukan tanggung jawab admin."},
+    {"tag": "CAPCUT · 7 HARI", "name": "CapCut · Akun dari Penjual", "type": "Akun dari Penjual", "dur": "7 Hari", "code": "cc7d", "price": "Rp10.000", "desc": "Private Account, Mix Plan, Region ID, All Device, Max 2 Device, Full Garansi."},
+    {"tag": "CAPCUT · 1 BULAN", "name": "CapCut · Akun dari Penjual", "type": "Akun dari Penjual", "dur": "1 Bulan", "code": "cc1b", "price": "Rp35.000", "desc": "Private account, Mix Plan, Region ID, All Device, Max 2 Device, Full Garansi (Max ambil garansi 1x)."},
+    {"tag": "WINKIT · 3 HARI", "name": "Winkit · Akun dari Pembeli", "type": "Akun dari Pembeli", "dur": "3 Hari", "code": "wnkitb3d", "price": "Rp3.500", "desc": "Private account, Siapkan email + pw (wajib fresh/baru buat), Full Garansi."}
+  ],
+  colloring:[
+    {tag:"COLLORING · CONTOH",name:"Nama Paket Colloring",desc:"Tulis deskripsi singkat colloring di sini: isi paket, jumlah preset, dan cara pakai.",price:"Rp 0"}
+  ]
+};
+const shopGrid=$("shopGrid"),shopSubcats=$("shopSubcats");let shopCat="aplikasi",shopAppFilter="ALIGHT MOTION";
+const SHOP_ACCENT={
+  "ALIGHT MOTION":"#00e6ad",
+  "WINK":"#f4f4f4",
+  "CAPCUT":"#f4f4f4",
+  "WINKIT":"linear-gradient(100deg,#70e8d3,#c6a5f5)"
+};
+/* Logo: kalau punya logo asli, isi di SHOP_LOGO, contoh {"ALIGHT MOTION":"data:image/png;base64,...."}. Kalau kosong, dipakai logo huruf bawaan. */
+const SHOP_LOGO={
+  "ALIGHT MOTION":"https://play-lh.googleusercontent.com/LRjRXaVEtoeHyiFcnMLCHs1ZJV8Q4q70PggflRDAfgOkulzFTbJg65y0drg6Yapo22Xoos_XCbyh7EgycBhQ%3Dw240-h480",
+  "WINK":"https://play-lh.googleusercontent.com/cshtf7MBtmCo5hOjigtUOLgpCcx-ZkQ_eisfmSvK0QZBKSG5bp4MEIH9iqdGYWnUK0B1bEc6iQ10p7WVZYVW7A%3Dw240-h480",
+  "CAPCUT":"https://play-lh.googleusercontent.com/M78HyakHaxKrjoeqYx41E9DXfVYYtx67nvc7Ks4G4zFQeaAJdGCi8gzzGSrHIwlrmnJS6zD9S4fAXqdEwfuHQAQ%3Dw240-h480",
+  "WINKIT":"https://play-lh.googleusercontent.com/FPU5FmOcxcuxpLP2Qc6sX3H-zYSK2kw-RxR9tRiFB9lhnhPbH-F2gFysw_-5gJp7-E78HJ81hOYIeVdGDkA03g%3Dw240-h480"
+};
+const SHOP_LOGO_FALLBACK={
+  "ALIGHT MOTION":{bg:"#1fbf6a",fg:"#fff",t:"Am",fs:22},
+  "WINK":{bg:"#ff5c8a",fg:"#fff",t:"W",fs:24},
+  "CAPCUT":{bg:"#0b0b0c",fg:"#fff",t:"C",fs:24,stroke:"#3a3f46"},
+  "WINKIT":{bg:"#ffb454",fg:"#2a1a00",t:"Wk",fs:21}
+};
+const brandOf=it=>(it.tag||"").split(" \u00b7 ")[0]||it.name||"-";
+function makeLogo(brand){
+  const box=document.createElement("div");box.className="sc-logo";
+  if(SHOP_LOGO[brand]){const im=document.createElement("img");im.src=SHOP_LOGO[brand];im.alt=brand;box.appendChild(im);return box}
+  const f=SHOP_LOGO_FALLBACK[brand]||{bg:"#8c93a0",fg:"#fff",t:brand.charAt(0),fs:22};
+  box.innerHTML='<svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="'+f.bg+'"'+(f.stroke?' stroke="'+f.stroke+'" stroke-width="2"':'')+'/><text x="24" y="'+(24+f.fs*0.35)+'" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="'+f.fs+'" fill="'+f.fg+'">'+f.t+'</text></svg>';
+  return box;
+}
+function renderShop(){
+  shopGrid.textContent="";
+  if(shopSubcats)shopSubcats.hidden=shopCat!=="aplikasi";
+  const allItems=SHOP_ITEMS[shopCat]||[];
+  const items=(shopCat==="aplikasi"&&shopAppFilter!=="all"?allItems.filter(it=>brandOf(it)===shopAppFilter):allItems)
+    .slice()
+    .sort((a,b)=>brandOf(a).localeCompare(brandOf(b),"id"));
+  if(!items.length){const d=document.createElement("div");d.className="shop-empty";d.textContent="Belum ada produk di menu ini. Segera hadir.";shopGrid.appendChild(d);return}
+  const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+  const row=(k,v,c)=>{const r=el("div","sc-row"+(c?" "+c:""));const value=el("span","v");if(c==="type"&&/Penjual|Pembeli/i.test(v)){const match=v.match(/(Penjual|Pembeli)/i);const before=v.slice(0,match.index),after=v.slice(match.index+match[0].length);if(before)value.append(document.createTextNode(before));value.append(el("strong","type-highlight",match[0]));if(after)value.append(document.createTextNode(after));}else value.textContent=v;r.append(el("span","",k),el("span","",":"),value);return r};
+  items.forEach((it,i)=>{
+    const brand=brandOf(it);
+    const card=el("article","sc");card.style.setProperty("--ac",SHOP_ACCENT[brand]||"#8c93a0");
+    const head=el("div","sc-head");head.append(el("span","sc-no",(i+1)+"."),makeLogo(brand),el("span","sc-brand",brand));
+    const rows=el("div","sc-rows");
+    if(it.dur)rows.appendChild(row("Durasi",it.dur,"duration"));
+    if(it.type)rows.appendChild(row("Type akun",it.type,"type"));
+    if(it.desc)rows.appendChild(row("Deskripsi",it.desc,"desc"));
+    const foot=el("div","sc-foot");const soon=!/\d/.test(it.price||"");
+    foot.appendChild(el("div","sc-price"+(soon?" soon":""),it.price||"Harga menyusul"));
+    const b=el("button","sc-buy",it.btn||(soon?"Tanya Harga":"Order"));b.type="button";b.addEventListener("click",()=>openOrder(it));foot.appendChild(b);
+    card.append(head,rows,foot);shopGrid.appendChild(card);
+  });
+}
+document.querySelectorAll("[data-shop-cat]").forEach(b=>b.addEventListener("click",()=>{
+  shopCat=b.dataset.shopCat;
+  document.querySelectorAll("[data-shop-cat]").forEach(x=>{const on=x===b;x.classList.toggle("active",on);x.setAttribute("aria-selected",String(on))});
+  if(shopCat!=="aplikasi"){
+    shopAppFilter="ALIGHT MOTION";
+    document.querySelectorAll("[data-shop-app]").forEach(x=>{x.classList.remove("active");x.setAttribute("aria-selected","false")});
+  }
+  renderShop();
+}));
+document.querySelectorAll("[data-shop-app]").forEach(b=>b.addEventListener("click",()=>{
+  shopAppFilter=b.dataset.shopApp;
+  document.querySelectorAll("[data-shop-app]").forEach(x=>{const on=x===b;x.classList.toggle("active",on);x.setAttribute("aria-selected",String(on))});
+  renderShop();
+}));
+renderShop();
+
+const orderModal=$("orderModal"),orderSum=$("orderSum"),orderPay=$("orderPay"),orderName=$("orderName");
+let orderItem=null,orderMethod=SHOP_PAY[0];
+function openOrder(it){
+  orderItem=it;orderMethod=SHOP_PAY[0];orderSum.textContent="";
+  [["Produk",brandOf(it)],["Type akun",it.type||"-"],["Durasi",it.dur||"-"],["Harga",it.price||"-"]].forEach(([k,v])=>{const d=document.createElement("div");d.append(k+": ");const b=document.createElement("b");b.textContent=v;d.appendChild(b);orderSum.appendChild(d)});
+  orderPay.textContent="";
+  SHOP_PAY.forEach((m,i)=>{const b=document.createElement("button");b.type="button";b.textContent=m;b.className=i===0?"active":"";b.addEventListener("click",()=>{orderMethod=m;orderPay.querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b))});orderPay.appendChild(b)});
+  orderModal.hidden=false;document.body.classList.add("modal-open");
+}
+function closeOrder(){orderModal.hidden=true;document.body.classList.remove("modal-open")}
+$("orderScrim").addEventListener("click",closeOrder);$("orderCancel").addEventListener("click",closeOrder);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!orderModal.hidden)closeOrder()});
+$("orderSend").addEventListener("click",()=>{
+  if(!orderItem)return;
+  const nm=orderName.value.trim();
+  const msg=["Halo admin, saya mau order dari website:","","Produk: "+brandOf(orderItem),"Type akun: "+(orderItem.type||"-"),"Durasi: "+(orderItem.dur||"-"),"Kode: "+(orderItem.code||"-"),"Harga: "+(orderItem.price||"-"),"Metode bayar: "+orderMethod].concat(nm?["Nama: "+nm]:[]).concat(["","Mohon info pembayarannya ya."]).join("\n");
+  window.open("https://wa.me/"+SHOP_WA_NUMBER+"?text="+encodeURIComponent(msg),"_blank","noopener");
+  closeOrder();
+});
 /* Pengunjung baru mendarat di Info; pengunjung lama kembali ke tab terakhir, dan titik merah muncul bila ada pengumuman baru. */
-(function(){const last=lsGet(LAST_TAB_KEY),start=["patcher","tools","info"].includes(last)?last:"info",hasNews=lsGet(INFO_SEEN_KEY)!==INFO_VERSION;showWorkspace(start,false);if(start!=="info"&&hasNews)setNews(true)})();
+(function(){const last=lsGet(LAST_TAB_KEY),start=["patcher","tools","shop","info"].includes(last)?last:"info",hasNews=lsGet(INFO_SEEN_KEY)!==INFO_VERSION;showWorkspace(start,false);if(start!=="info"&&hasNews)setNews(true)})();
 
 const toolModal=$("toolModal"),toolModalTitle=$("toolModalTitle"),toolModalDescription=$("toolModalDescription"),inspectorCard=$("inspectorCard");
 let lastToolOpener=null;
@@ -3742,7 +3941,15 @@ async function useFiles(arr){
   written.clear();
   renderFiles();
 }
-el.ffFiles.addEventListener("change",()=>useFiles(Array.from(el.ffFiles.files||[])));
+/* iOS: tanpa "multiple", WebKit mentranscode video dari galeri (mis. 125 MB -> 58 MB) sebelum sampai ke JS.
+   Dengan "multiple", file asli dikirim apa adanya. Hanya file pertama yang dipakai. */
+const IS_IOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+if(IS_IOS)el.ffFiles.multiple=true;
+el.ffFiles.addEventListener("change",()=>{
+  let arr=Array.from(el.ffFiles.files||[]);
+  if(IS_IOS&&arr.length>1)arr=arr.slice(0,1);
+  useFiles(arr);
+});
 
 /* ---- Google Drive: pilih & ambil video langsung ke memori browser (tidak disimpan ke penyimpanan HP dulu) ---- */
 const GKEY="wanxzyy_gdrive_client_id",GSCOPE="https://www.googleapis.com/auth/drive.readonly";
@@ -4030,6 +4237,59 @@ function makeLanczos3WebGLResizer(){
   }};
 }
 
+/* Tulis/ubah box 'btrt' pada sample entry avc1 supaya avgBitrate == maxBitrate (tanpa re-encode). */
+function patchBtrtMp4(src,bitrate){
+  const u8=src,dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);
+  const tp=o=>String.fromCharCode(u8[o],u8[o+1],u8[o+2],u8[o+3]);
+  const CONT=new Set(["moov","trak","mdia","minf","stbl"]);
+  const br=Math.max(1,Math.round(bitrate));
+  let moov=null,mdat=-1,hit=null;const stco=[];
+  for(let p=0;p+8<=u8.length;){
+    const sz=dv.getUint32(p),t=tp(p+4);if(sz<8)return src;
+    if(t==="moov")moov={s:p,e:p+sz};else if(t==="mdat"&&mdat<0)mdat=p;
+    p+=sz;
+  }
+  if(!moov)return src;
+  (function walk(s,e,anc){
+    for(let p=s;p+8<=e;){
+      const sz=dv.getUint32(p),t=tp(p+4);if(sz<8||p+sz>e)return;
+      if(CONT.has(t))walk(p+8,p+sz,anc.concat(p));
+      else if(t==="stsd"){
+        for(let q=p+16;q+8<=p+sz;){
+          const es=dv.getUint32(q),et=tp(q+4);if(es<8)break;
+          if((et==="avc1"||et==="avc3")&&!hit){
+            let found=-1;
+            for(let c=q+86;c+8<=q+es;){const cs=dv.getUint32(c);if(cs<8)break;if(tp(c+4)==="btrt")found=c;c+=cs}
+            hit={entry:q,end:q+es,found,anc:anc.concat(p,q)};
+          }
+          q+=es;
+        }
+      }else if(t==="stco"||t==="co64")stco.push({p,t});
+      p+=sz;
+    }
+  })(moov.s+8,moov.e,[moov.s]);
+  if(!hit)return src;
+  const maxB=br,avgB=br,buf=Math.ceil(br/8);
+  if(hit.found>=0){
+    dv.setUint32(hit.found+8,buf);dv.setUint32(hit.found+12,maxB);dv.setUint32(hit.found+16,avgB);
+    return src;
+  }
+  const ADD=20,at=hit.end,out=new Uint8Array(u8.length+ADD),odv=new DataView(out.buffer);
+  out.set(u8.subarray(0,at),0);out.set(u8.subarray(at),at+ADD);
+  odv.setUint32(at,ADD);out.set([0x62,0x74,0x72,0x74],at+4);
+  odv.setUint32(at+8,buf);odv.setUint32(at+12,maxB);odv.setUint32(at+16,avgB);
+  for(const a of hit.anc)odv.setUint32(a,odv.getUint32(a)+ADD);
+  if(mdat>=0&&mdat>at){ // mdat setelah moov: semua offset chunk bergeser +20
+    for(const {p,t} of stco){
+      const n=odv.getUint32(p+12);
+      for(let i=0;i<n;i++){
+        if(t==="stco"){const o=p+16+i*4;odv.setUint32(o,odv.getUint32(o)+ADD)}
+        else{const o=p+16+i*8;const v=Number(odv.getBigUint64(o))+ADD;odv.setBigUint64(o,BigInt(v))}
+      }
+    }
+  }
+  return out;
+}
 async function runHardware1080(){
   if(!files.length){setStatus("Pilih satu file video dulu untuk encoding hardware.","err");return}
   if(!("VideoEncoder" in window) || !("VideoDecoder" in window)){
@@ -4062,7 +4322,15 @@ async function runHardware1080(){
       input,output,
       video:{
         frameRate:60,codec:"avc",bitrate:rate*1000000,
+        bitrateMode:"constant",
+        latencyMode:"realtime",
+        fullCodecString:"avc1.640032", /* H.264 High Profile, Level 5.0 */
         hardwareAcceleration:"prefer-hardware",
+        onEncoderConfig:(cfg)=>{ /* jaring pengaman: paksa nilai akhir yang dikirim ke VideoEncoder.configure() */
+          cfg.codec="avc1.640032";cfg.bitrate=rate*1000000;cfg.bitrateMode="constant";
+          cfg.latencyMode="realtime";cfg.hardwareAcceleration="prefer-hardware";
+          cfg.avc={format:"avc"};
+        },
         forceTranscode:true,keyFrameInterval:1,
         process:(sample)=>lanczosResizer.process(sample),
         processedWidth:1080,processedHeight:1920
@@ -4088,9 +4356,12 @@ async function runHardware1080(){
     if(stopped)throw new Error("STOPPED");
     const buffer=output.target.buffer;
     if(!buffer||!buffer.byteLength)throw new Error("Encoding selesai tetapi output MP4 kosong.");
-    showOutputs([{name:"out_1080p60_hardware.mp4",data:new Uint8Array(buffer)}]);
+    let outBytes=new Uint8Array(buffer);
+    try{outBytes=patchBtrtMp4(outBytes,rate*1000000);addLog("Metadata btrt: avg = max = "+rate+" Mbps.")}
+    catch(e){addLog("Peringatan: metadata btrt tidak diubah ("+(e.message||e)+").")}
+    showOutputs([{name:"out_1080p60_hardware.mp4",data:outBytes}]);
     setBar(100);setStatus("Selesai. MP4 hardware-path siap diunduh.","ok");
-    addLog("Selesai. Ukuran hasil: "+mb(buffer.byteLength)+".");
+    addLog("Selesai. Ukuran hasil: "+mb(outBytes.byteLength)+".");
     flushLog();pushRecent("[Hardware WebCodecs] 1080p60 "+rate+" Mbps");
   }catch(e){
     flushLog();setBar(0);
@@ -4653,7 +4924,7 @@ modeEls.forEach(r=>r.addEventListener("change",applyMode));forgeEls.forEach(r=>r
 
 /* ---- Pemberitahuan pembaruan saluran: tampil satu kali untuk semua pengunjung ---- */
 const FG_LEGACY_SEEN="wp_notice_seen";
-const FG_UPDATE_SEEN="wp_notice_channel_update_2026_10";
+const FG_UPDATE_SEEN="wp_notice_channel_update_2026_11";
 const fgModal=$("fgModal");
 const fgOk=$("fgOk"),FG_LABEL="Mengerti & Lanjutkan";let fgTimer=0;
 function openFg(){
