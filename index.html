@@ -293,7 +293,7 @@ button.history-download{border:0;cursor:pointer;font-family:inherit}
 @media(max-width:380px){.hstore{margin:10px 12px 0}.history-modal{padding:10px}.history-dialog{border-radius:18px}.history-dialog-head{padding:15px 13px 13px}.history-list{padding:11px 12px}.history-dialog-foot{padding:10px 12px 12px}.history-foot-note{max-width:145px}}
 
 /* Workspace navigation + standalone Tools workspace */
-.workspace-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:5px;background:#15171a;border:1px solid #30343a;border-radius:16px}
+.workspace-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:5px;background:#15171a;border:1px solid #30343a;border-radius:16px}
 .workspace-tab{display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border:1px solid transparent;border-radius:11px;background:transparent;color:#aeb3ba;font-weight:650;font-size:13px;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
 .workspace-tab span{font-size:10px;letter-spacing:.08em;color:#858b93}
 .workspace-tab small{font-size:10px;color:#aeb3ba;background:#292c31;padding:3px 7px;border-radius:99px}
@@ -1058,6 +1058,8 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <div class="tool-library-head"><div><p class="eyebrow">WANXZYY / INFO RESMI</p><h2>Info Resmi</h2><p>Akun dan saluran resmi admin, serta ketentuan penggunaan website.</p></div><span class="folder-mark">✓ OFFICIAL</span></div>
 
     <div class="info-warn" role="alert"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 2.5 20h19L12 3.5z"/><path d="M12 10v4.5"/><path d="M12 17.6v.1"/></svg><div><span class="iw-title">PENTING · PEMBARUAN SALURAN</span>Saluran WhatsApp lama <strong>telah diretas</strong> dan <strong>tidak lagi digunakan</strong>. Mohon berhenti mengikuti saluran tersebut dan abaikan semua pesan dari sana. Gunakan <strong>hanya akun dan saluran resmi</strong> di bawah ini.</div></div>
+
+    <div class="tool-library-note"><b>Shop Dinonaktifkan Sementara</b><span>Fitur Shop sedang dinonaktifkan. Shop dapat diaktifkan atau dinonaktifkan kembali kapan saja melalui konfigurasi website.</span></div>
 
     <div class="tool-library-grid">
       <article class="tool-launch-card official">
@@ -3686,6 +3688,9 @@ $("fpsCheck").addEventListener("click",async()=>{
   finally{v.pause();URL.revokeObjectURL(url);btn.disabled=false;btn.textContent="Ukur ulang FPS"}
 });
 const tabPatcher=$("tabPatcher"),tabTools=$("tabTools"),tabShop=$("tabShop"),tabInfo=$("tabInfo"),toolsHeading=$("toolsHeading"),shopHeading=$("shopHeading"),infoHeading=$("infoHeading");
+/* SHOP_SWITCH: ubah ke true untuk mengaktifkan Shop kembali, false untuk menonaktifkan. */
+const SHOP_ENABLED=false;
+tabShop.hidden=!SHOP_ENABLED;
 const patcherOnly=[$("setup"),document.querySelector("details.guide"),$("historyCard")].filter(Boolean);
 const toolOnly=[];
 /* INFO_VERSION dihitung otomatis dari isi tab Info (teks + link). Isi berubah = versi berubah = titik merah muncul lagi. Tidak perlu diubah manual. */
@@ -3695,7 +3700,7 @@ const LAST_TAB_KEY="wp_last_tab",INFO_SEEN_KEY="wp_info_seen";
 const lsGet=k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 function setNews(on){tabInfo.classList.toggle("has-news",on);tabInfo.setAttribute("aria-label",on?"Info, ada pembaruan baru":"Info")}
-function showWorkspace(which,remember){const tools=which==="tools",shop=which==="shop",info=which==="info",off=tools||shop||info;document.body.classList.toggle("tools-mode",off);patcherOnly.forEach(el=>{el.hidden=off});toolOnly.forEach(el=>{el.hidden=!tools});toolsHeading.hidden=!tools;shopHeading.hidden=!shop;infoHeading.hidden=!info;[[tabPatcher,!off],[tabTools,tools],[tabShop,shop],[tabInfo,info]].forEach(([t,on])=>{t.classList.toggle("active",on);t.setAttribute("aria-selected",String(on))});if(info){lsSet(INFO_SEEN_KEY,INFO_VERSION);setNews(false)}if(remember)lsSet(LAST_TAB_KEY,which);if(off)window.scrollTo({top:0,behavior:"smooth"});}
+function showWorkspace(which,remember){if(which==="shop"&&!SHOP_ENABLED){showWorkspace("patcher",remember);return}const tools=which==="tools",shop=which==="shop",info=which==="info",off=tools||shop||info;document.body.classList.toggle("tools-mode",off);patcherOnly.forEach(el=>{el.hidden=off});toolOnly.forEach(el=>{el.hidden=!tools});toolsHeading.hidden=!tools;shopHeading.hidden=!shop;infoHeading.hidden=!info;[[tabPatcher,!off],[tabTools,tools],[tabShop,shop],[tabInfo,info]].forEach(([t,on])=>{t.classList.toggle("active",on);t.setAttribute("aria-selected",String(on))});if(info){lsSet(INFO_SEEN_KEY,INFO_VERSION);setNews(false)}if(remember)lsSet(LAST_TAB_KEY,which);if(off)window.scrollTo({top:0,behavior:"smooth"});}
 tabPatcher.addEventListener("click",()=>showWorkspace("patcher",true));tabTools.addEventListener("click",()=>showWorkspace("tools",true));tabShop.addEventListener("click",()=>showWorkspace("shop",true));tabInfo.addEventListener("click",()=>showWorkspace("info",true));
 
 /* ---------- SHOP ----------
