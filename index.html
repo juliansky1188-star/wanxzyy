@@ -261,6 +261,7 @@ body::before{content:"";position:fixed;inset:-20% -10% auto -10%;height:60vh;bac
 button.history-download{border:0;cursor:pointer;font-family:inherit}
 .history-download[hidden],.hcmp[hidden]{display:none!important}
 .history-download:disabled{opacity:.65;cursor:progress}
+.history-download+.history-download{margin-top:8px}
 .hcmp{display:grid;gap:10px;margin-top:14px}
 .hcmp-status{padding:11px 12px;border-radius:12px;background:#292431;border:1px solid #494052;color:#cfc5da;font-size:11px;line-height:1.55}
 .hcmp-status.err{border-color:#7a3d4a;color:#ffb3bf}
@@ -661,6 +662,10 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 .ff-file b{font:600 13px var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ff-file small{color:#9da3ab;font-size:11.5px;white-space:nowrap}
 .ff-file a{flex:none;text-decoration:none;background:#e8eaed;color:#101215;border-radius:9px;padding:7px 12px;font:700 12px var(--body)}
+.ff-file .ff-actions{display:flex;gap:8px}
+.ff-file .ff-actions a,.ff-file .ff-actions button{flex:1;text-align:center;border:0;cursor:pointer;border-radius:9px;padding:9px 12px;font:700 12.5px var(--body)}
+.ff-file .ff-actions .ff-use{background:#2f6bff;color:#fff}
+.ff-file .ff-actions .ff-use:active{opacity:.85}
 .ff-file video,.ff-file img{width:100%;max-height:260px;border-radius:9px;background:#000;object-fit:contain}
 .ff-file audio{width:100%}
 
@@ -1136,6 +1141,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
         <video id="historyPreview" class="history-preview" controls playsinline preload="metadata"></video>
         <div id="historyDetailInfo" class="history-detail-info"></div>
         <button type="button" id="historyCompare" class="history-download" hidden>Bandingkan (sebelum &amp; sesudah)</button>
+        <button type="button" id="historyPost" class="history-download" hidden>Posting hasil ini</button>
         <button type="button" id="historyShare" class="history-share" hidden>Bagikan hasil</button>
         <div id="historyCompareOut" class="hcmp" hidden></div>
       </div>
@@ -1288,10 +1294,12 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
         <div id="zS2" hidden>
           <label>Pilih akun TikTok</label>
           <div class="zacc" id="zAccList"></div>
+          <button type="button" class="btn ghost" id="zChangeKey2">Ganti API Key</button>
         </div>
         <div id="zS3" hidden>
           <p class="zwho" id="zWho"></p>
           <button type="button" class="btn ghost" id="zBack" hidden>Ganti akun</button>
+          <button type="button" class="btn ghost" id="zChangeKey3">Ganti API Key</button>
           <label>Caption<textarea id="zTag" rows="6" maxlength="2200" placeholder="Bebas, boleh banyak baris, hashtag, mention, dll."></textarea></label>
           <button type="button" class="btn main" id="zGo">Posting</button>
           <p class="note">Video diposting publik. Dengan menekan Posting, kamu setuju video ini diunggah ke akun TikTok di atas.</p>
@@ -4171,7 +4179,22 @@ function showOutputs(list){
     const box=document.createElement("div");box.className="ff-file";
     const row=document.createElement("div"),left=document.createElement("div"),nm=document.createElement("b"),sz=document.createElement("small"),a=document.createElement("a");
     nm.textContent=o.name;sz.textContent=mb(o.data.length);left.append(nm,sz);left.style.cssText="justify-content:flex-start;gap:8px";
-    a.href=u;a.download=o.name;a.textContent="Unduh";row.append(left,a);box.append(row);
+    a.href=u;a.download=o.name;a.textContent="Unduh";row.append(left);box.append(row);
+    const acts=document.createElement("div");acts.className="ff-actions";acts.append(a);
+    if(type.startsWith("video/")){
+      const use=document.createElement("button");use.type="button";use.className="ff-use";use.textContent="Patch Sekarang →";
+      use.addEventListener("click",()=>{
+        try{
+          const f=new File([o.data],o.name,{type:type});
+          setFile(f);
+          closeTool();
+          showWorkspace("patcher",true);
+          window.scrollTo({top:0,behavior:"smooth"});
+        }catch(err){setStatus("Gagal mengirim video ke Patcher: "+(err&&err.message||err),"err")}
+      });
+      acts.append(use);
+    }
+    box.append(acts);
     if(i<3){
       let p=null;
       if(type.startsWith("video/")){p=document.createElement("video");p.controls=true;p.playsInline=true;p.preload="metadata"}
@@ -4551,8 +4574,8 @@ $("historyClose").addEventListener("click",closeHistory);
 historyModal.querySelectorAll("[data-history-close]").forEach(el=>el.addEventListener("click",closeHistory));
 document.addEventListener("keydown",ev=>{if(ev.key==="Escape"&&!historyModal.hidden)closeHistory()});
 const historyDetailModal=$("historyDetailModal"),historyPreview=$("historyPreview");let historyPreviewUrl=null;
-let historyCompareCtx=null,historyCompareToken=0,historyShareCtx=null;
-function resetHistoryCompare(){historyCompareToken++;historyCompareCtx=null;historyShareCtx=null;$("historyShare").hidden=true;const out=$("historyCompareOut"),b=$("historyCompare");out.hidden=true;out.innerHTML="";b.hidden=true;b.disabled=false;b.dataset.state="";b.textContent="Bandingkan (sebelum & sesudah)"}
+let historyCompareCtx=null,historyCompareToken=0,historyShareCtx=null,historyPostCtx=null;
+function resetHistoryCompare(){historyCompareToken++;historyCompareCtx=null;historyShareCtx=null;historyPostCtx=null;$("historyPost").hidden=true;$("historyShare").hidden=true;const out=$("historyCompareOut"),b=$("historyCompare");out.hidden=true;out.innerHTML="";b.hidden=true;b.disabled=false;b.dataset.state="";b.textContent="Bandingkan (sebelum & sesudah)"}
 function closeHistoryDetail(){historyDetailModal.hidden=true;historyPreview.pause();historyPreview.removeAttribute("src");historyPreview.load();if(historyPreviewUrl)URL.revokeObjectURL(historyPreviewUrl);historyPreviewUrl=null;resetHistoryCompare()}
 async function openHistoryDetail(item){
   const info=$("historyDetailInfo");
@@ -4567,6 +4590,7 @@ async function openHistoryDetail(item){
     if(media?.output){
       historyPreviewUrl=URL.createObjectURL(media.output);historyPreview.src=historyPreviewUrl;historyPreview.hidden=false;
       historyShareCtx={blob:media.output,name:item.outputName||((item.name||"video").replace(/\.[^.]+$/,"")+"_Wanxzy.mp4")};if(canShareFiles)$("historyShare").hidden=false;
+      historyPostCtx={blob:media.output,name:historyShareCtx.name};$("historyPost").hidden=false;
       addInfo("Ukuran video asli",media.original?mb(media.original.size):"Tidak tersimpan");addInfo("Ukuran video hasil",mb(media.output.size));
       if(media.original){
         addInfo("Perubahan ukuran",`${media.original.size===media.output.size?"Sama":(media.output.size>media.original.size?"Bertambah":"Berkurang")} · ${mb(Math.abs(media.output.size-media.original.size))}`);
@@ -4656,6 +4680,19 @@ function historyRenderDiff(host,d,ctx){
   host.append(list,vrEl("p","hcmp-foot","Dibaca dari struktur dan header file, bukan membandingkan setiap frame, jadi tidak membuktikan perbedaan kualitas visual."))
 }
 $("historyShare").addEventListener("click",()=>{if(historyShareCtx)shareVideo(historyShareCtx.blob,historyShareCtx.name)});
+$("historyPost").addEventListener("click",()=>{
+  if(!historyPostCtx?.blob){toast("File video hasil tidak tersedia.");return}
+  lastBlob=historyPostCtx.blob;
+  const name=historyPostCtx.name||"video.mp4";
+  downloadLink.download=name;
+  $("outMeta").textContent=name+" · "+mb(lastBlob.size);
+  result.hidden=false;
+  closeHistoryDetail();closeHistory();
+  window.__resetZernio&&window.__resetZernio();
+  $("postNow").hidden=false;
+  $("postNow").click();
+  $("tiktokTools").scrollIntoView({behavior:"smooth",block:"center"});
+});
 $("historyCompare").addEventListener("click",async()=>{
   const ctx=historyCompareCtx;if(!ctx)return;
   const b=$("historyCompare"),out=$("historyCompareOut");
@@ -4879,6 +4916,9 @@ async function cleanup(id){fetch(`${API}/cleanup/${encodeURIComponent(id)}`,{met
     }catch(e){say2(e.message||"Gagal mengambil akun.",true)}
     finally{b.disabled=false}
   });
+  const changeKey=()=>{acc=null;s2.hidden=true;s3.hidden=true;s1.hidden=false;bar.hidden=true;zKey.value="";say2("Masukkan API key Zernio yang baru.");zKey.focus()};
+  $("zChangeKey2").addEventListener("click",changeKey);
+  $("zChangeKey3").addEventListener("click",changeKey);
   $("zBack").addEventListener("click",()=>{s3.hidden=true;s2.hidden=false;bar.hidden=true;say2("Pilih akun TikTok yang benar.")});
   $("zGo").addEventListener("click",async()=>{
     if(!lastBlob||!acc)return;
