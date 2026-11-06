@@ -89,11 +89,14 @@ button,input{font:inherit;color:inherit}
 .go:disabled{background:var(--raise);color:#6e6480;cursor:not-allowed}
 
 /* progress */
-.pct{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
-.pct strong{font:700 44px/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.pct{display:block;margin:0 0 8px}
+.pct strong{display:block;font:700 44px/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .pct strong i{font:600 20px var(--display);font-style:normal;color:var(--muted);margin-left:2px}
-.pct>span{color:var(--muted);font-size:13px;text-align:right;max-width:60%;overflow-wrap:anywhere}
-.pct>span.ok{color:var(--ok)}.pct>span.err{color:var(--err)}
+#status{display:block;margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.55;text-align:left;max-width:none;overflow-wrap:anywhere}
+#status.ok{color:var(--ok)}#status.err{color:var(--err)}
+#status.medium-validation{color:#d8c8cc;text-align:left;max-width:none;flex:none}
+.error-label{display:none;margin:2px 0 5px;color:var(--err);font:800 17px/1.2 var(--display);letter-spacing:.02em}
+#proc.has-error .error-label{display:block}
 .bar{height:8px;border-radius:99px;background:var(--ink);overflow:hidden}
 .fill{height:100%;width:0;background:var(--violet);border-radius:99px;transition:width .3s ease}
 .steps{display:grid;gap:0;margin:18px 0 4px;position:relative}
@@ -161,8 +164,9 @@ body::before{content:"";position:fixed;inset:-20% -10% auto -10%;height:60vh;bac
 .go:disabled{box-shadow:none}
 .fill{background:linear-gradient(90deg,var(--violet-d),var(--violet));box-shadow:0 0 14px rgba(176,123,255,.55)}
 .bar{height:10px}
-.phead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.phead h2{margin:0}
+.phead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:22px;min-width:0}
+.phead h2{margin:0;min-width:0;flex:1;font-size:clamp(17px,5vw,22px);white-space:nowrap}
+#status{white-space:pre-line}
 .timer{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font:500 13px var(--body);font-variant-numeric:tabular-nums;background:var(--raise);border:1px solid var(--line);padding:4px 10px;border-radius:99px}
 .timer svg{width:14px;height:14px}
 .step{grid-template-columns:28px 1fr 64px;align-items:start;padding:12px 0}
@@ -591,7 +595,12 @@ body{background:radial-gradient(ellipse at 50% -18%,#292d32 0,transparent 48%),v
 #start.too-big,#start.too-big:disabled{background:rgba(255,77,79,.18);color:#ff8f90;border:2px dashed rgba(255,77,79,.75);box-shadow:none;filter:none;transform:none}
 .size-warn{margin:10px 0 0;color:#ff4d4f;font:700 12.5px/1.45 var(--display);text-align:center;letter-spacing:.2px}
 .size-warn[hidden]{display:none}
-#proc .phead{margin-bottom:22px}
+#proc .phead{margin-bottom:24px}
+#proc .pct{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+#proc .pct strong{display:block;flex:0 0 auto}
+#proc .pct .pause-btn{flex:0 0 auto;margin-right:0}
+#proc .cancel-btn,#proc .timer{flex:0 0 auto}
+@media(max-width:380px){#proc .phead{gap:6px}#proc .phead h2{font-size:17px}#proc .cancel-btn{padding:5px 8px;gap:4px}#proc .timer{padding:5px 8px;gap:5px;font-size:11px}}
 .timer{background:#1b1e22;border-color:#363b42;color:#c4c8ce;padding:6px 11px;font-size:12px}
 .pct{margin-bottom:13px;gap:12px}
 .pct strong{font:800 clamp(48px,10vw,58px)/.98 var(--display);letter-spacing:-.075em}
@@ -654,6 +663,10 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 .cancel-btn:hover{background:#48232d;border-color:#b64d62}
 .cancel-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .pause-note{margin:10px 2px 0;font-size:12px;line-height:1.5;color:#a0a5ad}
+#proc .phead{align-items:center;margin-bottom:6px;min-height:34px}
+#proc .phead h2{margin:0;padding:0;line-height:1;display:flex;align-items:center;align-self:center;min-height:34px}
+#proc .pct{margin-top:0;margin-bottom:10px}
+#proc .pct strong{line-height:1;margin:0}
 
 /* FFmpeg Terminal */
 .ff-label{display:block;margin:18px 0 8px;color:#c4c8cd;font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
@@ -1344,9 +1357,10 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 
 
   <section class="card" id="proc" hidden>
-    <div class="phead"><h2>Proses</h2><div class="pause-row"><button type="button" class="cancel-btn" id="cancelBtn" hidden><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Cancel</button><button type="button" class="pause-btn" id="pauseBtn" hidden></button><span class="timer" title="Waktu berjalan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><span id="elapsed">00:00</span></span></div></div>
-    <div class="pct"><strong><span id="pctNum">0</span><i>%</i></strong><span id="status">Menyiapkan…</span></div>
-    <p class="pause-note" id="pauseNote" hidden></p>
+    <div class="phead"><h2>PROCESSING</h2><button type="button" class="cancel-btn" id="cancelBtn" hidden><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Cancel</button><span class="timer" title="Waktu berjalan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg><span id="elapsed">00:00</span></span></div>
+    <div class="pct"><strong><span id="pctNum">0</span><i>%</i></strong></div>
+    <div class="error-label" id="errorLabel" role="status">ERROR!!!</div>
+    <p id="status">Menyiapkan…</p>
     <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><div class="fill" id="fill"></div></div>
     <div class="steps">
       <div class="step" id="hq" data-state="wait"><span class="dot"></span><div class="sb"><b>HQ Method</b><span class="sub">Antre</span><div class="mini"><i></i></div></div><em>Menunggu</em></div>
@@ -3490,7 +3504,7 @@ function friendlyStatus(s){
     .replace("HQ Method selesai. Mengambil hasil…",one+" selesai. Mengambil hasil…")
     .replace(/Hasil HQ/g,one).replace(/HQ Method/g,one).replace(/Encode video/g,two).replace(/Hasil akhir/g,two)
 }
-const say=(s,cls="")=>{statusEl.textContent=friendlyStatus(s);statusEl.className=cls};
+const say=(s,cls="")=>{statusEl.textContent=friendlyStatus(s);statusEl.className=cls;const isError=cls==="err";$("proc").classList.toggle("has-error",isError);};
 const progress=n=>{const v=Math.max(0,Math.min(100,n));fill.style.width=v+"%";pctNum.textContent=Math.round(v);fill.parentElement.setAttribute("aria-valuenow",Math.round(v))};
 const LABEL={wait:"Menunggu",active:"Berjalan",done:"Selesai",skip:"Dilewati",fail:"Gagal"};
 const stepFor=l=>/^(HQ|Hasil HQ)/.test(l)?hq:enc;
@@ -3511,7 +3525,7 @@ const stage=(el,state,text)=>{el.dataset.state=state;el.querySelector("em").text
 
 /* ---- Jeda / Lanjutkan (fase upload & download) ---- */
 const ctl={paused:false,held:false,cancelled:false,cancelAfterServer:false,phase:"upload",waiters:[],aborters:new Set()};
-const pauseBtn=$("pauseBtn"),cancelBtn=$("cancelBtn"),pauseNote=$("pauseNote");
+const cancelBtn=$("cancelBtn");
 function cancelledError(){const e=new Error("Proses dibatalkan oleh pengguna.");e.name="AbortError";e.cancelled=true;return e}
 function checkCancelled(){if(ctl.cancelled)throw cancelledError()}
 function cancelProcess(){
@@ -3522,47 +3536,21 @@ function cancelProcess(){
     ctl.cancelAfterServer=true;
     cancelBtn.disabled=true;
     cancelBtn.textContent="Menunggu render selesai…";
-    pauseBtn.disabled=true;
     say("Permintaan cancel diterima. Menunggu rendering server selesai…");
     return;
   }
   ctl.cancelled=true;ctl.paused=false;ctl.held=false;ctl.waiters.splice(0).forEach(r=>r());for(const abort of [...ctl.aborters]){try{abort()}catch{}}ctl.aborters.clear();renderPause();cancelBtn.disabled=true;cancelBtn.textContent="Membatalkan…";say("Membatalkan proses…");
 }
 
-const ICON_PAUSE='<svg viewBox="0 0 24 24"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>';
-const ICON_PLAY='<svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>';
-function renderPause(){
-  pauseBtn.hidden=!running||ctl.cancelled;cancelBtn.hidden=!running||ctl.cancelled;
-  if(!ctl.paused){pauseBtn.innerHTML=ICON_PAUSE+"Jeda";pauseBtn.dataset.on="";pauseNote.hidden=true;return}
-  pauseBtn.dataset.on="1";pauseNote.hidden=false;
-  if(ctl.phase==="server"){
-    pauseBtn.innerHTML=ICON_PLAY+"Menunggu render selesai…";pauseBtn.disabled=true;
-    pauseNote.textContent="Permintaan jeda diterima. Rendering server dibiarkan selesai; proses akan dijeda sebelum tahap berikutnya.";
-  }else if(ctl.held){pauseBtn.innerHTML=ICON_PLAY+"Lanjutkan";pauseBtn.disabled=false;pauseNote.textContent="Dijeda. Tekan Lanjutkan untuk meneruskan proses."}
-  else{pauseBtn.innerHTML=ICON_PLAY+"Batalkan jeda";pauseBtn.disabled=false;pauseNote.textContent="Permintaan jeda menunggu tahap yang sedang berjalan selesai."}
-}
+function renderPause(){cancelBtn.hidden=!running||ctl.cancelled}
 function waitResume(){
   checkCancelled();
   if(!ctl.paused)return Promise.resolve();
-  ctl.held=true;pauseBtn.disabled=false;renderPause();say("Dijeda");
+  ctl.held=true;renderPause();say("Dijeda");
   return new Promise((resolve,reject)=>ctl.waiters.push(()=>{try{checkCancelled();resolve()}catch(e){reject(e)}}));
 }
-function setPaused(p){
-  if(!running||p===ctl.paused)return;
-  ctl.paused=p;
-  if(p){
-    if(ctl.phase==="server"){
-      say("Permintaan jeda diterima. Menunggu rendering server selesai…");
-    }else if(ctl.phase==="download"&&ctl.aborters.size){ctl.held=true;ctl.aborters.forEach(f=>f());say("Dijeda")}
-  }else{
-    ctl.held=false;pauseBtn.disabled=false;say("Melanjutkan…");
-    ctl.waiters.splice(0).forEach(r=>r());
-  }
-  renderPause();
-}
-function resetPause(){ctl.paused=false;ctl.held=false;ctl.cancelled=false;ctl.cancelAfterServer=false;ctl.phase="upload";ctl.aborters.clear();ctl.waiters.splice(0).forEach(r=>r());pauseBtn.disabled=false;cancelBtn.disabled=false;cancelBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Cancel';renderPause()}
+function resetPause(){ctl.paused=false;ctl.held=false;ctl.cancelled=false;ctl.cancelAfterServer=false;ctl.phase="upload";ctl.aborters.clear();ctl.waiters.splice(0).forEach(r=>r());cancelBtn.disabled=false;cancelBtn.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Cancel';renderPause()}
 cancelBtn.addEventListener("click",cancelProcess);
-pauseBtn.addEventListener("click",()=>setPaused(!ctl.paused));
 
 const CLOUD_MAX_BYTES=60*1024*1024;
 const cloudTooBig=f=>!!f&&getForge()==="cloud"&&f.size>CLOUD_MAX_BYTES;
@@ -5268,7 +5256,7 @@ async function mediumLocal(file) {
   if (!track) throw new Error("Video tidak ditemukan di file ini.");
 
   /* --- validasi: wajib punya tag "Hasil Terverifikasi" dari Ffmpeg Video Compressor --- */
-  if (!(await wxMediumHasTag(file))) throw new Error("Video belum terverifikasi. Medium hanya menerima video bertag \"Hasil Terverifikasi \u2192 Ffmpeg Video Compressor by @wanx.prstt\". Proses dulu di tab Tools > Ffmpeg Video Compressor, lalu pakai hasilnya.");
+  if (!(await wxMediumHasTag(file))) throw new Error("Video belum terverifikasi.\nMedium hanya menerima video dari Ffmpeg Video Compressor.\nProses dulu di tab Tools > Ffmpeg Video Compressor, lalu pakai hasilnya.");
   const rate = await detectTrackFps(MB, track);
   let scale = 0, srcFps = 0;
   if (Math.abs(rate - 60) <= 3) { scale = 2; srcFps = 60; }
@@ -5482,7 +5470,15 @@ start.addEventListener("click",async()=>{
       say("Proses dibatalkan. Tidak ada file hasil yang disimpan.","err");
       for(const [el,used] of [[hq,useHq],[enc,useEnc]])if(used&&el.dataset.state!=="done")stage(el,"fail","Dibatalkan");
     }else{
-      say(e.message||"Proses gagal. Coba lagi.","err");window.__showReport&&window.__showReport(e.message||"Proses gagal");
+      const errorText=e.message||"Proses gagal. Coba lagi.";
+      say(errorText,"err");
+      if(errorText.startsWith("Video belum terverifikasi.")){
+        window.__hideReport&&window.__hideReport();
+        statusEl.classList.add("medium-validation");
+        $("proc").classList.add("has-error");
+      }else{
+        window.__showReport&&window.__showReport(errorText);
+      }
       saveHistory({name:selected?.name||"Video",date:new Date().toLocaleString("id-ID"),size:selected?mb(selected.size):"—",status:"Gagal"});
       for(const [el,used] of [[hq,useHq],[enc,useEnc]]){if(used&&el.dataset.state!=="done")stage(el,el.dataset.state==="active"?"fail":"wait",el.dataset.state==="active"?"Gagal":"Tidak selesai");}
     }
