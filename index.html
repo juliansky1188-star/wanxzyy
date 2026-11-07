@@ -5356,14 +5356,14 @@ async function mediumLocal(file) {
   /* Kumpulkan semua tier yang didukung (urut dari terbaik), lalu tes mini: pakai tier pertama yang bitrate nyatanya >= 60% target. */
   const cands = [].concat(await pickMediumEncoder(dimM.w, dimM.h, srcFps, outBitrate, { level42First: true, all: true }) || []);
   if (!cands.length) throw new Error("Encoder H.264 di perangkat/browser ini tidak mendukung " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS. Coba Chrome terbaru, atau pakai Local Forge mode lain.");
-  let encPick = null, bestC = null;
+  let encPick = null, bestC = null, testFail = 0;
   const maxTests = Math.min(cands.length, 4);
   for (let ti = 0; ti < maxTests; ti++) {
     checkCancelled();
     const c = cands[ti];
     say("Medium: mendeteksi encoder terbaik (" + (ti + 1) + "/" + maxTests + ": " + c.label + ", " + c.bitrateMode + ")…");
     const r = await mediumTierTest(MB, track, c, srcFps, 1, outBitrate * scale, Math.round(srcFps / 2)); /* scale 1: ukur kemampuan encoder pada frame asli, bukan frame duplikat */
-    if (!r) continue;
+    if (!r) { testFail++; continue; }
     c.test = r;
     if (!bestC || r.ratio > bestC.test.ratio) bestC = c;
     if (r.ratio >= 0.6) { encPick = c; break; }
@@ -5389,19 +5389,30 @@ async function mediumLocal(file) {
     throw new Error("Versi Mediabunny tidak mendukung ubah timestamp.");
   };
   /* Satu percobaan encode penuh dengan konfigurasi tertentu. Gagal di tengah jalan (mis. "Encoding error." dari encoder hardware Android) -> dicoba lagi dengan konfigurasi lain. */
-  const attempt = async (enc, latency) => {
-    const encTag = enc.label + ", " + enc.bitrateMode + ", " + latency;
+  let curFed = 0;
+  const attempt = async (enc, latency, variant) => {
+    /* variant: "std" = config penuh; "min" = tanpa bitrateMode/latencyMode (sebagian encoder HP menolaknya); "canvas" = frame hasil decode disalin lewat canvas dulu (menghindari format frame hardware decoder yang ditolak encoder) */
+    const minimal = variant === "min", viaCanvas = variant === "canvas";
+    const encTag = enc.label + (minimal ? ", config minimal" : ", " + enc.bitrateMode + ", " + latency) + (viaCanvas ? ", via canvas" : "");
+    curFed = 0;
     const output = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
-    const source = new VideoSampleSource({
-      codec: "avc",
-      bitrate: outBitrate,
-      bitrateMode: enc.bitrateMode,
-      latencyMode: latency,
-      hardwareAcceleration: enc.hw,
-      fullCodecString: enc.codec,
-      keyFrameInterval: scale,
-      onEncoderConfig: cfg => { cfg.codec = enc.codec; cfg.hardwareAcceleration = enc.hw; cfg.bitrateMode = enc.bitrateMode; cfg.latencyMode = latency; cfg.avc = { format: "avc" }; }
-    });
+    const srcOpts = { codec: "avc", bitrate: outBitrate, hardwareAcceleration: enc.hw, fullCodecString: enc.codec, keyFrameInterval: scale };
+    if (!minimal) { srcOpts.bitrateMode = enc.bitrateMode; srcOpts.latencyMode = latency; }
+    srcOpts.onEncoderConfig = cfg => {
+      cfg.codec = enc.codec; cfg.hardwareAcceleration = enc.hw; cfg.avc = { format: "avc" };
+      if (minimal) { delete cfg.bitrateMode; delete cfg.latencyMode; } else { cfg.bitrateMode = enc.bitrateMode; cfg.latencyMode = latency; }
+    };
+    const source = new VideoSampleSource(srcOpts);
+    let cv = null, cx = null;
+    const drawFrom = smp => {
+      const fr = smp.toVideoFrame();
+      try {
+        const w = fr.displayWidth, h = fr.displayHeight;
+        if (!cv || cv.width !== w || cv.height !== h) { cv = (typeof OffscreenCanvas !== "undefined") ? new OffscreenCanvas(w, h) : Object.assign(document.createElement("canvas"), { width: w, height: h }); cx = cv.getContext("2d"); }
+        cx.drawImage(fr, 0, 0, w, h);
+      } finally { fr.close(); }
+    };
+    const mkCanvas = (ts, du) => new VideoSample(cv, { timestamp: ts, duration: du });
     output.addVideoTrack(source, { frameRate: srcFps }); /* tetap 60/120 FPS konstan */
     let aSource = null, aSink = null;
     if (aTrack) {
@@ -5418,9 +5429,10 @@ async function mediumLocal(file) {
         checkCancelled();
         const idx = Math.round(sample.timestamp * srcFps);
         try {
+          if (viaCanvas) drawFrom(sample);
           for (let k = 0; k < scale; k++) {
-            const c = mkAt(sample, (idx * scale + k) * fd, fd);
-            try { await source.add(c); } finally { c.close(); }
+            const c = viaCanvas ? mkCanvas((idx * scale + k) * fd, fd) : mkAt(sample, (idx * scale + k) * fd, fd);
+            try { await source.add(c); curFed++; } finally { c.close(); }
           }
         } finally { sample.close(); }
         const t0 = sample.timestamp;
@@ -5450,26 +5462,35 @@ async function mediumLocal(file) {
     return buf;
   };
 
-  /* Rencana percobaan: pilihan terbaik (quality) -> pilihan yang sama (realtime, lebih stabil di HP) -> kandidat lain (realtime). */
-  const plan = [[encPick, "quality"], [encPick, "realtime"]];
-  cands.forEach(c => { if (c !== encPick) plan.push([c, "realtime"]); });
-  const tries = plan.slice(0, 5);
+  /* Rencana percobaan: tiap percobaan SENGAJA berbeda (profil, config, jalur frame, software), supaya satu kelemahan encoder tidak menggagalkan semuanya. */
+  const plan = [[encPick, "quality", "std"], [encPick, "realtime", "std"], [encPick, "realtime", "min"], [encPick, "realtime", "canvas"]];
+  const seenCodec = new Set([encPick.codec]);
+  cands.forEach(c => { if (c.hw === "prefer-hardware" && !seenCodec.has(c.codec)) { seenCodec.add(c.codec); plan.push([c, "realtime", "min"]); } });
+  for (const [codec, name] of [["avc1.4D002A", "Main 4.2"], ["avc1.64002A", "High 4.2"], ["avc1.42E02A", "Baseline 4.2"]]) {
+    try {
+      const r = await VideoEncoder.isConfigSupported({ codec: codec, width: dimM.w, height: dimM.h, bitrate: outBitrate, framerate: srcFps, hardwareAcceleration: "prefer-software", latencyMode: "realtime", avc: { format: "avc" } });
+      if (r && r.supported) { plan.push([{ codec: codec, hw: "prefer-software", bitrateMode: "variable", label: name + " software" }, "realtime", "std"]); break; }
+    } catch (_) {}
+  }
+  const tries = plan;
+  const diag = [];
   let buf = null, lastErr = null, swOk = encPick.hw === "prefer-hardware";
   for (let i = 0; i < tries.length; i++) {
-    const [enc, latency] = tries[i];
+    const [enc, latency, variant] = tries[i];
     if (enc.hw !== "prefer-hardware" && !swOk) {
       if (!confirmSoftwareEncode(duration * srcFps * scale)) { lastErr = lastErr || new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software."); break; }
       swOk = true;
     }
-    try { buf = await attempt(enc, latency); break; }
+    try { buf = await attempt(enc, latency, variant); break; }
     catch (e) {
       if (ctl.cancelled || (e && (e.cancelled || e.name === "AbortError"))) throw e;
       lastErr = e;
-      console.warn("Medium attempt " + (i + 1) + " gagal:", enc.label, enc.bitrateMode, latency, e);
+      diag.push((i + 1) + ":" + String(enc.codec).replace("avc1.", "") + (enc.hw === "prefer-hardware" ? "h" : "s") + "/" + variant + "/" + latency.charAt(0) + " f" + curFed + " " + ((e && e.name) || "err"));
+      console.warn("Medium attempt " + (i + 1) + " gagal:", enc.label, enc.bitrateMode, latency, variant, e);
       if (i + 1 < tries.length) { say("Medium: encoder error (" + ((e && e.message) || "unknown") + "). Mencoba konfigurasi lain (" + (i + 2) + "/" + tries.length + ")…"); progress(8); await new Promise(r => setTimeout(r, 400)); }
     }
   }
-  if (!buf) throw new Error(((lastErr && lastErr.message) || "Encoding error.") + " [Medium: semua konfigurasi encoder gagal — " + encPick.label + ", " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS, " + (outBitrate / 1e6).toFixed(1) + " Mbps]");
+  if (!buf) throw new Error(((lastErr && lastErr.message) || "Encoding error.") + " [Medium: semua konfigurasi encoder gagal — " + encPick.label + ", " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS, " + (outBitrate / 1e6).toFixed(1) + " Mbps · tes mini gagal " + testFail + "/" + maxTests + " · " + diag.join("; ") + "]");
   progress(100); say("Selesai · Medium (" + srcFps + " FPS)");
   return new Blob([buf], { type: "video/mp4" });
 }
