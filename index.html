@@ -5375,32 +5375,12 @@ async function mediumLocal(file) {
   window.__medEncoder = encPick;
   if (encPick.hw !== "prefer-hardware" && !confirmSoftwareEncode(duration * srcFps * scale)) throw new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software.");
   if (encPick.fallback) say("Medium: memakai encoder cadangan (" + encPick.label + ")…");
-  const output = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
-  const source = new VideoSampleSource({
-    codec: "avc",
-    bitrate: outBitrate,
-    bitrateMode: encPick.bitrateMode,
-    latencyMode: "quality",
-    hardwareAcceleration: encPick.hw,
-    fullCodecString: encPick.codec,
-    keyFrameInterval: scale,
-    onEncoderConfig: cfg => { cfg.codec = encPick.codec; cfg.hardwareAcceleration = encPick.hw; cfg.bitrateMode = encPick.bitrateMode; cfg.latencyMode = "quality"; cfg.avc = { format: "avc" }; }
-  });
-  output.addVideoTrack(source, { frameRate: srcFps }); /* tetap 60/120 FPS konstan */
-  /* audio: paket disalin tanpa encode ulang (timestamp diatur di doAudio) */
   const aTrack = await input.getPrimaryAudioTrack();
-  let aSource = null, aSink = null, aCfg = null;
+  let aCfg = null;
   if (aTrack) {
     if (!MB.EncodedPacketSink || !MB.EncodedAudioPacketSource) throw new Error("Versi Mediabunny tidak mendukung salin audio.");
     aCfg = await aTrack.getDecoderConfig();
-    aSource = new MB.EncodedAudioPacketSource(aTrack.codec);
-    output.addAudioTrack(aSource);
-    aSink = new MB.EncodedPacketSink(aTrack);
   }
-  await output.start();
-
-  const sink = new VideoSampleSink(track);
-  say("Medium: encode " + encTag + "…"); progress(10);
   /* Tiap frame asli diulang N kali, FPS tetap konstan, durasi x N.
      frame ke-j output berada di j / srcFps, dengan j = indexAsli * N + k (k = 0..N-1). */
   const mkAt = (smp, ts, du) => {
@@ -5408,41 +5388,88 @@ async function mediumLocal(file) {
     if (VideoSample && typeof smp.toVideoFrame === "function") { const fr = smp.toVideoFrame(); const c = new VideoSample(fr, { timestamp: ts, duration: du }); fr.close(); return c; }
     throw new Error("Versi Mediabunny tidak mendukung ubah timestamp.");
   };
-  const doVideo = async () => {
-    const fd = 1 / srcFps;
-    for await (const sample of sink.samples()) {
-      checkCancelled();
-      const idx = Math.round(sample.timestamp * srcFps);
-      for (let k = 0; k < scale; k++) {
-        const c = mkAt(sample, (idx * scale + k) * fd, fd);
-        await source.add(c);
-        c.close();
+  /* Satu percobaan encode penuh dengan konfigurasi tertentu. Gagal di tengah jalan (mis. "Encoding error." dari encoder hardware Android) -> dicoba lagi dengan konfigurasi lain. */
+  const attempt = async (enc, latency) => {
+    const encTag = enc.label + ", " + enc.bitrateMode + ", " + latency;
+    const output = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
+    const source = new VideoSampleSource({
+      codec: "avc",
+      bitrate: outBitrate,
+      bitrateMode: enc.bitrateMode,
+      latencyMode: latency,
+      hardwareAcceleration: enc.hw,
+      fullCodecString: enc.codec,
+      keyFrameInterval: scale,
+      onEncoderConfig: cfg => { cfg.codec = enc.codec; cfg.hardwareAcceleration = enc.hw; cfg.bitrateMode = enc.bitrateMode; cfg.latencyMode = latency; cfg.avc = { format: "avc" }; }
+    });
+    output.addVideoTrack(source, { frameRate: srcFps }); /* tetap 60/120 FPS konstan */
+    let aSource = null, aSink = null;
+    if (aTrack) {
+      aSource = new MB.EncodedAudioPacketSource(aTrack.codec);
+      output.addAudioTrack(aSource);
+      aSink = new MB.EncodedPacketSink(aTrack);
+    }
+    await output.start();
+    const sink = new VideoSampleSink(track);
+    say("Medium: encode " + encTag + "…"); progress(10);
+    const doVideo = async () => {
+      const fd = 1 / srcFps;
+      for await (const sample of sink.samples()) {
+        checkCancelled();
+        const idx = Math.round(sample.timestamp * srcFps);
+        try {
+          for (let k = 0; k < scale; k++) {
+            const c = mkAt(sample, (idx * scale + k) * fd, fd);
+            try { await source.add(c); } finally { c.close(); }
+          }
+        } finally { sample.close(); }
+        const t0 = sample.timestamp;
+        if (duration > 0) { const pr = Math.min(1, t0 / duration); progress(10 + Math.round(pr * 85)); say("Medium: encode " + enc.label + "… " + Math.round(pr * 100) + "% (" + srcFps + " FPS)"); }
       }
-      const t0 = sample.timestamp;
-      sample.close();
-      if (duration > 0) { const pr = Math.min(1, t0 / duration); progress(10 + Math.round(pr * 85)); say("Medium: encode " + encPick.label + "… " + Math.round(pr * 100) + "% (" + srcFps + " FPS)"); }
-    }
-    source.close();
+      source.close();
+    };
+    /* audio: isi paket TIDAK diubah (tanpa encode ulang, tidak dilambatkan); hanya timestamp x N */
+    const doAudio = async () => {
+      if (!aSource) return;
+      let first = true;
+      for await (const pk of aSink.packets()) {
+        checkCancelled();
+        const ts = pk.timestamp * scale, du = (pk.duration || 0) * scale;
+        const np = (typeof pk.clone === "function") ? pk.clone({ timestamp: ts, duration: du }) : new MB.EncodedPacket(pk.data, pk.type, ts, du);
+        await aSource.add(np, first ? { decoderConfig: aCfg } : undefined); first = false;
+      }
+      aSource.close();
+    };
+    try {
+      await Promise.all([doVideo(), doAudio()]);
+      await output.finalize();
+    } catch (e) { try { await output.cancel(); } catch (_) {} throw e; }
+    const buf = output.target.buffer;
+    if (!buf || !buf.byteLength) throw new Error("Encode selesai tetapi output kosong.");
+    window.__medEncoder = enc; window.__medLatency = latency;
+    return buf;
   };
-  /* audio: isi paket TIDAK diubah (tanpa encode ulang, tidak dilambatkan); hanya timestamp x N */
-  const doAudio = async () => {
-    if (!aSource) return;
-    let first = true;
-    for await (const pk of aSink.packets()) {
-      checkCancelled();
-      const ts = pk.timestamp * scale, du = (pk.duration || 0) * scale;
-      const np = (typeof pk.clone === "function") ? pk.clone({ timestamp: ts, duration: du }) : new MB.EncodedPacket(pk.data, pk.type, ts, du);
-      await aSource.add(np, first ? { decoderConfig: aCfg } : undefined); first = false;
-    }
-    aSource.close();
-  };
-  try {
-    await Promise.all([doVideo(), doAudio()]);
-    await output.finalize();
-  } catch (e) { try { await output.cancel(); } catch (_) {} throw e; }
 
-  const buf = output.target.buffer;
-  if (!buf || !buf.byteLength) throw new Error("Encode selesai tetapi output kosong.");
+  /* Rencana percobaan: pilihan terbaik (quality) -> pilihan yang sama (realtime, lebih stabil di HP) -> kandidat lain (realtime). */
+  const plan = [[encPick, "quality"], [encPick, "realtime"]];
+  cands.forEach(c => { if (c !== encPick) plan.push([c, "realtime"]); });
+  const tries = plan.slice(0, 5);
+  let buf = null, lastErr = null, swOk = encPick.hw === "prefer-hardware";
+  for (let i = 0; i < tries.length; i++) {
+    const [enc, latency] = tries[i];
+    if (enc.hw !== "prefer-hardware" && !swOk) {
+      if (!confirmSoftwareEncode(duration * srcFps * scale)) { lastErr = lastErr || new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software."); break; }
+      swOk = true;
+    }
+    try { buf = await attempt(enc, latency); break; }
+    catch (e) {
+      if (ctl.cancelled || (e && (e.cancelled || e.name === "AbortError"))) throw e;
+      lastErr = e;
+      console.warn("Medium attempt " + (i + 1) + " gagal:", enc.label, enc.bitrateMode, latency, e);
+      if (i + 1 < tries.length) { say("Medium: encoder error (" + ((e && e.message) || "unknown") + "). Mencoba konfigurasi lain (" + (i + 2) + "/" + tries.length + ")…"); progress(8); await new Promise(r => setTimeout(r, 400)); }
+    }
+  }
+  if (!buf) throw new Error(((lastErr && lastErr.message) || "Encoding error.") + " [Medium: semua konfigurasi encoder gagal — " + encPick.label + ", " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS, " + (outBitrate / 1e6).toFixed(1) + " Mbps]");
   progress(100); say("Selesai · Medium (" + srcFps + " FPS)");
   return new Blob([buf], { type: "video/mp4" });
 }
