@@ -4420,6 +4420,37 @@ function patchBtrtMp4(src,bitrate){
   }
   return out;
 }
+/* Pilih konfigurasi encoder H.264 yang benar-benar didukung perangkat (urut dari kualitas terbaik; hardware dulu, software terakhir). */
+/* Hardware tidak didukung -> encoder software (CPU) bisa sangat lama; tanya dulu, jangan diam-diam. */
+function confirmSoftwareEncode(frames) {
+  const n = frames > 0 ? " (sekitar " + Math.round(frames).toLocaleString("id-ID") + " frame)" : "";
+  return window.confirm("HP/browser kamu tidak mendukung encoder hardware untuk video ini.\n\nKalau dilanjutkan, video diproses pakai CPU" + n + " dan bisa SANGAT lama (belasan menit atau lebih), HP bisa panas.\n\nLanjutkan?");
+}
+async function pickMediumEncoder(w, h, fps, bitrate, opts) {
+  opts = opts || {};
+  const modes = opts.modes || ["variable", "constant"], latency = opts.latency || "quality";
+  const heavy = Math.ceil(w / 16) * Math.ceil(h / 16) * fps > 589824;
+  if (!(typeof VideoEncoder !== "undefined" && VideoEncoder.isConfigSupported)) return { codec: heavy ? "avc1.640034" : "avc1.640032", hw: "prefer-hardware", bitrateMode: modes[0], label: "default", fallback: false };
+  const codecs = heavy
+    ? [["avc1.640034", "High 5.2"], ["avc1.4D0034", "Main 5.2"]]
+    : (opts.level42First
+      ? [["avc1.64002A", "High 4.2"], ["avc1.640032", "High 5.0"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]]
+      : [["avc1.640032", "High 5.0"], ["avc1.64002A", "High 4.2"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]]);
+  const tries = [];
+  for (const hw of ["prefer-hardware", "no-preference"])
+    for (const [codec, name] of codecs)
+      for (const bitrateMode of modes)
+        tries.push({ codec, hw, bitrateMode, label: name + (hw === "prefer-hardware" ? " hardware" : " otomatis") });
+  const list = [];
+  for (let i = 0; i < tries.length; i++) {
+    const t = tries[i];
+    try {
+      const r = await VideoEncoder.isConfigSupported({ codec: t.codec, width: w, height: h, bitrate: bitrate, framerate: fps, hardwareAcceleration: t.hw, bitrateMode: t.bitrateMode, latencyMode: latency, avc: { format: "avc" } });
+      if (r && r.supported) { t.fallback = i > 0; if (opts.all) { list.push(t); continue; } return t; }
+    } catch (_) {}
+  }
+  return opts.all ? list : null;
+}
 async function runHardware1080(){
   if(!files.length){setStatus("Pilih satu file video dulu untuk encoding hardware.","err");return}
   if(!("VideoEncoder" in window) || !("VideoDecoder" in window)){
