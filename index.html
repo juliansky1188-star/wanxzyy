@@ -4446,19 +4446,22 @@ async function runHardware1080(){
     const vTrack=await input.getPrimaryVideoTrack();
     if(!vTrack)throw new Error("Video tidak ditemukan di file ini.");
     const srcDim=wxDisplaySize(vTrack),outSz=wx1080Size(srcDim.w,srcDim.h),outW=outSz.w,outH=outSz.h;
-    const avcStr=(Math.ceil(outW/16)*Math.ceil(outH/16)*ffFps()>589824)?"avc1.640034":"avc1.640032"; /* High L5.0 / L5.2 menyesuaikan beban */
+    const encPick=await pickMediumEncoder(outW,outH,ffFps(),rate*1000000,{modes:["constant","variable"],latency:"realtime"});
+    if(!encPick)throw new Error("Encoder H.264 di perangkat/browser ini tidak mendukung "+outW+"x"+outH+" "+ffFps()+" FPS. Coba FPS lebih rendah atau Chrome terbaru.");
+    if(encPick.hw!=="prefer-hardware"&&!confirmSoftwareEncode(0))throw new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software.");
+    const avcStr=encPick.codec;
     const lanczosResizer=makeLanczos3WebGLResizer(outW,outH);
     const conversion=await Conversion.init({
       input,output,
       video:{
         frameRate:ffFps(),codec:"avc",bitrate:rate*1000000,
-        bitrateMode:"constant",
+        bitrateMode:encPick.bitrateMode,
         latencyMode:"realtime",
-        fullCodecString:avcStr, /* H.264 High Profile, Level 5.0 / 5.2 sesuai ukuran & FPS */
-        hardwareAcceleration:"prefer-hardware",
+        fullCodecString:avcStr, /* level/profil dipilih otomatis sesuai yang didukung perangkat */
+        hardwareAcceleration:encPick.hw,
         onEncoderConfig:(cfg)=>{ /* jaring pengaman: paksa nilai akhir yang dikirim ke VideoEncoder.configure() */
-          cfg.codec=avcStr;cfg.bitrate=rate*1000000;cfg.bitrateMode="constant";
-          cfg.latencyMode="realtime";cfg.hardwareAcceleration="prefer-hardware";
+          cfg.codec=avcStr;cfg.bitrate=rate*1000000;cfg.bitrateMode=encPick.bitrateMode;
+          cfg.latencyMode="realtime";cfg.hardwareAcceleration=encPick.hw;
           cfg.avc={format:"avc"};
         },
         forceTranscode:true,keyFrameInterval:1,
@@ -4473,6 +4476,7 @@ async function runHardware1080(){
       throw new Error("Konversi hardware tidak valid. "+(discarded||"Codec atau format input tidak didukung."));
     }
     addLog("Sumber: "+srcDim.w+"×"+srcDim.h+" → Output: MP4 H.264/AVC, "+outW+"×"+outH+" (1080p, rasio asli), "+ffFps()+" FPS, target "+rate+" Mbps.");
+    if(encPick.fallback)addLog("Encoder cadangan dipakai: "+encPick.label+" ("+encPick.bitrateMode+").");
     addLog("Resize: Lanczos3 dua tahap melalui shader WebGL2 sebelum encoding.");
     addLog("Encoding: WebCodecs prefer-hardware. Preset x264 tidak tersedia pada jalur hardware; bitrate satu-satunya kontrol kompresi yang disediakan.");
     addLog("Audio: dipertahankan bila format sumber kompatibel; library dapat mentranscode bila diperlukan.");
@@ -5243,6 +5247,34 @@ async function detectTrackFps(MB, track){
   }
   return rate;
 }
+/* Pilih konfigurasi encoder H.264 yang benar-benar didukung perangkat (urut dari kualitas terbaik; hardware dulu, software terakhir). */
+/* Hardware tidak didukung -> encoder software (CPU) bisa sangat lama; tanya dulu, jangan diam-diam. */
+function confirmSoftwareEncode(frames) {
+  const n = frames > 0 ? " (sekitar " + Math.round(frames).toLocaleString("id-ID") + " frame)" : "";
+  return window.confirm("HP/browser kamu tidak mendukung encoder hardware untuk video ini.\n\nKalau dilanjutkan, video diproses pakai CPU" + n + " dan bisa SANGAT lama (belasan menit atau lebih), HP bisa panas.\n\nLanjutkan?");
+}
+async function pickMediumEncoder(w, h, fps, bitrate, opts) {
+  opts = opts || {};
+  const modes = opts.modes || ["variable", "constant"], latency = opts.latency || "quality";
+  const heavy = Math.ceil(w / 16) * Math.ceil(h / 16) * fps > 589824;
+  if (!(typeof VideoEncoder !== "undefined" && VideoEncoder.isConfigSupported)) return { codec: heavy ? "avc1.640034" : "avc1.640032", hw: "prefer-hardware", bitrateMode: modes[0], label: "default", fallback: false };
+  const codecs = heavy
+    ? [["avc1.640034", "High 5.2"], ["avc1.4D0034", "Main 5.2"]]
+    : [["avc1.640032", "High 5.0"], ["avc1.64002A", "High 4.2"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]];
+  const tries = [];
+  for (const hw of ["prefer-hardware", "no-preference"])
+    for (const [codec, name] of codecs)
+      for (const bitrateMode of modes)
+        tries.push({ codec, hw, bitrateMode, label: name + (hw === "prefer-hardware" ? " hardware" : " otomatis") });
+  for (let i = 0; i < tries.length; i++) {
+    const t = tries[i];
+    try {
+      const r = await VideoEncoder.isConfigSupported({ codec: t.codec, width: w, height: h, bitrate: bitrate, framerate: fps, hardwareAcceleration: t.hw, bitrateMode: t.bitrateMode, latencyMode: latency, avc: { format: "avc" } });
+      if (r && r.supported) { t.fallback = i > 0; return t; }
+    } catch (_) {}
+  }
+  return null;
+}
 async function mediumLocal(file) {
   if (!("VideoEncoder" in window) || !("VideoDecoder" in window)) throw new Error("Browser ini tidak mendukung WebCodecs (hardware). Gunakan Chrome/Edge terbaru.");
   progress(3); say("Medium: memuat modul hardware…");
@@ -5273,16 +5305,25 @@ async function mediumLocal(file) {
   /* bitrate diambil apa adanya dari video input (tanpa dikali/dibagi/dibatasi) */
   const outBitrate = Math.max(1, Math.round(bps));
 
+  /* Cek dulu encoder yang benar-benar didukung perangkat ini (chip HP berbeda-beda: ada yang hanya sampai Level 4.2 atau Main profile). */
+  let dW = Number(track.displayWidth), dH = Number(track.displayHeight);
+  if (!(dW > 0 && dH > 0)) { dW = Number(track.codedWidth) || 0; dH = Number(track.codedHeight) || 0; if ((Number(track.rotation) || 0) % 180 !== 0) { const tmp = dW; dW = dH; dH = tmp; } }
+  const dimM = { w: dW, h: dH };
+  const encPick = await pickMediumEncoder(dimM.w, dimM.h, srcFps, outBitrate);
+  if (!encPick) throw new Error("Encoder H.264 di perangkat/browser ini tidak mendukung " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS. Coba Chrome terbaru, atau pakai Local Forge mode lain.");
+  window.__medEncoder = encPick;
+  if (encPick.hw !== "prefer-hardware" && !confirmSoftwareEncode(duration * srcFps * scale)) throw new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software.");
+  if (encPick.fallback) say("Medium: memakai encoder cadangan (" + encPick.label + ")…");
   const output = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
   const source = new VideoSampleSource({
     codec: "avc",
     bitrate: outBitrate,
-    bitrateMode: "variable",
+    bitrateMode: encPick.bitrateMode,
     latencyMode: "quality",
-    hardwareAcceleration: "prefer-hardware",
-    fullCodecString: srcFps > 60 ? "avc1.640034" : "avc1.640032", /* High, Level 5.2 (120 FPS) / 5.0 (60 FPS), sama seperti Compressor */
+    hardwareAcceleration: encPick.hw,
+    fullCodecString: encPick.codec,
     keyFrameInterval: 1,
-    onEncoderConfig: cfg => { cfg.hardwareAcceleration = "prefer-hardware"; cfg.bitrateMode = "variable"; cfg.latencyMode = "quality"; cfg.avc = { format: "avc" }; }
+    onEncoderConfig: cfg => { cfg.codec = encPick.codec; cfg.hardwareAcceleration = encPick.hw; cfg.bitrateMode = encPick.bitrateMode; cfg.latencyMode = "quality"; cfg.avc = { format: "avc" }; }
   });
   output.addVideoTrack(source, { frameRate: srcFps }); /* tetap 60/120 FPS konstan */
   /* audio: paket disalin tanpa encode ulang (timestamp diatur di doAudio) */
