@@ -5260,21 +5260,61 @@ async function pickMediumEncoder(w, h, fps, bitrate, opts) {
   if (!(typeof VideoEncoder !== "undefined" && VideoEncoder.isConfigSupported)) return { codec: heavy ? "avc1.640034" : "avc1.640032", hw: "prefer-hardware", bitrateMode: modes[0], label: "default", fallback: false };
   const codecs = heavy
     ? [["avc1.640034", "High 5.2"], ["avc1.4D0034", "Main 5.2"]]
-    : [["avc1.640032", "High 5.0"], ["avc1.64002A", "High 4.2"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]];
+    : (opts.level42First
+      ? [["avc1.64002A", "High 4.2"], ["avc1.640032", "High 5.0"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]]
+      : [["avc1.640032", "High 5.0"], ["avc1.64002A", "High 4.2"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]]);
   const tries = [];
   for (const hw of ["prefer-hardware", "no-preference"])
     for (const [codec, name] of codecs)
       for (const bitrateMode of modes)
         tries.push({ codec, hw, bitrateMode, label: name + (hw === "prefer-hardware" ? " hardware" : " otomatis") });
+  const list = [];
   for (let i = 0; i < tries.length; i++) {
     const t = tries[i];
     try {
       const r = await VideoEncoder.isConfigSupported({ codec: t.codec, width: w, height: h, bitrate: bitrate, framerate: fps, hardwareAcceleration: t.hw, bitrateMode: t.bitrateMode, latencyMode: latency, avc: { format: "avc" } });
-      if (r && r.supported) { t.fallback = i > 0; return t; }
+      if (r && r.supported) { t.fallback = i > 0; if (opts.all) { list.push(t); continue; } return t; }
     } catch (_) {}
   }
-  return null;
+  return opts.all ? list : null;
 }
+/* Tes mini (khusus Medium): encode beberapa frame asli lewat pipeline yang sama, ukur bitrate nyata vs target dan waktunya. */
+async function mediumTierTest(MB, track, c, fps, scale, bitrate, n) {
+  const { Output, Mp4OutputFormat, BufferTarget, VideoSampleSink, VideoSampleSource, VideoSample } = MB;
+  const out = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
+  const src = new VideoSampleSource({
+    codec: "avc", bitrate: bitrate, bitrateMode: c.bitrateMode, latencyMode: "quality",
+    hardwareAcceleration: c.hw, fullCodecString: c.codec, keyFrameInterval: 1,
+    onEncoderConfig: cfg => { cfg.codec = c.codec; cfg.hardwareAcceleration = c.hw; cfg.bitrateMode = c.bitrateMode; cfg.latencyMode = "quality"; cfg.avc = { format: "avc" }; }
+  });
+  out.addVideoTrack(src, { frameRate: fps });
+  const mk = (smp, ts, du) => {
+    if (typeof smp.clone === "function") { const cl = smp.clone(); if (typeof cl.setTimestamp === "function") { cl.setTimestamp(ts); if (typeof cl.setDuration === "function") cl.setDuration(du); return cl; } cl.close && cl.close(); }
+    if (VideoSample && typeof smp.toVideoFrame === "function") { const fr = smp.toVideoFrame(); const cl = new VideoSample(fr, { timestamp: ts, duration: du }); fr.close(); return cl; }
+    throw new Error("ubah timestamp tidak didukung");
+  };
+  const t0 = performance.now();
+  let frames = 0;
+  try {
+    await out.start();
+    const sink = new VideoSampleSink(track), fd = 1 / fps;
+    let i = 0;
+    for await (const smp of sink.samples()) {
+      if (i >= n) { smp.close(); break; }
+      for (let k = 0; k < scale; k++) { const cl = mk(smp, (i * scale + k) * fd, fd); await src.add(cl); cl.close(); frames++; }
+      smp.close(); i++;
+    }
+    src.close();
+    await out.finalize();
+  } catch (e) { try { await out.cancel(); } catch (_) {} return null; }
+  const buf = out.target.buffer;
+  if (!buf || !buf.byteLength || frames < 2) return null;
+  const secs = frames / fps;
+  return { ratio: (buf.byteLength * 8 / secs) / bitrate, ms: Math.round(performance.now() - t0), frames: frames };
+}
+/* Target ukuran hasil Medium = ukuran input + tambahan: 25% input, minimal 7 MB, maksimal 12 MB.
+   Contoh: 10 MB -> ~17 MB, 30 MB -> ~37 MB, 40 MB -> ~50 MB. Ubah angka di bawah jika perlu. */
+const MEDIUM_ADD_PCT = 0.25, MEDIUM_ADD_MIN_MB = 7, MEDIUM_ADD_MAX_MB = 12;
 async function mediumLocal(file) {
   if (!("VideoEncoder" in window) || !("VideoDecoder" in window)) throw new Error("Browser ini tidak mendukung WebCodecs (hardware). Gunakan Chrome/Edge terbaru.");
   progress(3); say("Medium: memuat modul hardware…");
@@ -5302,15 +5342,36 @@ async function mediumLocal(file) {
   let bps = 0;
   try { const st = await track.computePacketStats(300); bps = Number(st && st.averageBitrate) || 0; } catch (_) {}
   if (!(bps > 0)) bps = duration > 0 ? file.size * 8 / duration : 14e6;
-  /* bitrate diambil apa adanya dari video input (tanpa dikali/dibagi/dibatasi) */
-  const outBitrate = Math.max(1, Math.round(bps));
+  /* Durasi output = durasi input x scale. Bitrate dihitung dari target ukuran (input + tambahan kecil) dibagi durasi output. */
+  const addBytes = Math.min(MEDIUM_ADD_MAX_MB * 1e6, Math.max(MEDIUM_ADD_MIN_MB * 1e6, file.size * MEDIUM_ADD_PCT));
+  let outBitrate = duration > 0
+    ? Math.round((file.size + addBytes) * 8 / (duration * scale))
+    : Math.round(Math.max(1, Math.round(bps)) * 1.3 / scale);
+  outBitrate = Math.max(1, outBitrate);
 
   /* Cek dulu encoder yang benar-benar didukung perangkat ini (chip HP berbeda-beda: ada yang hanya sampai Level 4.2 atau Main profile). */
   let dW = Number(track.displayWidth), dH = Number(track.displayHeight);
   if (!(dW > 0 && dH > 0)) { dW = Number(track.codedWidth) || 0; dH = Number(track.codedHeight) || 0; if ((Number(track.rotation) || 0) % 180 !== 0) { const tmp = dW; dW = dH; dH = tmp; } }
   const dimM = { w: dW, h: dH };
-  const encPick = await pickMediumEncoder(dimM.w, dimM.h, srcFps, outBitrate);
-  if (!encPick) throw new Error("Encoder H.264 di perangkat/browser ini tidak mendukung " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS. Coba Chrome terbaru, atau pakai Local Forge mode lain.");
+  /* Kumpulkan semua tier yang didukung (urut dari terbaik), lalu tes mini: pakai tier pertama yang bitrate nyatanya >= 60% target. */
+  const cands = [].concat(await pickMediumEncoder(dimM.w, dimM.h, srcFps, outBitrate, { level42First: true, all: true }) || []);
+  if (!cands.length) throw new Error("Encoder H.264 di perangkat/browser ini tidak mendukung " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS. Coba Chrome terbaru, atau pakai Local Forge mode lain.");
+  let encPick = null, bestC = null;
+  const maxTests = Math.min(cands.length, 4);
+  for (let ti = 0; ti < maxTests; ti++) {
+    checkCancelled();
+    const c = cands[ti];
+    say("Medium: mendeteksi encoder terbaik (" + (ti + 1) + "/" + maxTests + ": " + c.label + ", " + c.bitrateMode + ")…");
+    const r = await mediumTierTest(MB, track, c, srcFps, 1, outBitrate * scale, Math.round(srcFps / 2)); /* scale 1: ukur kemampuan encoder pada frame asli, bukan frame duplikat */
+    if (!r) continue;
+    c.test = r;
+    if (!bestC || r.ratio > bestC.test.ratio) bestC = c;
+    if (r.ratio >= 0.6) { encPick = c; break; }
+  }
+  if (!encPick) encPick = bestC || cands[0];
+  encPick.fallback = cands.indexOf(encPick) > 0;
+  const encTag = encPick.label + ", " + encPick.bitrateMode;
+  say("Medium: encoder terpilih · " + encTag + (encPick.test ? " (bitrate nyata ±" + Math.round(encPick.test.ratio * 100) + "% dari target)" : "") + " · target " + (outBitrate / 1e6).toFixed(1) + " Mbps");
   window.__medEncoder = encPick;
   if (encPick.hw !== "prefer-hardware" && !confirmSoftwareEncode(duration * srcFps * scale)) throw new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software.");
   if (encPick.fallback) say("Medium: memakai encoder cadangan (" + encPick.label + ")…");
@@ -5322,7 +5383,7 @@ async function mediumLocal(file) {
     latencyMode: "quality",
     hardwareAcceleration: encPick.hw,
     fullCodecString: encPick.codec,
-    keyFrameInterval: 1,
+    keyFrameInterval: scale,
     onEncoderConfig: cfg => { cfg.codec = encPick.codec; cfg.hardwareAcceleration = encPick.hw; cfg.bitrateMode = encPick.bitrateMode; cfg.latencyMode = "quality"; cfg.avc = { format: "avc" }; }
   });
   output.addVideoTrack(source, { frameRate: srcFps }); /* tetap 60/120 FPS konstan */
@@ -5339,7 +5400,7 @@ async function mediumLocal(file) {
   await output.start();
 
   const sink = new VideoSampleSink(track);
-  say("Medium: encode hardware…"); progress(10);
+  say("Medium: encode " + encTag + "…"); progress(10);
   /* Tiap frame asli diulang N kali, FPS tetap konstan, durasi x N.
      frame ke-j output berada di j / srcFps, dengan j = indexAsli * N + k (k = 0..N-1). */
   const mkAt = (smp, ts, du) => {
@@ -5359,7 +5420,7 @@ async function mediumLocal(file) {
       }
       const t0 = sample.timestamp;
       sample.close();
-      if (duration > 0) { const pr = Math.min(1, t0 / duration); progress(10 + Math.round(pr * 85)); say("Medium: encode hardware… " + Math.round(pr * 100) + "% (" + srcFps + " FPS)"); }
+      if (duration > 0) { const pr = Math.min(1, t0 / duration); progress(10 + Math.round(pr * 85)); say("Medium: encode " + encPick.label + "… " + Math.round(pr * 100) + "% (" + srcFps + " FPS)"); }
     }
     source.close();
   };
