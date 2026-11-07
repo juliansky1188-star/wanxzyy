@@ -16,7 +16,7 @@
 <meta name="twitter:description" content="Proses video dengan HQ Method dan encode langsung di browser, lalu upload ke TikTok.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#0d0a13;--surface:#16111e;--raise:#1e1728;--line:#2b2237;--line2:#3d3150;
@@ -149,7 +149,7 @@ details.guide[open] summary::after{transform:rotate(-135deg)}
 .guide li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:12px;color:var(--muted);font-size:14px}
 .guide li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--raise);border:1px solid var(--line2);display:grid;place-items:center;font:600 12px var(--display);color:var(--violet)}
 .guide li b{color:var(--text);font-weight:600}
-.foot{text-align:center;color:#8d829f;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:clamp(8.5px,2.65vw,11px);font-weight:600;letter-spacing:.015em;line-height:1.4;white-space:nowrap;padding:10px 2px 4px;margin:0;}
+.foot{text-align:center;color:#8d829f;font-family:"Space Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:clamp(8.5px,2.65vw,11px);font-weight:600;letter-spacing:.015em;line-height:1.4;white-space:nowrap;padding:10px 2px 4px;margin:0;}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(max-width:380px){.head h1{font-size:24px}.pct strong{font-size:38px}}
 
@@ -396,33 +396,33 @@ body.tools-mode #proc,body.tools-mode #download{display:none!important}
 /* Tools library and focused modal windows */
 .tools-library{display:grid;gap:16px}
 .tool-library-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:5px 2px 2px}
-.tool-library-head h2{font:800 25px/1.12 "Plus Jakarta Sans",sans-serif;letter-spacing:-.045em;margin:3px 0 7px;color:#f5f6f7}
+.tool-library-head h2{font:800 25px/1.12 "Space Grotesk",sans-serif;letter-spacing:-.045em;margin:3px 0 7px;color:#f5f6f7}
 .tool-library-head p:not(.eyebrow){font-size:13px;line-height:1.55;color:#a5aab1;margin:0;max-width:440px}
-.eyebrow{font:700 9px/1.4 "Inter",sans-serif;letter-spacing:.16em;color:#9da3ab;margin:0}
+.eyebrow{font:700 9px/1.4 "Space Grotesk",sans-serif;letter-spacing:.16em;color:#9da3ab;margin:0}
 .folder-mark{font-size:9px;letter-spacing:.1em;color:#aeb3ba;border:1px solid #363a40;border-radius:8px;padding:8px 10px;white-space:nowrap}
 .tool-library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .tool-launch-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:17px;border-radius:18px;border:1px solid #34383e;background:linear-gradient(145deg,#1c1e22,#141619);box-shadow:0 10px 28px #0002}
 .tool-launch-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#292c31;border:1px solid #41464d;color:#f4f5f6;font-size:23px;margin-bottom:14px}
-.tool-tag{font:700 9px/1.3 "Inter",sans-serif;letter-spacing:.13em;color:#9299a2}
-.tool-launch-card h3{font:750 16px/1.25 "Plus Jakarta Sans",sans-serif;letter-spacing:-.025em;color:#f4f5f6;margin:7px 0 8px}
-.tool-launch-card p{font:400 12px/1.6 "Inter",sans-serif;color:#a6abb2;margin:0 0 18px;flex:1}
-.tool-open-btn{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;border:1px solid #4a4f56;background:#e8eaed;color:#15171a;border-radius:11px;padding:11px 12px;font:700 11px "Inter",sans-serif;cursor:pointer;transition:transform .15s,background .15s}
+.tool-tag{font:700 9px/1.3 "Space Grotesk",sans-serif;letter-spacing:.13em;color:#9299a2}
+.tool-launch-card h3{font:750 16px/1.25 "Space Grotesk",sans-serif;letter-spacing:-.025em;color:#f4f5f6;margin:7px 0 8px}
+.tool-launch-card p{font:400 12px/1.6 "Space Grotesk",sans-serif;color:#a6abb2;margin:0 0 18px;flex:1}
+.tool-open-btn{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;border:1px solid #4a4f56;background:#e8eaed;color:#15171a;border-radius:11px;padding:11px 12px;font:700 11px "Space Grotesk",sans-serif;cursor:pointer;transition:transform .15s,background .15s}
 .tool-open-btn:hover{background:#fff;transform:translateY(-1px)}
 a.tool-open-btn{text-decoration:none;box-sizing:border-box}
-.info-note h4{margin:0 0 8px;font:700 12px "Inter",sans-serif;color:#e5e7e9}
+.info-note h4{margin:0 0 8px;font:700 12px "Space Grotesk",sans-serif;color:#e5e7e9}
 .info-list{margin:0;padding:0;list-style:none;display:grid;gap:8px}
-.info-list li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;font:400 12px/1.55 "Inter",sans-serif;color:#a6abb2}
+.info-list li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;font:400 12px/1.55 "Space Grotesk",sans-serif;color:#a6abb2}
 .info-list li b{font-weight:700;color:#f0f1f3}
 .info-list.plain li{display:block;position:relative;padding-left:16px}
 .info-list.plain li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;background:#8c93a0}
-.info-sec{margin:20px 2px 8px;font:800 11px "Inter",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8c93a0}
+.info-sec{margin:20px 2px 8px;font:800 11px "Space Grotesk",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8c93a0}
 .faq-list{display:grid;gap:8px}
 .faq-item{border:1px solid #30343a;background:#15171a;border-radius:14px;overflow:hidden}
-.faq-item summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 15px;font:700 12.5px/1.4 "Inter",sans-serif;color:#e5e7e9}
+.faq-item summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 15px;font:700 12.5px/1.4 "Space Grotesk",sans-serif;color:#e5e7e9}
 .faq-item summary::-webkit-details-marker{display:none}
 .faq-item summary::after{content:"";flex:none;width:7px;height:7px;border:solid #8c93a0;border-width:0 2px 2px 0;transform:rotate(45deg);transition:transform .2s;margin-right:3px}
 .faq-item[open] summary::after{transform:rotate(-135deg)}
-.faq-item p{margin:0;padding:0 15px 14px;font:400 12px/1.6 "Inter",sans-serif;color:#a6abb2}
+.faq-item p{margin:0;padding:0 15px 14px;font:400 12px/1.6 "Space Grotesk",sans-serif;color:#a6abb2}
 .faq-item p strong{color:#f4f5f6;font-weight:800}
 #engineBox .seg span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.15;min-height:44px}
 #engineBox .seg span small{display:block;font-size:10px;font-weight:600;letter-spacing:0;opacity:.8}
@@ -433,7 +433,7 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 .fdot[data-state="maintenance"]{background:#ffb454;box-shadow:0 0 0 3px #ffb45426}
 .fdot[data-state="soon"]{background:#8c93a0;box-shadow:0 0 0 3px #8c93a026}
 .seg input:checked+span .fdot{box-shadow:none}
-.early-warn{margin:10px 0 0;padding:10px 12px;border:1px solid #6b4a1c;border-left:4px solid #ffb454;background:#1d1810;border-radius:11px;color:#ffd9a0;font:600 12px/1.5 "Inter",sans-serif}
+.early-warn{margin:10px 0 0;padding:10px 12px;border:1px solid #6b4a1c;border-left:4px solid #ffb454;background:#1d1810;border-radius:11px;color:#ffd9a0;font:600 12px/1.5 "Space Grotesk",sans-serif}
 .early-warn[hidden]{display:none}
 .early-warn p{margin:0}.early-warn p+p{margin-top:6px}
 .report-btn{margin-top:10px}
@@ -442,27 +442,27 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 .cl-group::before{display:none!important}
 .cl-group:not(:first-child){margin-top:8px}
 .cl-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.cl-date{font:600 11px "Inter",sans-serif;color:#8c93a0;letter-spacing:0}
+.cl-date{font:600 11px "Space Grotesk",sans-serif;color:#8c93a0;letter-spacing:0}
 .cl-list li::before{display:none!important}
 .cl-list li{padding-left:0!important}
-.cl-tag{display:inline-block;margin-right:7px;padding:2px 8px;border-radius:99px;font:800 10px "Inter",sans-serif;letter-spacing:.04em;vertical-align:1px;border:1px solid}
+.cl-tag{display:inline-block;margin-right:7px;padding:2px 8px;border-radius:99px;font:800 10px "Space Grotesk",sans-serif;letter-spacing:.04em;vertical-align:1px;border:1px solid}
 .cl-tag.new{background:#1f3a2e;border-color:#2f6b52;color:#7be3b3}
 .cl-tag.fix{background:#2a2010;border-color:#6b4a1c;color:#ffb454}
 .cl-tag.chg{background:#1b2634;border-color:#34506e;color:#9cc4ff}
 .tool-launch-card.wide{grid-column:1/-1}
-.info-warn{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;border:1px solid #6b4a1c;border-left:4px solid #ffb454;background:linear-gradient(135deg,#2a2010,#1d1810);border-radius:14px;padding:14px 15px;font:400 12.5px/1.6 "Inter",sans-serif;color:#f0d9b0;box-shadow:0 8px 24px #ffb45414}
+.info-warn{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;border:1px solid #6b4a1c;border-left:4px solid #ffb454;background:linear-gradient(135deg,#2a2010,#1d1810);border-radius:14px;padding:14px 15px;font:400 12.5px/1.6 "Space Grotesk",sans-serif;color:#f0d9b0;box-shadow:0 8px 24px #ffb45414}
 .info-warn>svg{color:#ffb454;margin-top:1px}
-.info-warn .iw-title{display:block;font:800 11px "Inter",sans-serif;letter-spacing:.14em;color:#ffb454;margin-bottom:4px}
+.info-warn .iw-title{display:block;font:800 11px "Space Grotesk",sans-serif;letter-spacing:.14em;color:#ffb454;margin-bottom:4px}
 .info-warn strong{color:#fff3da;font-weight:800}
 .tool-launch-card.official{border-color:#2f6b52;background:linear-gradient(145deg,#17251f,#141a17);box-shadow:0 10px 28px #62d9a512}
 .tool-launch-card.official .tool-launch-icon{background:#1f3a2e;border-color:#2f6b52;color:#62d9a5}
-.official-badge{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin:0 0 10px;padding:4px 9px;border-radius:99px;background:#1f3a2e;border:1px solid #2f6b52;color:#7be3b3;font:800 9px "Inter",sans-serif;letter-spacing:.12em}
+.official-badge{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin:0 0 10px;padding:4px 9px;border-radius:99px;background:#1f3a2e;border:1px solid #2f6b52;color:#7be3b3;font:800 9px "Space Grotesk",sans-serif;letter-spacing:.12em}
 .info-note.alert{border-color:#6b4a1c;border-left:4px solid #ffb454;background:#1d1810}
 .info-note.alert h4{color:#ffb454;display:flex;align-items:center;gap:7px}
 .info-list strong,.info-list.plain strong{color:#f4f5f6;font-weight:800}
 .tool-open-btn span{font-size:15px}
 .tool-library-note{display:grid;gap:4px;border:1px solid #30343a;background:#15171a;border-radius:14px;padding:13px 15px}
-.tool-library-note b{font:700 11px "Inter",sans-serif;color:#e5e7e9}.tool-library-note span{font:400 11px/1.55 "Inter",sans-serif;color:#979da5}
+.tool-library-note b{font:700 11px "Space Grotesk",sans-serif;color:#e5e7e9}.tool-library-note span{font:400 11px/1.55 "Space Grotesk",sans-serif;color:#979da5}
 .tool-modal[hidden]{display:none!important}.tool-modal{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px}
 .tool-modal-scrim{position:absolute;z-index:0;inset:0;width:100%;height:100%;border:0;background:#050607d9;backdrop-filter:blur(8px);cursor:default;touch-action:manipulation}
 .tool-modal-panel{z-index:2!important}
@@ -472,8 +472,8 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 .tool-modal-panel{position:relative;z-index:1;display:flex;flex-direction:column;width:min(100%,620px);max-height:min(88dvh,850px);overflow:hidden;background:#101215;border:1px solid #42474e;border-radius:22px;box-shadow:0 24px 100px #000a;animation:toolPop .18s ease-out}
 @keyframes toolPop{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 .tool-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 20px 16px;border-bottom:1px solid #30343a;background:#17191d}
-.tool-modal-head h2{font:800 21px/1.2 "Plus Jakarta Sans",sans-serif;letter-spacing:-.04em;color:#f5f6f7;margin:5px 0 6px}
-.tool-modal-head p:last-child{font:400 12px/1.5 "Inter",sans-serif;color:#a5aab1;margin:0;max-width:460px}
+.tool-modal-head h2{font:800 21px/1.2 "Space Grotesk",sans-serif;letter-spacing:-.04em;color:#f5f6f7;margin:5px 0 6px}
+.tool-modal-head p:last-child{font:400 12px/1.5 "Space Grotesk",sans-serif;color:#a5aab1;margin:0;max-width:460px}
 .tool-modal-close{width:34px;height:34px;flex:none;border:1px solid #444950;background:#25282d;color:#f4f5f6;border-radius:10px;font-size:23px;line-height:1;cursor:pointer}
 .tool-modal-content{overflow:auto;padding:16px;overscroll-behavior:contain}.tool-modal-tool{margin:0!important;box-shadow:none!important}.tool-modal-tool[hidden]{display:none!important}
 .tool-modal-content .card{background:#17191d;border-color:#34383e;border-radius:16px;padding:16px}
@@ -557,14 +557,14 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 :root{
  --ink:#090a0c;--surface:#111316;--raise:#191c20;--line:#292d32;--line2:#41464d;
  --text:#f5f6f7;--muted:#a0a5ad;--violet:#e9ebee;--violet-d:#c8cdd3;
- --ok:#e0e4e8;--err:#e6caca;--display:"Plus Jakarta Sans",sans-serif;--body:"Inter",sans-serif
+ --ok:#e0e4e8;--err:#e6caca;--display:"Space Grotesk",sans-serif;--body:"Space Grotesk",sans-serif
 }
 html{color-scheme:dark;scroll-behavior:smooth}
 body{background:radial-gradient(ellipse at 50% -18%,#292d32 0,transparent 48%),var(--ink);padding:30px 18px 56px;letter-spacing:-.012em;font-size:15px;line-height:1.6}
 .wrap{width:min(100%,660px);gap:22px}
 .head{padding:8px 4px 8px;gap:18px;align-items:center}
 .logo{width:66px;height:66px;border-radius:20px;box-shadow:0 0 0 1px #4a4f56,0 12px 30px #0007}
-.head h1{font-family:var(--display);font-size:clamp(27px,5.5vw,34px);line-height:1.08;letter-spacing:-.065em;font-weight:800}
+.head h1{font-family:var(--display);font-size:clamp(27px,5.5vw,34px);line-height:1.08;letter-spacing:-.035em;font-weight:700}
 .head h1 small{display:inline-flex;align-items:center;margin-left:7px;padding:4px 9px;border-radius:7px;background:#24272b;border:1px solid #41464d;color:#dfe2e6;font:600 10px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
 .head p{max-width:420px;margin-top:8px;color:#a5aab1;font-size:13.5px;line-height:1.55;letter-spacing:0}
 .card{padding:26px;background:linear-gradient(150deg,#17191c 0%,#111316 66%);border:1px solid #30343a;border-radius:23px;box-shadow:0 18px 48px #0003,inset 0 1px 0 #ffffff08}
@@ -588,6 +588,10 @@ body{background:radial-gradient(ellipse at 50% -18%,#292d32 0,transparent 48%),v
 .seg span{min-height:44px;display:flex;align-items:center;justify-content:center;padding:10px 6px;border-radius:10px;font-size:12.5px;font-weight:650;letter-spacing:-.02em;color:#a4a9b0;transition:background .18s,color .18s,box-shadow .18s}
 .seg input:checked+span{background:linear-gradient(180deg,#f2f3f4,#d7dbe0);color:#111316;box-shadow:0 2px 8px #0005}
 .modedesc{margin:10px 2px 0;min-height:22px;font-size:12.5px;line-height:1.5;color:#969ca4}
+.modedesc .mnote{display:block;margin:8px 0 0;padding:7px 10px;border-left:3px solid #f5c15a;border-radius:6px;background:rgba(245,193,90,.10);color:#f5d68a;font-size:12.5px;line-height:1.5}
+.modedesc .mnote b{color:#ffd978}
+.modedesc .mnote.info{border-left-color:#7cc4ff;background:rgba(124,196,255,.10);color:#a9d8ff}
+.modedesc .mnote.info b{color:#c6e6ff}
 .go,#start{margin-top:22px;min-height:54px;padding:16px 20px;border-radius:14px;background:linear-gradient(180deg,#f6f7f8,#d9dde1);color:#101215;border:1px solid #fff;font:750 15px/1.2 var(--display);letter-spacing:-.025em;box-shadow:0 7px 18px #0004;transition:transform .16s,filter .16s,box-shadow .16s}
 .go:hover:not(:disabled),#start:hover:not(:disabled){filter:brightness(1.07);transform:translateY(-1px);box-shadow:0 10px 22px #0005}
 .go:active:not(:disabled),#start:active:not(:disabled){transform:translateY(0)}
@@ -881,10 +885,10 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 .fg-scrim{position:absolute;inset:0;background:#050607e6;backdrop-filter:blur(8px)}
 .fg-panel{position:relative;width:min(100%,420px);max-height:92dvh;overflow:auto;overscroll-behavior:contain;background:#101215;border:1px solid #42474e;border-radius:20px;padding:22px 20px 20px;box-shadow:0 24px 80px #000a;color:#f4f5f6;animation:fgIn .22s ease-out}
 @keyframes fgIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
-.fg-panel .fg-eyebrow{margin:0 0 6px;font:700 11px/1 "Inter",sans-serif;letter-spacing:.14em;color:#8c929a}
-.fg-panel h2{margin:0 0 8px;font:800 21px/1.2 "Plus Jakarta Sans",sans-serif;letter-spacing:-.03em}
+.fg-panel .fg-eyebrow{margin:0 0 6px;font:700 11px/1 "Space Grotesk",sans-serif;letter-spacing:.14em;color:#8c929a}
+.fg-panel h2{margin:0 0 8px;font:800 21px/1.2 "Space Grotesk",sans-serif;letter-spacing:-.03em}
 .fg-panel p{margin:0;font-size:13px;line-height:1.55;color:#a5aab1}
-.fg-sub{margin:16px 0 8px!important;font:700 11px/1 "Inter",sans-serif!important;letter-spacing:.12em;color:#8c929a!important}
+.fg-sub{margin:16px 0 8px!important;font:700 11px/1 "Space Grotesk",sans-serif!important;letter-spacing:.12em;color:#8c929a!important}
 .fg-terms{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:6px;counter-reset:t}
 .fg-terms li{counter-increment:t;display:flex;gap:10px;font-size:12.5px;line-height:1.5;color:#c4c8ce}
 .fg-terms li::before{content:counter(t);flex:none;width:20px;height:20px;border-radius:6px;background:#25282d;border:1px solid #3a3f46;color:#f4f5f6;font-weight:700;font-size:11px;display:grid;place-items:center;margin-top:1px}
@@ -902,7 +906,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
 .fg-tier button{border:0;background:none;color:#f4f5f6;text-decoration:underline;font-size:12.5px;cursor:pointer;padding:4px 0}
 .fg-panel .fg-intro{margin-bottom:14px}
 .fg-notice-section{margin-top:13px;padding:13px;border:1px solid #30343a;border-radius:14px;background:#17191d}
-.fg-notice-section h3{margin:0 0 7px;font:750 14px/1.3 "Plus Jakarta Sans",sans-serif;color:#f4f5f6}
+.fg-notice-section h3{margin:0 0 7px;font:750 14px/1.3 "Space Grotesk",sans-serif;color:#f4f5f6}
 .fg-notice-section>p{font-size:12.5px;line-height:1.5}
 .fg-notice-section .fg-rules{margin:9px 0 0;gap:7px}
 .fg-notice-section .fg-rules li{padding:9px 10px;background:#202328;border-color:#373c44;font-size:12.5px}
@@ -1143,7 +1147,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <p class="info-sec">FAQ</p>
     <div class="faq-list">
       <details class="faq-item"><summary>Apa beda Local Forge dan Cloud Forge?</summary><p><strong>Local Forge</strong> untuk akun di bawah 10 ribu pengikut: video diproses langsung di perangkatmu, tanpa dikirim ke server dan tanpa encode ulang. <strong>Cloud Forge</strong> untuk akun 10 ribu pengikut atau lebih: video diproses di server, jadi pastikan koneksi internetmu cepat dan stabil.</p></details>
-      <details class="faq-item"><summary>Apa beda Standard, Medium, dan Pro di Local Forge?</summary><p><strong>Standard:</strong> patch header MP4 langsung di perangkat dengan pemrosesan sedang. <strong>Medium:</strong> video di-encode ulang lewat hardware (WebCodecs) di perangkat agar FPS tetap 60 atau 120 (terdeteksi otomatis), tanpa patch tambahan dan tanpa server. Input boleh dari kompresor apa pun, asal 60 atau 120 FPS. <strong>Pro:</strong> pemrosesan lanjutan dengan Universal Safe dan verifikasi hasil.</p></details>
+      <details class="faq-item"><summary>Apa beda Standard, Medium, dan Pro di Local Forge?</summary><p><strong>Standard:</strong> patch header MP4 langsung di perangkat dengan pemrosesan sedang. <strong>Medium:</strong> mengubah timestamp memakai FFmpeg stream copy di perangkat, tanpa encode ulang. FPS terdeteksi otomatis: 60 FPS memakai faktor 2× dan 120 FPS memakai faktor 4×. Video dan audio disalin tanpa re-encode; durasi menjadi lebih panjang. <strong>Pro:</strong> pemrosesan lanjutan dengan Universal Safe dan verifikasi hasil.</p></details>
       <details class="faq-item"><summary>Apa beda Pro dan Ultra di Cloud Forge?</summary><p><strong>Pro:</strong> hanya encode ulang video menggunakan tools khusus, dalam satu tahap. <strong>Ultra:</strong> video di-patch terlebih dahulu, lalu hasilnya di-encode ulang dengan pemrosesan lanjutan.</p></details>
       <details class="faq-item"><summary>Kenapa video saya ditolak karena ukurannya?</summary><p>Cloud Forge punya batas ukuran file <strong>60MB</strong>. Kalau videomu lebih besar, pakai video lain atau perkecil dulu lewat <strong>Video Compressor</strong> di tab Tools, lalu kirim hasilnya langsung ke Patcher.</p></details>
       <details class="faq-item"><summary>Hasil Medium di akun saya belum berhasil, kenapa?</summary><p>Pastikan videomu berformat 60 atau 120 FPS (dari kompresor apa pun). FPS dideteksi otomatis. Mohon dimaklumi, pada sebagian akun hasilnya mungkin masih belum berhasil.</p></details>
@@ -1158,7 +1162,7 @@ details.guide summary{font:700 16px var(--display);letter-spacing:-.035em}
     <div class="tool-library-note info-note"><h4 class="cl-head"><span>v3.3.0 · Terbaru</span></h4>
       <ul class="info-list plain">
         <li class="cl-group">New :</li>
-        <li>Engine <strong>Medium</strong> di Local Forge: video di-encode ulang lewat hardware (WebCodecs) di perangkat, tanpa FFmpeg software &amp; tanpa server.</li>
+        <li>Engine <strong>Medium</strong> di Local Forge: FFmpeg stream copy dengan deteksi FPS otomatis (60 FPS → 2×, 120 FPS → 4×), tanpa encode ulang video/audio.</li>
         <li>Medium <strong>bukan untuk membuat video antikompress</strong>, namun agar <strong>FPS video tetap 60 FPS</strong> sesuai pilihan FPS di Ffmpeg Video Compressor.</li>
         <li>Deteksi FPS (60/120) otomatis di Medium. Audio tetap original.</li>
         <li class="cl-group">Changed :</li>
@@ -3924,7 +3928,7 @@ for(const [cdn,w,c] of [
 const el={};
 ["ffEngine","ffEngineText","ffLoad","ffFiles","ffFilesName","ffChips","ffMemNote","ffTpl","ffTplDesc","ff1080Config","ffMode","ffModeHelp","ffBitrate","ffMinBitrate","ffMaxBitrate","ffBufsize","ffSoftwareConfig","ffHwNote","ffManual","ffCmd","ffRecent","ffRun","ffStop","ffStatus","ffTime","ffBar","ffFill","ffCopy","ffLog","ffOut"].forEach(id=>el[id]=$(id));
 const RECENT_KEY="wanxzyy_ffmpeg_recent_v1";
-let inst=null,loading=null,files=[],names=[],written=new Map(),busy=false,stopped=false,dirty=false,urls=[],tick=null,t0=0,logLines=[],logTimer=null,curTpl=null,wasmBase=0,activeHardwareConversion=null;
+let inst=null,loading=null,files=[],names=[],written=new Map(),busy=false,stopped=false,dirty=false,urls=[],tick=null,t0=0,logLines=[],logTimer=null,curTpl=null,wasmBase=0,activeHardwareConversion=null,mediumOnProgress=null;
 
 const setEngine=(state,text)=>{el.ffEngine.dataset.state=state;el.ffEngineText.textContent=text;el.ffLoad.hidden=el.ffMode?.value!=="software"||state==="ready"||state==="loading";el.ffLoad.textContent=state==="error"?"Coba lagi":"Muat mesin"};
 const setStatus=(t,cls="")=>{el.ffStatus.textContent=t;el.ffStatus.className=cls};
@@ -3943,7 +3947,7 @@ async function blobURL(u,type,onBytes){
 function flushLog(){logTimer=null;const v=logLines.slice(-500).join("\n");el.ffLog.textContent=v;el.ffLog.scrollTop=el.ffLog.scrollHeight}
 function addLog(line){logLines.push(line);if(logLines.length>2000)logLines=logLines.slice(-1000);if(!logTimer)logTimer=setTimeout(flushLog,120)}
 const onLog=({message})=>addLog(message);
-const onProg=({progress})=>{if(busy&&Number.isFinite(progress)&&progress>0&&progress<=1)setBar(progress*100)};
+const onProg=({progress})=>{if(busy&&Number.isFinite(progress)&&progress>0&&progress<=1)setBar(progress*100);if(typeof mediumOnProgress==="function"&&Number.isFinite(progress)&&progress>0&&progress<=1)mediumOnProgress(progress)};
 
 async function loadEngine(){
   if(inst)return inst;
@@ -4581,7 +4585,41 @@ function resetEngine(msg){
   written.clear();setEngine("idle",msg);
 }
 /* Mesin dipakai bersama Local Forge > Medium (1 instance, tidak dimuat 2x) */
-window.__wxFfmpeg={load:loadEngine,reset:m=>resetEngine(m||"Mesin FFmpeg dimuat ulang otomatis saat dijalankan lagi.")};
+async function runMediumCopy(file,scale,onProgress){
+  if(!file)throw new Error("Video Medium tidak ditemukan.");
+  if(scale!==2&&scale!==4)throw new Error("Faktor Medium tidak valid.");
+  if(busy)throw new Error("Mesin FFmpeg sedang dipakai Compressor. Tunggu sampai selesai.");
+  const f=await loadEngine();
+  const ext=(file.name.match(/\.([a-z0-9]{1,5})$/i)||[])[1]||"mp4";
+  const stem="wx_medium_"+Date.now();
+  const inputName=stem+"_in."+ext.toLowerCase(),outputName=stem+"_out.mp4";
+  let abort=null;
+  mediumOnProgress=onProgress||null;
+  try{
+    if(ctl.cancelled)throw cancelledError();
+    await f.writeFile(inputName,new Uint8Array(await file.arrayBuffer()));
+    if(ctl.cancelled)throw cancelledError();
+    const args=["-hide_banner","-nostdin","-y","-itsscale",String(scale),"-i",inputName,"-map","0:v:0","-map","0:a?","-c:v","copy","-c:a","copy",outputName];
+    say("Medium: menjalankan FFmpeg stream copy ("+scale+"×)…");
+    if(typeof onProgress==="function")onProgress(0.03);
+    abort=()=>{try{f.terminate()}catch{}if(inst===f)inst=null;written.clear();setEngine("idle","Proses dibatalkan. Mesin FFmpeg akan dimuat ulang saat dibutuhkan.")};
+    ctl.aborters.add(abort);
+    const code=await f.exec(args);
+    if(ctl.cancelled)throw cancelledError();
+    if(code!==0)throw new Error("FFmpeg gagal (kode "+code+"). "+logLines.slice(-8).join(" | "));
+    const data=await f.readFile(outputName);
+    if(!data||!data.length)throw new Error("FFmpeg selesai tetapi file output kosong.");
+    say("Medium: stream copy selesai · tanpa re-encode.");
+    if(typeof onProgress==="function")onProgress(1);
+    return new Uint8Array(data);
+  }finally{
+    if(abort)ctl.aborters.delete(abort);
+    mediumOnProgress=null;
+    try{await f.deleteFile(inputName)}catch{}
+    try{await f.deleteFile(outputName)}catch{}
+  }
+}
+window.__wxFfmpeg={load:loadEngine,runMedium:runMediumCopy,reset:m=>resetEngine(m||"Mesin FFmpeg dimuat ulang otomatis saat dijalankan lagi.")};
 async function stop(){
   if(!busy)return;
   stopped=true;
@@ -5078,7 +5116,7 @@ const engineUsable=()=>engineState()==="active";
 /* Nama file hasil: Android = "Local Patched by wanx.prstt.mp4", iOS/iPadOS = HURUF BESAR semua. Platform dideteksi otomatis. */
 const isIOSDevice=(()=>{try{const ua=navigator.userAgent||"";return /iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1)}catch{return false}})();
 const makeOutName=local=>{const n=(local?"Local":"Cloud")+" Patched by wanx.prstt.mp4";return isIOSDevice?n.toUpperCase():n};
-const PROFS={std:"<b>Standard:</b> Patch header MP4 langsung di perangkat dengan pemrosesan sedang.",medium:"<b>Medium:</b> Video di-encode ulang lewat hardware (WebCodecs) di perangkat, tanpa FFmpeg software &amp; tanpa server. (<b>Engine ini bukan membuat video menjadi antikompress namun membuat FPS Video Tetap 60fps</b>)<br><b>Catatan:</b> video dari kompresor apa pun didukung, asal 60 atau 120 FPS.",pro:"<b>Pro:</b> Pemrosesan lanjutan dengan Universal Safe &amp; verifikasi hasil."};
+const PROFS={std:"<b>Standard:</b> Patch header MP4 langsung di perangkat dengan pemrosesan sedang.",medium:"<b>Medium:</b> Video tidak di-encode ulang, hanya menambah patch, &amp; berjalan di perangkat, tanpa server.<span class=\"mnote\">(Engine ini bukan membuat video menjadi antikompress namun membuat FPS Video Tetap 60fps)</span><span class=\"mnote info\"><b>Catatan:</b> video dari kompresor apa pun didukung, asal 60 atau 120 FPS.</span>",pro:"<b>Pro:</b> Pemrosesan lanjutan dengan Universal Safe &amp; verifikasi hasil."};
 const applyMode=()=>{const lo=getForge()==="local";$("forgeDesc").innerHTML=FORGES[getForge()];$("engineBox").hidden=lo;$("profBox").hidden=!lo;$("profDesc").innerHTML=PROFS[getProfile()];updateEngNote();$("modeDesc").innerHTML=MODES[getMode()];if(!running)refreshStart()};
 const lockMode=b=>{modeEls.forEach(r=>r.disabled=b);forgeEls.forEach(r=>r.disabled=b);profEls.forEach(r=>r.disabled=b);medFpsEls.forEach(r=>r.disabled=b)};
 modeEls.forEach(r=>r.addEventListener("change",applyMode));forgeEls.forEach(r=>r.addEventListener("change",()=>{if(getForge()==="cloud"){document.querySelector('input[name="mode"][value="enc"]').checked=true}else{document.querySelector('input[name="lprof"][value="medium"]').checked=true}applyMode()}));profEls.forEach(r=>r.addEventListener("change",applyMode));
@@ -5223,276 +5261,113 @@ async function tagCloudBlob(blob,tag){
 /* ---- Local Forge > Medium: re-encode lewat FFmpeg WASM di perangkat (tanpa patch tambahan, tanpa server).
    Input dari kompresor apa pun. FPS (60/120) dideteksi otomatis. ---- */
 function probeVideoDuration(file){return new Promise(res=>{const v=document.createElement("video"),u=URL.createObjectURL(file);let fin=false;const done=d=>{if(fin)return;fin=true;try{URL.revokeObjectURL(u)}catch(e){}v.removeAttribute("src");res(d)};v.preload="metadata";v.muted=true;v.onloadedmetadata=()=>done(isFinite(v.duration)?v.duration:0);v.onerror=()=>done(0);setTimeout(()=>done(0),4000);v.src=u})}
-/* Local Forge > Medium (HARDWARE): WebCodecs via Mediabunny, tanpa ffmpeg.wasm / libx264.
-   Timestamp video dikali N. Audio disalin original.
-   Input dari kompresor apa pun (tidak perlu tag), asal 60 atau 120 FPS.
-   FPS dideteksi otomatis: 60 FPS -> N=2, 120 FPS -> N=4. */
-async function loadMediabunnyMedium(){
-  if (window.__wxMB) return window.__wxMB;
-  const errs = [];
-  for (const u of ["https://esm.sh/mediabunny@1.62.1","https://esm.sh/mediabunny@1.61.3","https://cdn.jsdelivr.net/npm/mediabunny@1.61.3/+esm"]) {
-    try { window.__wxMB = await import(u); return window.__wxMB; }
-    catch (e) { errs.push(u.replace("https://","") + ": " + (e && e.message || e)); }
+/* Local Forge > Medium: FFmpeg timestamp scaling + stream copy.
+   60 FPS -> itsscale 2; 120 FPS -> itsscale 4.
+   Video dan audio disalin apa adanya; TIDAK ADA re-encode. */
+/* Medium: setara "-itsscale N -c copy" (video+audio), dikerjakan langsung di header MP4 lewat JS.
+   Tanpa FFmpeg WASM, tanpa CDN, tanpa membaca isi mdat. Hanya moov yang dibaca & diubah (ukuran moov tetap),
+   jadi offset chunk tidak berubah. Dikali N: stts (delta), ctts, mdhd/tkhd/mvhd duration, elst. */
+async function mediumReadMoov(file){
+  const size=file.size,rd=async(o,n)=>new Uint8Array(await file.slice(o,o+n).arrayBuffer());
+  let pos=0,moov=null,frag=false;
+  while(pos+8<=size){
+    const h=await rd(pos,Math.min(16,size-pos)),dv=new DataView(h.buffer);
+    let bs=dv.getUint32(0),hd=8;const t=String.fromCharCode(h[4],h[5],h[6],h[7]);
+    if(bs===1){if(h.length<16)break;bs=dv.getUint32(8)*4294967296+dv.getUint32(12);hd=16}
+    else if(bs===0)bs=size-pos;
+    if(bs<hd||pos+bs>size)break;
+    if(t==="moov"&&!moov)moov={off:pos,size:bs};
+    if(t==="moof")frag=true;
+    pos+=bs;
   }
-  throw new Error("Modul Mediabunny gagal dimuat. Cek koneksi internet. (" + errs.join(" | ") + ")");
+  if(!moov)throw new Error("Medium: box moov tidak ditemukan. File harus MP4/MOV yang utuh.");
+  if(frag)throw new Error("Medium: fragmented MP4 tidak didukung.");
+  if(moov.size>256*1048576)throw new Error("Medium: moov terlalu besar.");
+  return {off:moov.off,size:moov.size,bytes:await rd(moov.off,moov.size)};
 }
-async function detectTrackFps(MB, track){
-  let rate = 0;
-  try { const st = await track.computePacketStats(300); rate = Number(st && st.averagePacketRate) || 0; } catch (_) {}
-  if (!(rate > 0) && MB.EncodedPacketSink) { /* cadangan: hitung dari timestamp paket */
-    const sink = new MB.EncodedPacketSink(track);
-    let pk = await sink.getFirstPacket(), first = null, last = null, n = 0;
-    while (pk && n < 300) { if (first === null) first = pk.timestamp; last = pk.timestamp; n++; pk = await sink.getNextPacket(pk); }
-    if (n > 1 && last > first) rate = (n - 1) / (last - first);
-  }
-  return rate;
-}
-/* Pilih konfigurasi encoder H.264 yang benar-benar didukung perangkat (urut dari kualitas terbaik; hardware dulu, software terakhir). */
-/* Hardware tidak didukung -> encoder software (CPU) bisa sangat lama; tanya dulu, jangan diam-diam. */
-function confirmSoftwareEncode(frames) {
-  const n = frames > 0 ? " (sekitar " + Math.round(frames).toLocaleString("id-ID") + " frame)" : "";
-  return window.confirm("HP/browser kamu tidak mendukung encoder hardware untuk video ini.\n\nKalau dilanjutkan, video diproses pakai CPU" + n + " dan bisa SANGAT lama (belasan menit atau lebih), HP bisa panas.\n\nLanjutkan?");
-}
-async function pickMediumEncoder(w, h, fps, bitrate, opts) {
-  opts = opts || {};
-  const modes = opts.modes || ["variable", "constant"], latency = opts.latency || "quality";
-  const heavy = Math.ceil(w / 16) * Math.ceil(h / 16) * fps > 589824;
-  if (!(typeof VideoEncoder !== "undefined" && VideoEncoder.isConfigSupported)) return { codec: heavy ? "avc1.640034" : "avc1.640032", hw: "prefer-hardware", bitrateMode: modes[0], label: "default", fallback: false };
-  const codecs = heavy
-    ? [["avc1.640034", "High 5.2"], ["avc1.4D0034", "Main 5.2"]]
-    : (opts.level42First
-      ? [["avc1.64002A", "High 4.2"], ["avc1.640032", "High 5.0"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]]
-      : [["avc1.640032", "High 5.0"], ["avc1.64002A", "High 4.2"], ["avc1.4D002A", "Main 4.2"], ["avc1.42E02A", "Baseline 4.2"]]);
-  const tries = [];
-  for (const hw of ["prefer-hardware", "no-preference"])
-    for (const [codec, name] of codecs)
-      for (const bitrateMode of modes)
-        tries.push({ codec, hw, bitrateMode, label: name + (hw === "prefer-hardware" ? " hardware" : " otomatis") });
-  const list = [];
-  for (let i = 0; i < tries.length; i++) {
-    const t = tries[i];
-    try {
-      const r = await VideoEncoder.isConfigSupported({ codec: t.codec, width: w, height: h, bitrate: bitrate, framerate: fps, hardwareAcceleration: t.hw, bitrateMode: t.bitrateMode, latencyMode: latency, avc: { format: "avc" } });
-      if (r && r.supported) { t.fallback = i > 0; if (opts.all) { list.push(t); continue; } return t; }
-    } catch (_) {}
-  }
-  return opts.all ? list : null;
-}
-/* Tes mini (khusus Medium): encode beberapa frame asli lewat pipeline yang sama, ukur bitrate nyata vs target dan waktunya. */
-async function mediumTierTest(MB, track, c, fps, scale, bitrate, n) {
-  const { Output, Mp4OutputFormat, BufferTarget, VideoSampleSink, VideoSampleSource, VideoSample } = MB;
-  const out = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
-  const src = new VideoSampleSource({
-    codec: "avc", bitrate: bitrate, bitrateMode: c.bitrateMode, latencyMode: "quality",
-    hardwareAcceleration: c.hw, fullCodecString: c.codec, keyFrameInterval: 1,
-    onEncoderConfig: cfg => { cfg.codec = c.codec; cfg.hardwareAcceleration = c.hw; cfg.bitrateMode = c.bitrateMode; cfg.latencyMode = "quality"; cfg.avc = { format: "avc" }; }
-  });
-  out.addVideoTrack(src, { frameRate: fps });
-  const mk = (smp, ts, du) => {
-    if (typeof smp.clone === "function") { const cl = smp.clone(); if (typeof cl.setTimestamp === "function") { cl.setTimestamp(ts); if (typeof cl.setDuration === "function") cl.setDuration(du); return cl; } cl.close && cl.close(); }
-    if (VideoSample && typeof smp.toVideoFrame === "function") { const fr = smp.toVideoFrame(); const cl = new VideoSample(fr, { timestamp: ts, duration: du }); fr.close(); return cl; }
-    throw new Error("ubah timestamp tidak didukung");
-  };
-  const t0 = performance.now();
-  let frames = 0;
-  try {
-    await out.start();
-    const sink = new VideoSampleSink(track), fd = 1 / fps;
-    let i = 0;
-    for await (const smp of sink.samples()) {
-      if (i >= n) { smp.close(); break; }
-      for (let k = 0; k < scale; k++) { const cl = mk(smp, (i * scale + k) * fd, fd); await src.add(cl); cl.close(); frames++; }
-      smp.close(); i++;
+function mediumScan(m){
+  const dv=new DataView(m.buffer,m.byteOffset,m.byteLength),C=new Set(["moov","trak","mdia","minf","stbl","edts"]);
+  const list=[];let tix=-1;
+  const walk=(s,e,tk)=>{
+    let p=s;
+    while(p+8<=e){
+      let sz=dv.getUint32(p),h=8;const t=String.fromCharCode(m[p+4],m[p+5],m[p+6],m[p+7]);
+      if(sz===1){sz=dv.getUint32(p+8)*4294967296+dv.getUint32(p+12);h=16}else if(sz===0)sz=e-p;
+      if(sz<h||p+sz>e)throw new Error("Medium: struktur moov tidak valid.");
+      let cur=tk;if(t==="trak"){tix++;cur=tix}
+      list.push({t,s:p+h,e:p+sz,tk:cur});
+      if(C.has(t))walk(p+h,p+sz,cur);
+      p+=sz;
     }
-    src.close();
-    await out.finalize();
-  } catch (e) { try { await out.cancel(); } catch (_) {} return null; }
-  const buf = out.target.buffer;
-  if (!buf || !buf.byteLength || frames < 2) return null;
-  const secs = frames / fps;
-  return { ratio: (buf.byteLength * 8 / secs) / bitrate, ms: Math.round(performance.now() - t0), frames: frames };
+  };
+  let hd=8;if(dv.getUint32(0)===1)hd=16;
+  walk(hd,m.length,-1);
+  return {dv,list};
 }
-/* Target ukuran hasil Medium = ukuran input + tambahan: 25% input, minimal 7 MB, maksimal 12 MB.
-   Contoh: 10 MB -> ~17 MB, 30 MB -> ~37 MB, 40 MB -> ~50 MB. Ubah angka di bawah jika perlu. */
-const MEDIUM_ADD_PCT = 0.25, MEDIUM_ADD_MIN_MB = 7, MEDIUM_ADD_MAX_MB = 12;
+function mediumDetectFps(m){
+  const {dv,list}=mediumScan(m);
+  const tracks={};
+  for(const b of list){
+    if(b.tk<0)continue;const T=tracks[b.tk]||(tracks[b.tk]={});
+    if(b.t==="hdlr")T.h=String.fromCharCode(m[b.s+8],m[b.s+9],m[b.s+10],m[b.s+11]);
+    else if(b.t==="mdhd")T.ts=dv.getUint8(b.s)===1?dv.getUint32(b.s+20):dv.getUint32(b.s+12);
+    else if(b.t==="stts"){const n=dv.getUint32(b.s+4);let fr=0,tk=0;for(let i=0;i<n;i++){const c=dv.getUint32(b.s+8+i*8),d=dv.getUint32(b.s+12+i*8);fr+=c;tk+=c*d}T.fr=fr;T.tk=tk}
+  }
+  const v=Object.values(tracks).find(t=>t.h==="vide"&&t.ts&&t.fr&&t.tk);
+  if(!v)throw new Error("Medium: track video atau tabel waktu (stts) tidak ditemukan.");
+  return v.fr*v.ts/v.tk;
+}
+function mediumApplyScale(m,k){
+  const {dv,list}=mediumScan(m),U32=4294967295;
+  const mulU32=(o)=>{const v=dv.getUint32(o)*k;if(v>U32)throw new Error("Medium: nilai waktu melebihi batas 32-bit (video terlalu panjang).");dv.setUint32(o,v)};
+  const mulU64=(o)=>{
+    const hi=dv.getUint32(o),lo=dv.getUint32(o+4);
+    if(hi===U32&&lo===U32)return; /* sentinel unknown duration: biarkan */
+    const v=((BigInt(hi)<<32n)|BigInt(lo))*BigInt(k);
+    if(v>0xFFFFFFFFFFFFFFFFn)throw new Error("Medium: durasi melebihi batas 64-bit.");
+    dv.setUint32(o,Number(v>>32n));dv.setUint32(o+4,Number(v&0xFFFFFFFFn));
+  };
+  for(const b of list){
+    const ver=dv.getUint8(b.s);
+    if(b.t==="stts"){const n=dv.getUint32(b.s+4);for(let i=0;i<n;i++)mulU32(b.s+12+i*8)}
+    else if(b.t==="ctts"){
+      const n=dv.getUint32(b.s+4);
+      for(let i=0;i<n;i++){const o=b.s+12+i*8;if(ver===1){const x=dv.getInt32(o)*k;if(x>2147483647||x<-2147483648)throw new Error("Medium: offset ctts melebihi batas.");dv.setInt32(o,x)}else mulU32(o)}
+    }
+    else if(b.t==="mdhd"){ver===1?mulU64(b.s+24):mulU32(b.s+16)}
+    else if(b.t==="mvhd"){ver===1?mulU64(b.s+24):mulU32(b.s+16)}
+    else if(b.t==="tkhd"){ver===1?mulU64(b.s+28):mulU32(b.s+20)}
+    else if(b.t==="elst"){
+      const n=dv.getUint32(b.s+4);
+      for(let i=0;i<n;i++){
+        if(ver===1){const o=b.s+8+i*20;mulU64(o);const mt=dv.getBigInt64(o+8);if(mt>=0n)dv.setBigInt64(o+8,mt*BigInt(k))}
+        else{const o=b.s+8+i*12;mulU32(o);const mt=dv.getInt32(o+4);if(mt>=0){const x=mt*k;if(x>2147483647)throw new Error("Medium: media_time elst melebihi batas.");dv.setInt32(o+4,x)}}
+      }
+    }
+  }
+}
 async function mediumLocal(file) {
-  if (!("VideoEncoder" in window) || !("VideoDecoder" in window)) throw new Error("Browser ini tidak mendukung WebCodecs (hardware). Gunakan Chrome/Edge terbaru.");
-  progress(3); say("Medium: memuat modul hardware…");
-  const MB = await loadMediabunnyMedium();
+  progress(3); say("Medium: membaca header video…");
+  const mv = await mediumReadMoov(file);
   checkCancelled();
-  const { Input, BlobSource, Output, Mp4OutputFormat, BufferTarget, ALL_FORMATS, VideoSampleSink, VideoSampleSource, VideoSample } = MB;
-  if (!Input || !BlobSource || !Output || !Mp4OutputFormat || !BufferTarget || !VideoSampleSink || !VideoSampleSource) throw new Error("Modul Mediabunny tidak lengkap.");
-
-  say("Medium: memeriksa video…"); progress(6);
-  const input = new Input({ formats: ALL_FORMATS, source: new BlobSource(file) });
-  const track = await input.getPrimaryVideoTrack();
-  if (!track) throw new Error("Video tidak ditemukan di file ini.");
-
-  /* Tanpa wajib tag: video dari kompresor mana pun diterima, asal 60 atau 120 FPS. */
-  const rate = await detectTrackFps(MB, track);
+  progress(20);
+  const rate = mediumDetectFps(mv.bytes);
   let scale = 0, srcFps = 0;
   if (Math.abs(rate - 60) <= 3) { scale = 2; srcFps = 60; }
   else if (Math.abs(rate - 120) <= 6) { scale = 4; srcFps = 120; }
-  else throw new Error("FPS video terdeteksi " + (rate ? rate.toFixed(1) : "tidak diketahui") + ". Medium hanya menerima video 60 atau 120 FPS (dari kompresor apa pun).");
+  else throw new Error("FPS video terdeteksi " + (rate ? rate.toFixed(1) : "tidak diketahui") + ". Medium hanya menerima input 60 atau 120 FPS.");
   window.__medDetected = { fps: srcFps, scale: scale };
-  say("Medium: terdeteksi " + srcFps + " FPS");
+  say("Medium: terdeteksi " + srcFps + " FPS → itsscale " + scale + ". Video/audio stream copy tanpa encode ulang.");
+  progress(45);
+  await new Promise(r => setTimeout(r, 0));
   checkCancelled();
-
-  const duration = await input.computeDuration();
-  let bps = 0;
-  try { const st = await track.computePacketStats(300); bps = Number(st && st.averageBitrate) || 0; } catch (_) {}
-  if (!(bps > 0)) bps = duration > 0 ? file.size * 8 / duration : 14e6;
-  /* Durasi output = durasi input x scale. Bitrate dihitung dari target ukuran (input + tambahan kecil) dibagi durasi output. */
-  const addBytes = Math.min(MEDIUM_ADD_MAX_MB * 1e6, Math.max(MEDIUM_ADD_MIN_MB * 1e6, file.size * MEDIUM_ADD_PCT));
-  let outBitrate = duration > 0
-    ? Math.round((file.size + addBytes) * 8 / (duration * scale))
-    : Math.round(Math.max(1, Math.round(bps)) * 1.3 / scale);
-  outBitrate = Math.max(1, outBitrate);
-
-  /* Cek dulu encoder yang benar-benar didukung perangkat ini (chip HP berbeda-beda: ada yang hanya sampai Level 4.2 atau Main profile). */
-  let dW = Number(track.displayWidth), dH = Number(track.displayHeight);
-  if (!(dW > 0 && dH > 0)) { dW = Number(track.codedWidth) || 0; dH = Number(track.codedHeight) || 0; if ((Number(track.rotation) || 0) % 180 !== 0) { const tmp = dW; dW = dH; dH = tmp; } }
-  const dimM = { w: dW, h: dH };
-  /* Kumpulkan semua tier yang didukung (urut dari terbaik), lalu tes mini: pakai tier pertama yang bitrate nyatanya >= 60% target. */
-  const cands = [].concat(await pickMediumEncoder(dimM.w, dimM.h, srcFps, outBitrate, { level42First: true, all: true }) || []);
-  if (!cands.length) throw new Error("Encoder H.264 di perangkat/browser ini tidak mendukung " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS. Coba Chrome terbaru, atau pakai Local Forge mode lain.");
-  let encPick = null, bestC = null, testFail = 0;
-  const maxTests = Math.min(cands.length, 4);
-  for (let ti = 0; ti < maxTests; ti++) {
-    checkCancelled();
-    const c = cands[ti];
-    say("Medium: mendeteksi encoder terbaik (" + (ti + 1) + "/" + maxTests + ": " + c.label + ", " + c.bitrateMode + ")…");
-    const r = await mediumTierTest(MB, track, c, srcFps, 1, outBitrate * scale, Math.round(srcFps / 2)); /* scale 1: ukur kemampuan encoder pada frame asli, bukan frame duplikat */
-    if (!r) { testFail++; continue; }
-    c.test = r;
-    if (!bestC || r.ratio > bestC.test.ratio) bestC = c;
-    if (r.ratio >= 0.6) { encPick = c; break; }
-  }
-  if (!encPick) encPick = bestC || cands[0];
-  encPick.fallback = cands.indexOf(encPick) > 0;
-  const encTag = encPick.label + ", " + encPick.bitrateMode;
-  say("Medium: encoder terpilih · " + encTag + (encPick.test ? " (bitrate nyata ±" + Math.round(encPick.test.ratio * 100) + "% dari target)" : "") + " · target " + (outBitrate / 1e6).toFixed(1) + " Mbps");
-  window.__medEncoder = encPick;
-  if (encPick.hw !== "prefer-hardware" && !confirmSoftwareEncode(duration * srcFps * scale)) throw new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software.");
-  if (encPick.fallback) say("Medium: memakai encoder cadangan (" + encPick.label + ")…");
-  const aTrack = await input.getPrimaryAudioTrack();
-  let aCfg = null;
-  if (aTrack) {
-    if (!MB.EncodedPacketSink || !MB.EncodedAudioPacketSource) throw new Error("Versi Mediabunny tidak mendukung salin audio.");
-    aCfg = await aTrack.getDecoderConfig();
-  }
-  /* Tiap frame asli diulang N kali, FPS tetap konstan, durasi x N.
-     frame ke-j output berada di j / srcFps, dengan j = indexAsli * N + k (k = 0..N-1). */
-  const mkAt = (smp, ts, du) => {
-    if (typeof smp.clone === "function") { const c = smp.clone(); if (typeof c.setTimestamp === "function") { c.setTimestamp(ts); if (typeof c.setDuration === "function") c.setDuration(du); return c; } c.close && c.close(); }
-    if (VideoSample && typeof smp.toVideoFrame === "function") { const fr = smp.toVideoFrame(); const c = new VideoSample(fr, { timestamp: ts, duration: du }); fr.close(); return c; }
-    throw new Error("Versi Mediabunny tidak mendukung ubah timestamp.");
-  };
-  /* Satu percobaan encode penuh dengan konfigurasi tertentu. Gagal di tengah jalan (mis. "Encoding error." dari encoder hardware Android) -> dicoba lagi dengan konfigurasi lain. */
-  let curFed = 0;
-  const attempt = async (enc, latency, variant) => {
-    /* variant: "std" = config penuh; "min" = tanpa bitrateMode/latencyMode (sebagian encoder HP menolaknya); "canvas" = frame hasil decode disalin lewat canvas dulu (menghindari format frame hardware decoder yang ditolak encoder) */
-    const minimal = variant === "min", viaCanvas = variant === "canvas";
-    const encTag = enc.label + (minimal ? ", config minimal" : ", " + enc.bitrateMode + ", " + latency) + (viaCanvas ? ", via canvas" : "");
-    curFed = 0;
-    const output = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
-    const srcOpts = { codec: "avc", bitrate: outBitrate, hardwareAcceleration: enc.hw, fullCodecString: enc.codec, keyFrameInterval: scale };
-    if (!minimal) { srcOpts.bitrateMode = enc.bitrateMode; srcOpts.latencyMode = latency; }
-    srcOpts.onEncoderConfig = cfg => {
-      cfg.codec = enc.codec; cfg.hardwareAcceleration = enc.hw; cfg.avc = { format: "avc" };
-      if (minimal) { delete cfg.bitrateMode; delete cfg.latencyMode; } else { cfg.bitrateMode = enc.bitrateMode; cfg.latencyMode = latency; }
-    };
-    const source = new VideoSampleSource(srcOpts);
-    let cv = null, cx = null;
-    const drawFrom = smp => {
-      const fr = smp.toVideoFrame();
-      try {
-        const w = fr.displayWidth, h = fr.displayHeight;
-        if (!cv || cv.width !== w || cv.height !== h) { cv = (typeof OffscreenCanvas !== "undefined") ? new OffscreenCanvas(w, h) : Object.assign(document.createElement("canvas"), { width: w, height: h }); cx = cv.getContext("2d"); }
-        cx.drawImage(fr, 0, 0, w, h);
-      } finally { fr.close(); }
-    };
-    const mkCanvas = (ts, du) => new VideoSample(cv, { timestamp: ts, duration: du });
-    output.addVideoTrack(source, { frameRate: srcFps }); /* tetap 60/120 FPS konstan */
-    let aSource = null, aSink = null;
-    if (aTrack) {
-      aSource = new MB.EncodedAudioPacketSource(aTrack.codec);
-      output.addAudioTrack(aSource);
-      aSink = new MB.EncodedPacketSink(aTrack);
-    }
-    await output.start();
-    const sink = new VideoSampleSink(track);
-    say("Medium: encode " + encTag + "…"); progress(10);
-    const doVideo = async () => {
-      const fd = 1 / srcFps;
-      for await (const sample of sink.samples()) {
-        checkCancelled();
-        const idx = Math.round(sample.timestamp * srcFps);
-        try {
-          if (viaCanvas) drawFrom(sample);
-          for (let k = 0; k < scale; k++) {
-            const c = viaCanvas ? mkCanvas((idx * scale + k) * fd, fd) : mkAt(sample, (idx * scale + k) * fd, fd);
-            try { await source.add(c); curFed++; } finally { c.close(); }
-          }
-        } finally { sample.close(); }
-        const t0 = sample.timestamp;
-        if (duration > 0) { const pr = Math.min(1, t0 / duration); progress(10 + Math.round(pr * 85)); say("Medium: encode " + enc.label + "… " + Math.round(pr * 100) + "% (" + srcFps + " FPS)"); }
-      }
-      source.close();
-    };
-    /* audio: isi paket TIDAK diubah (tanpa encode ulang, tidak dilambatkan); hanya timestamp x N */
-    const doAudio = async () => {
-      if (!aSource) return;
-      let first = true;
-      for await (const pk of aSink.packets()) {
-        checkCancelled();
-        const ts = pk.timestamp * scale, du = (pk.duration || 0) * scale;
-        const np = (typeof pk.clone === "function") ? pk.clone({ timestamp: ts, duration: du }) : new MB.EncodedPacket(pk.data, pk.type, ts, du);
-        await aSource.add(np, first ? { decoderConfig: aCfg } : undefined); first = false;
-      }
-      aSource.close();
-    };
-    try {
-      await Promise.all([doVideo(), doAudio()]);
-      await output.finalize();
-    } catch (e) { try { await output.cancel(); } catch (_) {} throw e; }
-    const buf = output.target.buffer;
-    if (!buf || !buf.byteLength) throw new Error("Encode selesai tetapi output kosong.");
-    window.__medEncoder = enc; window.__medLatency = latency;
-    return buf;
-  };
-
-  /* Rencana percobaan: tiap percobaan SENGAJA berbeda (profil, config, jalur frame, software), supaya satu kelemahan encoder tidak menggagalkan semuanya. */
-  const plan = [[encPick, "quality", "std"], [encPick, "realtime", "std"], [encPick, "realtime", "min"], [encPick, "realtime", "canvas"]];
-  const seenCodec = new Set([encPick.codec]);
-  cands.forEach(c => { if (c.hw === "prefer-hardware" && !seenCodec.has(c.codec)) { seenCodec.add(c.codec); plan.push([c, "realtime", "min"]); } });
-  for (const [codec, name] of [["avc1.4D002A", "Main 4.2"], ["avc1.64002A", "High 4.2"], ["avc1.42E02A", "Baseline 4.2"]]) {
-    try {
-      const r = await VideoEncoder.isConfigSupported({ codec: codec, width: dimM.w, height: dimM.h, bitrate: outBitrate, framerate: srcFps, hardwareAcceleration: "prefer-software", latencyMode: "realtime", avc: { format: "avc" } });
-      if (r && r.supported) { plan.push([{ codec: codec, hw: "prefer-software", bitrateMode: "variable", label: name + " software" }, "realtime", "std"]); break; }
-    } catch (_) {}
-  }
-  const tries = plan;
-  const diag = [];
-  let buf = null, lastErr = null, swOk = encPick.hw === "prefer-hardware";
-  for (let i = 0; i < tries.length; i++) {
-    const [enc, latency, variant] = tries[i];
-    if (enc.hw !== "prefer-hardware" && !swOk) {
-      if (!confirmSoftwareEncode(duration * srcFps * scale)) { lastErr = lastErr || new Error("Dibatalkan: encoder hardware tidak didukung di perangkat ini dan kamu memilih tidak memakai software."); break; }
-      swOk = true;
-    }
-    try { buf = await attempt(enc, latency, variant); break; }
-    catch (e) {
-      if (ctl.cancelled || (e && (e.cancelled || e.name === "AbortError"))) throw e;
-      lastErr = e;
-      diag.push((i + 1) + ":" + String(enc.codec).replace("avc1.", "") + (enc.hw === "prefer-hardware" ? "h" : "s") + "/" + variant + "/" + latency.charAt(0) + " f" + curFed + " " + ((e && e.name) || "err"));
-      console.warn("Medium attempt " + (i + 1) + " gagal:", enc.label, enc.bitrateMode, latency, variant, e);
-      if (i + 1 < tries.length) { say("Medium: encoder error (" + ((e && e.message) || "unknown") + "). Mencoba konfigurasi lain (" + (i + 2) + "/" + tries.length + ")…"); progress(8); await new Promise(r => setTimeout(r, 400)); }
-    }
-  }
-  if (!buf) throw new Error(((lastErr && lastErr.message) || "Encoding error.") + " [Medium: semua konfigurasi encoder gagal — " + encPick.label + ", " + dimM.w + "x" + dimM.h + " " + srcFps + " FPS, " + (outBitrate / 1e6).toFixed(1) + " Mbps · tes mini gagal " + testFail + "/" + maxTests + " · " + diag.join("; ") + "]");
-  progress(100); say("Selesai · Medium (" + srcFps + " FPS)");
-  return new Blob([buf], { type: "video/mp4" });
+  mediumApplyScale(mv.bytes, scale);
+  progress(80);
+  const blob = new Blob([file.slice(0, mv.off), mv.bytes, file.slice(mv.off + mv.size)], { type: "video/mp4" });
+  if (blob.size !== file.size) throw new Error("Medium: ukuran hasil tidak cocok dengan sumber.");
+  checkCancelled();
+  progress(100); say("Selesai · Medium (" + srcFps + " FPS, stream copy)");
+  return blob;
 }
 
 async function localForge(file,profile){
@@ -7843,7 +7718,7 @@ start.addEventListener("click",async()=>{
     if((m=ua.match(/(?:FxiOS|Firefox)\/([\d.]+)/)))return"Firefox "+m[1].split(".")[0];
     if((m=ua.match(/Version\/([\d.]+).*Safari/)))return"Safari "+m[1].split(".")[0];return"Tidak diketahui"}
   function methodText(){const f=getForge();
-    if(f==="local"){const p={std:"Standard",medium:"Medium",pro:"Pro"}[getProfile()]||getProfile();return"Local Forge · "+p+(getProfile()==="medium"?" · Hardware"+(getMedFps()?" ("+getMedFps()+" FPS)":""):"")}
+    if(f==="local"){const p={std:"Standard",medium:"Medium",pro:"Pro"}[getProfile()]||getProfile();return"Local Forge · "+p+(getProfile()==="medium"?" · Stream Copy"+(getMedFps()?" ("+getMedFps()+" FPS)":""):"")}
     const m={enc:"Pro",both:"Ultra"}[getMode()]||getMode();return"Cloud Forge · "+m}
   function buildReport(err){
     const sel=typeof selected!=="undefined"?selected:null;
@@ -7872,8 +7747,6 @@ start.addEventListener("click",async()=>{
         if(navigator.onLine===false)msgs.push("Kamu sedang offline. Cloud Forge butuh koneksi internet.");
         if(sel.size<=CLOUD_MAX_BYTES&&sel.size>=CLOUD_MAX_BYTES*EARLY.cloudNearRatio)msgs.push("Ukuran videomu mendekati batas Cloud Forge (60MB). Kalau gagal, perkecil dulu lewat Video Compressor.");
         if(dur>EARLY.longSec)msgs.push("Videomu cukup panjang ("+fmtDur(dur)+"). Proses di Cloud bisa lama, pastikan koneksi stabil.");
-      }else if(getProfile()==="medium"){
-        if(sel.size>EARLY.ultraBigMB*1048576||dur>EARLY.longSec)msgs.push("Medium memproses di perangkat dan memakai banyak memori. Untuk video besar atau panjang bisa lambat atau gagal. Kalau terjadi, coba Standard atau Pro.");
       }
     }
     box.innerHTML="";msgs.forEach(t=>{const p=document.createElement("p");p.textContent=t;box.appendChild(p)});
