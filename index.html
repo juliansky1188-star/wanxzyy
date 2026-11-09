@@ -428,6 +428,8 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 #engineBox .seg span small{display:block;font-size:10px;font-weight:600;letter-spacing:0;opacity:.8}
 .seg label.eng-down span{opacity:.7}
 .seg label.eng-down span small{color:#ffb454;opacity:1}
+.seg span small.eng-ok{display:block;font-size:10px;font-weight:600;letter-spacing:0;color:#62d9a5;opacity:1}
+.seg input:checked+span small.eng-ok{color:#14091f}
 .fn{display:inline-flex;align-items:center;gap:7px;font-weight:inherit}
 .fdot{flex:none;width:7px;height:7px;border-radius:50%;background:#62d9a5;box-shadow:0 0 0 3px #62d9a526}
 .fdot[data-state="maintenance"]{background:#ffb454;box-shadow:0 0 0 3px #ffb45426}
@@ -5130,8 +5132,8 @@ const MODES={
 };
 const getMode=()=>document.querySelector('input[name="mode"]:checked')?.value||"both";
 /* STATUS ENGINE: "active" | "maintenance" | "soon". Ubah nilainya di sini. Engine non-aktif tetap bisa dipilih, tapi tombol Proses terkunci. */
-const ENGINE_STATUS={local:{std:"maintenance",medium:"active",pro:"maintenance"},cloud:{enc:"maintenance",both:"maintenance"}};
-const ENGINE_STATUS_TEXT={active:"Aktif",maintenance:"Perbaikan",soon:"Segera hadir"};
+const ENGINE_STATUS={local:{std:"maintenance",medium:"active",pro:"maintenance"},cloud:{enc:"active",both:"active"}};
+const ENGINE_STATUS_TEXT={active:"Active",maintenance:"Perbaikan",soon:"Segera hadir"};
 const forgeEls=document.querySelectorAll('input[name="forge"]');
 const getForge=()=>document.querySelector('input[name="forge"]:checked')?.value||"local";
 const FORGES={
@@ -5157,7 +5159,7 @@ function applyEngineStatus(){
     if(dot)dot.dataset.state=st;
     lab.classList.toggle("eng-down",st!=="active");
     let sm=sp.querySelector("small");
-    if(st!=="active"){if(!sm){sm=document.createElement("small");sp.appendChild(sm)}sm.textContent=ENGINE_STATUS_TEXT[st]}else if(sm){sm.remove()}
+    if(!sm){sm=document.createElement("small");sp.appendChild(sm)}sm.textContent=ENGINE_STATUS_TEXT[st];sm.classList.toggle("eng-ok",st==="active")
   }));
 }
 function updateEngNote(){const n=$("engNote");if(!n)return;const st=engineState();if(st==="active"){n.hidden=true;return}n.textContent=st==="maintenance"?"Engine ini sedang dalam perbaikan, jadi belum bisa dipakai untuk memproses. Pilih engine lain yang aktif.":"Engine ini segera hadir.";n.hidden=false}
