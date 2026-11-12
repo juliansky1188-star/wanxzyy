@@ -5516,6 +5516,57 @@ async function mediumLocal(file) {
   return blob;
 }
 
+async function loadMediabunny() {
+  if (window.__wxMB) return window.__wxMB;
+  let MB = null;
+  for (const u of ["https://esm.sh/mediabunny@1.62.1", "https://esm.sh/mediabunny@1.61.3", "https://cdn.jsdelivr.net/npm/mediabunny@1.61.3/+esm"]) {
+    try { MB = await import(u); break; } catch (e) {}
+  }
+  if (!MB) throw new Error("modul Mediabunny gagal dimuat. Cek koneksi internet.");
+  return (window.__wxMB = MB);
+}
+/* Pro: video H.264/HEVC disalin (tanpa encode ulang), audio → AAC-LC stereo 1 track via WebCodecs, track lain dibuang, hasil MP4. Tanpa FFmpeg. */
+async function hwNormalize(file, onP) {
+  const MB = await loadMediabunny();
+  checkCancelled();
+  const { Input, BlobSource, Output, Mp4OutputFormat, BufferTarget, Conversion, ALL_FORMATS } = MB;
+  if (!Input || !BlobSource || !Output || !Mp4OutputFormat || !BufferTarget || !Conversion) throw new Error("modul Mediabunny tidak lengkap.");
+  const input = new Input({ formats: ALL_FORMATS, source: new BlobSource(file) });
+  const vTrack = await input.getPrimaryVideoTrack();
+  if (!vTrack) throw new Error("track video tidak ditemukan.");
+  let vc = vTrack.codec;
+  if (vc === undefined && typeof vTrack.getCodec === "function") vc = await vTrack.getCodec();
+  if (vc !== "avc" && vc !== "hevc") throw new Error("codec video " + (vc || "tidak dikenal") + " tidak didukung (hanya H.264/HEVC).");
+  const aTrack = await input.getPrimaryAudioTrack();
+  if (!aTrack) throw new Error("video tidak punya track audio.");
+  if (typeof MB.canEncodeAudio === "function") {
+    const ok = await MB.canEncodeAudio("aac", { numberOfChannels: 2, sampleRate: 48000, bitrate: 192000 }).catch(() => false);
+    if (!ok) throw new Error("browser ini tidak bisa meng-encode audio AAC lewat WebCodecs. Coba Chrome terbaru.");
+  }
+  const isMain = (t, n, p) => (t && p && t.id !== undefined && p.id !== undefined) ? t.id === p.id : n === 1;
+  const output = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
+  const conversion = await Conversion.init({
+    input, output,
+    video: (t, n) => isMain(t, n, vTrack) ? {} : { discard: true },
+    audio: (t, n) => isMain(t, n, aTrack) ? { codec: "aac", forceTranscode: true, numberOfChannels: 2, sampleRate: 48000, bitrate: 192000 } : { discard: true },
+    subtitle: { discard: true }
+  });
+  if (!conversion.isValid) {
+    const why = (conversion.discardedTracks || []).map(x => x.reason || (x.track && x.track.type) || "track tidak didukung").join("; ");
+    throw new Error("konversi tidak valid. " + (why || "codec atau format input tidak didukung."));
+  }
+  if (Array.isArray(conversion.utilizedTracks) && !conversion.utilizedTracks.some(t => t.type === "audio")) throw new Error("audio tidak bisa di-encode ke AAC di browser ini.");
+  const abort = () => { try { conversion.cancel(); } catch (e) {} };
+  ctl.aborters.add(abort);
+  try {
+    conversion.onProgress = pr => { if (Number.isFinite(pr)) onP(pr); };
+    await conversion.execute();
+  } finally { ctl.aborters.delete(abort); }
+  checkCancelled();
+  const buf = output.target.buffer;
+  if (!buf || !buf.byteLength) throw new Error("hasil konversi kosong.");
+  return new Uint8Array(buf);
+}
 const ULTRA_API_URL = "https://compressbase.com/method-api/client.mjs";
 let ultraModule = null;
 async function ultraLocal(file) {
@@ -5526,11 +5577,34 @@ async function ultraLocal(file) {
   }
   checkCancelled();
   if (!ultraModule || typeof ultraModule.patchVideo !== "function") throw new Error("Pro: fungsi patchVideo tidak ditemukan di modul.");
-  progress(20); say("Pro: memproses video di perangkat (Quality + FPS · SL/SR)…");
+  let src = file, normalized = false;
+  const normalize = async () => {
+    say("Pro: menyiapkan video (video disalin, audio → AAC-LC stereo 1 track)…");
+    let u8;
+    try { u8 = await hwNormalize(file, p => progress(8 + Math.round(p * 22))); }
+    catch (e) { if (e && e.cancelled) throw e; throw new Error("Pro: konversi gagal, " + ((e && e.message) || "tidak diketahui")); }
+    checkCancelled();
+    src = new File([u8], (file.name.replace(/\.[^.]+$/, "") || "video") + ".mp4", { type: "video/mp4" });
+    normalized = true;
+  };
+  if (!/\.(mp4|m4v)$/i.test(file.name) && file.type !== "video/mp4") await normalize();
+  progress(32); say("Pro: memproses video di perangkat (Quality + FPS · SL/SR)…");
   await new Promise(r => setTimeout(r, 0));
+  const patch = () => ultraModule.patchVideo(src, { postingDevice: "sl-sr" });
   let out;
-  try { out = await ultraModule.patchVideo(file, { postingDevice: "sl-sr" }); }
-  catch (e) { throw new Error("Pro: " + ((e && e.message) || "gagal memproses video") + " (pastikan MP4 punya tepat satu track AAC-LC stereo)."); }
+  try {
+    try { out = await patch(); }
+    catch (e) {
+      if (normalized) throw e;
+      checkCancelled();
+      await normalize(); checkCancelled();
+      progress(32); say("Pro: mencoba lagi dengan video yang sudah disiapkan…");
+      out = await patch();
+    }
+  } catch (e) {
+    if (e && (e.cancelled || /^Pro:/.test(e.message || ""))) throw e;
+    throw new Error("Pro: " + ((e && e.message) || "gagal memproses video") + " (pastikan MP4 punya tepat satu track AAC-LC stereo).");
+  }
   checkCancelled();
   let blob = out;
   if (out && !(out instanceof Blob)) {
