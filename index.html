@@ -563,6 +563,9 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 #fgModal #fgOk{min-height:40px;margin-top:8px;font-size:12px}
 @media(max-width:480px){#fgModal{padding:10px}#fgModal .fg-panel{width:min(100%,350px);max-height:68dvh;padding:12px 11px 11px}}
 
+
+/* Diagnostik */
+.diag-copy{margin-top:10px}
 </style>
 <style>
 /* OBSIDIAN PRO v2: refined monochrome layout */
@@ -1030,6 +1033,59 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 .go:hover:not(:disabled),#start:hover:not(:disabled){box-shadow:0 10px 22px #0005,0 0 30px rgba(176,123,255,.38)}
 </style>
 
+<style id="smooth-motion">
+:root{--ease-out:cubic-bezier(.16,1,.3,1);--ease-io:cubic-bezier(.4,0,.2,1);--spring:cubic-bezier(.34,1.32,.5,1);--mo-x:0px}
+
+/* ===== Tab navigation: sliding pill ===== */
+.workspace-nav{position:relative}
+.workspace-tab{position:relative;z-index:1}
+.nav-pill{position:absolute;left:0;top:5px;width:0;height:0;border-radius:11px;background:#292c31;border:1px solid #454a52;box-shadow:0 2px 10px #0004,inset 0 1px 0 #ffffff12;pointer-events:none;z-index:0;opacity:0;transition:transform .55s var(--spring),width .55s var(--spring),opacity .2s;will-change:transform,width}
+.workspace-nav.has-pill .nav-pill{opacity:1}
+.workspace-nav.has-pill .workspace-tab.active{background:transparent;border-color:transparent;box-shadow:none}
+
+/* ===== Page enter / exit ===== */
+@keyframes moIn{from{opacity:0;transform:translate3d(var(--mo-x,0px),12px,0) scale(.985)}to{opacity:1;transform:none}}
+@keyframes moSwap{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.mo-in{animation:moIn .52s var(--ease-out) backwards;animation-delay:var(--mo-d,0ms);will-change:opacity,transform}
+.mo-swap{animation:moSwap .32s var(--ease-out) backwards}
+.modedesc{text-wrap:pretty}
+.modedesc .mnote{animation:moSwap .45s var(--ease-out) .14s backwards}
+.mo-out{opacity:0!important;transform:translate3d(calc(var(--mo-x,0px) * -.5),-4px,0) scale(.992)!important;transition:opacity .1s ease-in,transform .1s ease-in!important}
+
+/* ===== Tab buttons: hover, press, label color ===== */
+.workspace-tab{transition:color .3s var(--ease-io),transform .4s var(--spring),background .18s,border-color .18s,box-shadow .18s;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.workspace-tab:not(.active):hover{color:#dfe3e8}
+.workspace-tab:active{transform:scale(.95);transition-duration:.12s,.12s,.18s,.18s,.18s}
+.workspace-tab.active{color:#fff}
+@media(prefers-reduced-motion:reduce){.nav-pill,.workspace-tab{transition:none!important}}
+
+/* ===== Segmented controls (Method / Engine / tools): sliding thumb ===== */
+.seg{position:relative}
+.seg-thumb{position:absolute;left:0;top:0;width:0;height:0;border-radius:10px;background:linear-gradient(180deg,#f2f3f4,#d7dbe0);box-shadow:0 2px 8px #0005;pointer-events:none;opacity:0;transition:transform .38s var(--ease-out),width .38s var(--ease-out),height .38s var(--ease-out),opacity .15s;will-change:transform,width}
+.seg.sg-on .seg-thumb{opacity:1}
+.seg.sg-on input:checked+span{background:transparent!important;box-shadow:none!important}
+.seg span{transition:color .25s var(--ease-io),transform .12s var(--ease-io)}
+
+/* ===== Modals: fade + rise on open, fade + sink on close ===== */
+.tool-modal[hidden],.history-modal[hidden],.history-detail-modal[hidden],.fg-modal[hidden],.order-modal[hidden]{display:grid!important;visibility:hidden;pointer-events:none;transition:visibility 0s linear .32s}
+.tool-modal,.history-modal,.history-detail-modal,.fg-modal,.order-modal{transition:visibility 0s}
+.tool-modal-scrim,.history-backdrop,.fg-scrim,.order-scrim{transition:opacity .32s var(--ease-out)}
+.tool-modal[hidden] .tool-modal-scrim,.history-modal[hidden] .history-backdrop,.history-detail-modal[hidden] .history-backdrop,.fg-modal[hidden] .fg-scrim,.order-modal[hidden] .order-scrim{opacity:0}
+.tool-modal-panel,.history-dialog,.history-detail-dialog,.fg-panel,.order-panel{animation:none!important;transition:transform .4s var(--ease-out),opacity .3s var(--ease-out)}
+.tool-modal[hidden] .tool-modal-panel,.history-modal[hidden] .history-dialog,.history-detail-modal[hidden] .history-detail-dialog,.fg-modal[hidden] .fg-panel,.order-modal[hidden] .order-panel{opacity:0;transform:translateY(20px) scale(.97)}
+.order-modal[hidden] .order-panel{transform:translateY(46px)}
+
+/* ===== FAQ / accordion ===== */
+.faq-item summary::after,details.guide summary::after,.vr-sec>summary::after{transition:transform .38s var(--ease-out)}
+.faq-item[open]>p{animation:moSwap .42s var(--ease-out) .04s backwards}
+.faq-item summary{transition:background .2s}
+@media(hover:hover){.faq-item summary:hover{background:#1b1e22}}
+
+/* ===== Cards ===== */
+.tool-launch-card{transition:transform .3s var(--ease-out),border-color .2s,box-shadow .3s}
+@media(hover:hover){.tool-launch-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #0005}}
+</style>
+
 </head>
 <body>
 <main class="wrap">
@@ -1158,6 +1214,7 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M12 8.5v4"/><path d="M12 15.6v.1"/></svg></div><span class="tool-tag">SUPPORT · WHATSAPP</span><h3>Lapor Error</h3>
         <p>Ada video yang gagal diproses? Kirim laporan ke admin lewat WhatsApp. Info perangkat, browser, Forge, mode, dan ukuran video terisi otomatis.</p>
         <button type="button" class="tool-open-btn" id="reportInfoBtn">Lapor via WhatsApp <span>↗</span></button>
+        <button type="button" class="tool-open-btn diag-copy" id="diagCopyBtn">Salin log diagnostik <span>⧉</span></button>
       </article>
     </div>
 
@@ -1178,17 +1235,15 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 
     <div class="tool-library-note info-note"><h4 class="cl-head"><span>v3.4.0 · Terbaru</span></h4>
       <ul class="info-list plain">
-        <li class="cl-group">New :</li>
-        <li>Engine <strong>Pro</strong> (Quality + FPS, SL/SR audio) di Local Forge: <strong>bisa untuk semua akun</strong> dan <strong>tanpa limit ukuran file</strong>.</li>
-        <li>Kartu peringatan <strong>saluran WhatsApp diretas</strong> kini berwarna merah agar langsung terlihat.</li>
-        <li>Efek tekan (<strong>scale</strong>) pada tab, pilihan Method/Engine, dan tombol; glow ungu lembut pada tombol <strong>Proses video</strong>.</li>
-        <li class="cl-group">Changed :</li>
-        <li>Nama engine Local Forge: <strong>Medium</strong> lama kini menjadi <strong>Standard</strong>, Medium sekarang memakai metode lama (dalam perbaikan), dan Standard lama dihapus.</li>
-        <li>Catatan Standard dan Pro di Local Forge: bisa digunakan untuk semua akun (10 ribu pengikut ke atas/ke bawah). Deskripsi Local Forge kini untuk Engine Standard &amp; Pro.</li>
-        <li>Pengumuman di tab Info dirapikan jadi poin-poin; tagline header diperbarui; penulisan "di atas" dan "anti-kompresi" dibenahi.</li>
-        <li>Teks penjelas lebih terang dan terbaca (13px), animasi modal lebih halus, dan jarak bawah halaman mengikuti area aman perangkat.</li>
-        <li>Changelog v3.3.0 diringkas.</li>
-        <li>Versi sebelumnya: v3.3.0.</li>
+        <li class="cl-group">Fitur Baru:</li>
+        <li><strong>Engine Pro di Local Forge:</strong> kini tersedia untuk seluruh akun tanpa batasan ukuran file, mencakup peningkatan Quality + FPS serta audio SL/SR.</li>
+        <li><strong>Peringatan Saluran WhatsApp:</strong> kartu peringatan kini menggunakan aksen merah agar lebih mudah dikenali.</li>
+        <li><strong>Penyempurnaan Interaksi:</strong> efek tekan (scale) pada tab, pilihan Engine, dan tombol, serta efek kilau (glow) ungu lembut pada tombol Proses video.</li>
+        <li class="cl-group">Pembaruan &amp; Peningkatan:</li>
+        <li><strong>Struktur Engine Local Forge:</strong> penamaan opsi Medium disesuaikan menjadi Standard. Opsi Medium saat ini menggunakan metode sebelumnya (dalam tahap pemeliharaan).</li>
+        <li><strong>Aksesibilitas Engine:</strong> catatan penggunaan Engine Standard &amp; Pro kini berlaku untuk seluruh akun secara fleksibel.</li>
+        <li><strong>Antarmuka &amp; Informasi:</strong> penyusunan ulang informasi pada tab Info, pembaruan tagline, serta peningkatan keterbacaan teks (13px).</li>
+        <li><strong>Kenyamanan Visual:</strong> animasi modal dibuat lebih halus dan jarak bawah halaman disesuaikan mengikuti area aman (safe area) perangkat.</li>
       </ul>
     </div>
 
@@ -1417,6 +1472,7 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
     </div>
     <p class="modedesc" style="margin-top:6px">Jangan tutup halaman sampai proses selesai.</p>
     <button type="button" class="btn ghost report-btn" id="reportBtn" hidden>Lapor error ke admin</button>
+    <button type="button" class="btn ghost report-btn diag-copy" id="diagCopyBtn2" hidden>Salin log diagnostik</button>
   </section>
 
   <section class="card result" id="download" hidden>
@@ -1504,6 +1560,57 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
   <p class="foot">© 2026 Wanxzy – Developed &amp; Maintained by <a href="https://www.tiktok.com/@wanx.prstt" target="_blank" rel="noopener noreferrer">@wanx.prstt</a></p>
 </main>
 
+<script id="diag-eta-js">
+/* Log diagnostik (ring buffer) */
+(function(){
+  var MAX=400,buf=[],t0=Date.now(),caps={};
+  function ts(){return((Date.now()-t0)/1000).toFixed(1)+"s"}
+  function push(s){try{s=String(s==null?"":s).replace(/\s+$/,"");if(!s)return;if(s.length>300)s=s.slice(0,300)+"…";
+    var l=buf[buf.length-1];if(l&&l.s===s){l.n++;return}
+    buf.push({t:ts(),s:s,n:1});if(buf.length>MAX)buf.splice(0,buf.length-MAX)}catch(e){}}
+  addEventListener("error",function(e){push("[ERROR] "+(e.message||"")+(e.filename?" @"+String(e.filename).split("/").pop()+":"+e.lineno:""))});
+  addEventListener("unhandledrejection",function(e){var r=e.reason;push("[REJECT] "+((r&&r.message)||r))});
+  function ok(f){try{return!!f()}catch(e){return false}}
+  function envLines(){
+    var n=navigator,c=n.connection||{},L=[];
+    L.push("UA: "+(n.userAgent||"-"));
+    L.push("Layar: "+screen.width+"x"+screen.height+" @"+(window.devicePixelRatio||1)+"x");
+    L.push("CPU core: "+(n.hardwareConcurrency||"-")+" · RAM ≈ "+(n.deviceMemory?n.deviceMemory+" GB":"-"));
+    L.push("Online: "+(n.onLine!==false)+" · Koneksi: "+(c.effectiveType||"-")+(c.downlink?" ("+c.downlink+" Mbps)":""));
+    L.push("WebCodecs VideoEncoder: "+ok(function(){return typeof VideoEncoder!=="undefined"})+" · VideoDecoder: "+ok(function(){return typeof VideoDecoder!=="undefined"}));
+    L.push("WebAssembly: "+ok(function(){return typeof WebAssembly==="object"})+" · SharedArrayBuffer: "+ok(function(){return typeof SharedArrayBuffer!=="undefined"})+" · crossOriginIsolated: "+(window.crossOriginIsolated===true));
+    if(caps.h264!==undefined)L.push("HW encode H.264 1080p60: "+caps.h264);
+    if(caps.hevc!==undefined)L.push("HW encode H.265 1080p60: "+caps.hevc);
+    if(caps.storage)L.push("Storage: "+caps.storage);
+    return L}
+  function probe(){
+    try{
+      if(typeof VideoEncoder!=="undefined"&&VideoEncoder.isConfigSupported){
+        [["h264","avc1.640034",{avc:{format:"avc"}}],["hevc","hvc1.1.6.L153.B0",{hevc:{format:"hevc"}}]].forEach(function(x){
+          var cfg=Object.assign({codec:x[1],width:1920,height:1080,bitrate:2e7,framerate:60,hardwareAcceleration:"prefer-hardware"},x[2]);
+          VideoEncoder.isConfigSupported(cfg).then(function(r){caps[x[0]]=r.supported?"didukung":"tidak didukung"}).catch(function(){caps[x[0]]="gagal dicek"})})
+      }else{caps.h264=caps.hevc="WebCodecs tidak tersedia"}
+    }catch(e){}
+    try{if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(function(r){var m=function(b){return(b/1048576).toFixed(0)+" MB"};caps.storage=m(r.usage||0)+" terpakai / "+m(r.quota||0)})}catch(e){}
+  }
+  function compose(head){
+    var L=[];if(head)L.push(head,"");
+    L.push("== LINGKUNGAN ==");L=L.concat(envLines());
+    L.push("","== LOG (maks "+MAX+" baris terakhir) ==");
+    if(!buf.length)L.push("(kosong)");
+    buf.forEach(function(b){L.push("["+b.t+"] "+b.s+(b.n>1?" (x"+b.n+")":""))});
+    return L.join("\n")}
+  function copy(t){
+    var done=false;
+    function fallback(){try{var a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.cssText="position:fixed;opacity:0;top:0";document.body.appendChild(a);a.select();var r=document.execCommand("copy");a.remove();return r}catch(e){return false}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      return navigator.clipboard.writeText(t).then(function(){return true},function(){return fallback()})}
+    return Promise.resolve(fallback())}
+  window.__diag={push:push,compose:compose,copy:copy,buf:buf};
+  probe();push("Aplikasi dibuka");
+
+})();
+</script>
 <script>
 /* Video Structure Analyzer — membaca struktur ISO-BMFF (MP4/MOV/M4V) tanpa memuat seluruh file.
    Hanya header box, moov, dan ftyp yang dibaca; isi mdat tidak pernah dibaca. */
@@ -3553,7 +3660,7 @@ function friendlyStatus(s){
     .replace("HQ Method selesai. Mengambil hasil…",one+" selesai. Mengambil hasil…")
     .replace(/Hasil HQ/g,one).replace(/HQ Method/g,one).replace(/Encode video/g,two).replace(/Hasil akhir/g,two)
 }
-const say=(s,cls="")=>{statusEl.textContent=friendlyStatus(s);statusEl.className=cls;const isError=cls==="err";$("proc").classList.toggle("has-error",isError);};
+const say=(s,cls="")=>{try{window.__diag&&window.__diag.push((cls==="err"?"[patcher ERR] ":"[patcher] ")+s)}catch(e){}statusEl.textContent=friendlyStatus(s);statusEl.className=cls;const isError=cls==="err";$("proc").classList.toggle("has-error",isError);};
 const progress=n=>{const v=Math.max(0,Math.min(100,n));fill.style.width=v+"%";pctNum.textContent=Math.round(v);fill.parentElement.setAttribute("aria-valuenow",Math.round(v))};
 const LABEL={wait:"Menunggu",active:"Berjalan",done:"Selesai",skip:"Dilewati",fail:"Gagal"};
 const stepFor=l=>/^(HQ|Hasil HQ)/.test(l)?hq:enc;
@@ -3976,7 +4083,7 @@ const RECENT_KEY="wanxzyy_ffmpeg_recent_v1";
 let inst=null,loading=null,files=[],names=[],written=new Map(),busy=false,stopped=false,dirty=false,urls=[],tick=null,t0=0,logLines=[],logTimer=null,curTpl=null,wasmBase=0,activeHardwareConversion=null,mediumOnProgress=null;
 
 const setEngine=(state,text)=>{el.ffEngine.dataset.state=state;el.ffEngineText.textContent=text;el.ffLoad.hidden=el.ffMode?.value!=="software"||state==="ready"||state==="loading";el.ffLoad.textContent=state==="error"?"Coba lagi":"Muat mesin"};
-const setStatus=(t,cls="")=>{el.ffStatus.textContent=t;el.ffStatus.className=cls};
+const setStatus=(t,cls="")=>{try{window.__diag&&window.__diag.push((cls==="err"?"[ff ERR] ":"[ff] ")+t)}catch(e){}el.ffStatus.textContent=t;el.ffStatus.className=cls};
 const setBar=p=>{const b=el.ffBar;if(Number.isFinite(p)){b.classList.remove("indet");el.ffFill.style.width=Math.max(0,Math.min(100,p))+"%"}else{b.classList.add("indet");el.ffFill.style.width=""}};
 const fmtT=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
 const loadScript=src=>new Promise((res,rej)=>{const t=document.createElement("script");t.src=src;t.onload=res;t.onerror=()=>{t.remove();rej(new Error("Gagal memuat "+src))};document.head.appendChild(t)});
@@ -3990,7 +4097,7 @@ async function blobURL(u,type,onBytes){
 
 /* log (dibatch supaya tidak berat) */
 function flushLog(){logTimer=null;const v=logLines.slice(-500).join("\n");el.ffLog.textContent=v;el.ffLog.scrollTop=el.ffLog.scrollHeight}
-function addLog(line){logLines.push(line);if(logLines.length>2000)logLines=logLines.slice(-1000);if(!logTimer)logTimer=setTimeout(flushLog,120)}
+function addLog(line){try{window.__diag&&window.__diag.push("[ffmpeg] "+line)}catch(e){}logLines.push(line);if(logLines.length>2000)logLines=logLines.slice(-1000);if(!logTimer)logTimer=setTimeout(flushLog,120)}
 const onLog=({message})=>addLog(message);
 const onProg=({progress})=>{if(busy&&Number.isFinite(progress)&&progress>0&&progress<=1)setBar(progress*100);if(typeof mediumOnProgress==="function"&&Number.isFinite(progress)&&progress>0&&progress<=1)mediumOnProgress(progress)};
 
@@ -5516,57 +5623,6 @@ async function mediumLocal(file) {
   return blob;
 }
 
-async function loadMediabunny() {
-  if (window.__wxMB) return window.__wxMB;
-  let MB = null;
-  for (const u of ["https://esm.sh/mediabunny@1.62.1", "https://esm.sh/mediabunny@1.61.3", "https://cdn.jsdelivr.net/npm/mediabunny@1.61.3/+esm"]) {
-    try { MB = await import(u); break; } catch (e) {}
-  }
-  if (!MB) throw new Error("modul Mediabunny gagal dimuat. Cek koneksi internet.");
-  return (window.__wxMB = MB);
-}
-/* Pro: video H.264/HEVC disalin (tanpa encode ulang), audio → AAC-LC stereo 1 track via WebCodecs, track lain dibuang, hasil MP4. Tanpa FFmpeg. */
-async function hwNormalize(file, onP) {
-  const MB = await loadMediabunny();
-  checkCancelled();
-  const { Input, BlobSource, Output, Mp4OutputFormat, BufferTarget, Conversion, ALL_FORMATS } = MB;
-  if (!Input || !BlobSource || !Output || !Mp4OutputFormat || !BufferTarget || !Conversion) throw new Error("modul Mediabunny tidak lengkap.");
-  const input = new Input({ formats: ALL_FORMATS, source: new BlobSource(file) });
-  const vTrack = await input.getPrimaryVideoTrack();
-  if (!vTrack) throw new Error("track video tidak ditemukan.");
-  let vc = vTrack.codec;
-  if (vc === undefined && typeof vTrack.getCodec === "function") vc = await vTrack.getCodec();
-  if (vc !== "avc" && vc !== "hevc") throw new Error("codec video " + (vc || "tidak dikenal") + " tidak didukung (hanya H.264/HEVC).");
-  const aTrack = await input.getPrimaryAudioTrack();
-  if (!aTrack) throw new Error("video tidak punya track audio.");
-  if (typeof MB.canEncodeAudio === "function") {
-    const ok = await MB.canEncodeAudio("aac", { numberOfChannels: 2, sampleRate: 48000, bitrate: 192000 }).catch(() => false);
-    if (!ok) throw new Error("browser ini tidak bisa meng-encode audio AAC lewat WebCodecs. Coba Chrome terbaru.");
-  }
-  const isMain = (t, n, p) => (t && p && t.id !== undefined && p.id !== undefined) ? t.id === p.id : n === 1;
-  const output = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
-  const conversion = await Conversion.init({
-    input, output,
-    video: (t, n) => isMain(t, n, vTrack) ? {} : { discard: true },
-    audio: (t, n) => isMain(t, n, aTrack) ? { codec: "aac", forceTranscode: true, numberOfChannels: 2, sampleRate: 48000, bitrate: 192000 } : { discard: true },
-    subtitle: { discard: true }
-  });
-  if (!conversion.isValid) {
-    const why = (conversion.discardedTracks || []).map(x => x.reason || (x.track && x.track.type) || "track tidak didukung").join("; ");
-    throw new Error("konversi tidak valid. " + (why || "codec atau format input tidak didukung."));
-  }
-  if (Array.isArray(conversion.utilizedTracks) && !conversion.utilizedTracks.some(t => t.type === "audio")) throw new Error("audio tidak bisa di-encode ke AAC di browser ini.");
-  const abort = () => { try { conversion.cancel(); } catch (e) {} };
-  ctl.aborters.add(abort);
-  try {
-    conversion.onProgress = pr => { if (Number.isFinite(pr)) onP(pr); };
-    await conversion.execute();
-  } finally { ctl.aborters.delete(abort); }
-  checkCancelled();
-  const buf = output.target.buffer;
-  if (!buf || !buf.byteLength) throw new Error("hasil konversi kosong.");
-  return new Uint8Array(buf);
-}
 const ULTRA_API_URL = "https://compressbase.com/method-api/client.mjs";
 let ultraModule = null;
 async function ultraLocal(file) {
@@ -5577,34 +5633,11 @@ async function ultraLocal(file) {
   }
   checkCancelled();
   if (!ultraModule || typeof ultraModule.patchVideo !== "function") throw new Error("Pro: fungsi patchVideo tidak ditemukan di modul.");
-  let src = file, normalized = false;
-  const normalize = async () => {
-    say("Pro: menyiapkan video (video disalin, audio → AAC-LC stereo 1 track)…");
-    let u8;
-    try { u8 = await hwNormalize(file, p => progress(8 + Math.round(p * 22))); }
-    catch (e) { if (e && e.cancelled) throw e; throw new Error("Pro: konversi gagal, " + ((e && e.message) || "tidak diketahui")); }
-    checkCancelled();
-    src = new File([u8], (file.name.replace(/\.[^.]+$/, "") || "video") + ".mp4", { type: "video/mp4" });
-    normalized = true;
-  };
-  if (!/\.(mp4|m4v)$/i.test(file.name) && file.type !== "video/mp4") await normalize();
-  progress(32); say("Pro: memproses video di perangkat (Quality + FPS · SL/SR)…");
+  progress(20); say("Pro: memproses video di perangkat (Quality + FPS · SL/SR)…");
   await new Promise(r => setTimeout(r, 0));
-  const patch = () => ultraModule.patchVideo(src, { postingDevice: "sl-sr" });
   let out;
-  try {
-    try { out = await patch(); }
-    catch (e) {
-      if (normalized) throw e;
-      checkCancelled();
-      await normalize(); checkCancelled();
-      progress(32); say("Pro: mencoba lagi dengan video yang sudah disiapkan…");
-      out = await patch();
-    }
-  } catch (e) {
-    if (e && (e.cancelled || /^Pro:/.test(e.message || ""))) throw e;
-    throw new Error("Pro: " + ((e && e.message) || "gagal memproses video") + " (pastikan MP4 punya tepat satu track AAC-LC stereo).");
-  }
+  try { out = await ultraModule.patchVideo(file, { postingDevice: "sl-sr" }); }
+  catch (e) { throw new Error("Pro: " + ((e && e.message) || "gagal memproses video") + " (pastikan MP4 punya tepat satu track AAC-LC stereo)."); }
   checkCancelled();
   let blob = out;
   if (out && !(out instanceof Blob)) {
@@ -7960,9 +7993,20 @@ start.addEventListener("click",async()=>{
       "Koneksi: "+(navigator.onLine===false?"offline":net),
       "Error: "+(e||"(tulis masalahmu di sini)"),
       "Waktu: "+new Date().toLocaleString("id-ID")].join("\n")}
-  function sendReport(err){const msg=buildReport(err);window.open("https://wa.me/"+SHOP_WA_NUMBER+"?text="+encodeURIComponent(msg),"_blank","noopener")}
-  window.__showReport=m=>{lastErr=String(m||"");const b=$("reportBtn");if(b)b.hidden=false};
-  window.__hideReport=()=>{const b=$("reportBtn");if(b)b.hidden=true};
+  function fullDiag(err){return window.__diag?window.__diag.compose(buildReport(err)):buildReport(err)}
+  function sendReport(err){
+    let msg=buildReport(err);
+    /* salin log dulu (sinkron, masih dalam gestur tap) lalu buka WhatsApp */
+    if(window.__diag&&navigator.clipboard&&navigator.clipboard.writeText){
+      window.__diag.copy(fullDiag(err));
+      msg+="\n\nLog diagnostik lengkap sudah tersalin otomatis. Mohon tempel (paste) di bawah pesan ini."}
+    window.open("https://wa.me/"+SHOP_WA_NUMBER+"?text="+encodeURIComponent(msg),"_blank","noopener")}
+  function copyDiag(btn){
+    if(!window.__diag)return;const old=btn.dataset.old||btn.innerHTML;btn.dataset.old=old;
+    window.__diag.copy(fullDiag("")).then(ok=>{btn.textContent=ok?"Tersalin ✓":"Gagal menyalin";setTimeout(()=>{btn.innerHTML=old},1800)})}
+  ["diagCopyBtn","diagCopyBtn2"].forEach(id=>{const b=$(id);if(b)b.addEventListener("click",()=>copyDiag(b))});
+  window.__showReport=m=>{lastErr=String(m||"");const b=$("reportBtn"),d=$("diagCopyBtn2");if(b)b.hidden=false;if(d)d.hidden=false;try{window.__diag&&window.__diag.push("[LAPOR] "+lastErr)}catch(e){}};
+  window.__hideReport=()=>{const b=$("reportBtn"),d=$("diagCopyBtn2");if(b)b.hidden=true;if(d)d.hidden=true};
   $("reportBtn").addEventListener("click",()=>sendReport(lastErr));
   $("reportInfoBtn").addEventListener("click",()=>sendReport(""));
 
@@ -7985,5 +8029,220 @@ start.addEventListener("click",async()=>{
   addEventListener("online",earlyWarn);addEventListener("offline",earlyWarn);
 })();
 </script>
+<script id="prefs-js">
+/* Simpan preset terakhir (Forge, Engine, codec, resolusi, FPS, bitrate) */
+(function(){
+  var KEY="wanxzyy_prefs_v1",NAMES=["forge","lprof","mode","ffCodecRadio","ffResRadio","ffFpsRadio"];
+  function load(){try{var o=JSON.parse(localStorage.getItem(KEY)||"{}");return o&&typeof o==="object"?o:{}}catch(e){return{}}}
+  function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+  var prefs=load(),SAFE=/^[\w-]+$/;
+  function pick(name,val){
+    if(typeof val!=="string"||!SAFE.test(val))return;
+    var r=document.querySelector('input[name="'+name+'"][value="'+val+'"]');
+    if(!r||r.disabled||r.checked)return;
+    r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}
+  try{
+    NAMES.forEach(function(n){pick(n,prefs[n])});   /* forge dulu: handler-nya mereset engine */
+    var br=document.getElementById("ffBitrate"),v=Number(prefs.ffBitrate);
+    if(br&&isFinite(v)&&v>=0.1&&v<=200){br.value=String(v);br.dispatchEvent(new Event("input",{bubbles:true}))}
+    if(window.__diag)window.__diag.push("Preset dipulihkan: "+JSON.stringify(prefs))
+  }catch(e){}
+  function snap(){
+    NAMES.forEach(function(n){var c=document.querySelector('input[name="'+n+'"]:checked');if(c)prefs[n]=c.value});
+    var b=document.getElementById("ffBitrate"),x=b?Number(b.value):NaN;if(isFinite(x)&&x>0)prefs.ffBitrate=x;
+    save(prefs)}
+  document.addEventListener("change",function(e){var t=e.target;if(t&&t.type==="radio"&&NAMES.indexOf(t.name)>-1)setTimeout(snap,0)});
+  document.addEventListener("input",function(e){if(e.target&&e.target.id==="ffBitrate")snap()});
+})();
+</script>
+<script id="smooth-motion-js">
+(function(){
+"use strict";
+var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches;
+var $=function(id){return document.getElementById(id)};
+var raf=function(f){requestAnimationFrame(f)};
+
+/* ---------- 1. Sliding pill di navigasi tab ---------- */
+var nav=document.querySelector(".workspace-nav");
+var pill=null;
+function pillTo(t,anim){
+  if(!pill||!t||!t.offsetWidth)return;
+  if(!anim)pill.style.transition="none";
+  pill.style.top=t.offsetTop+"px";
+  pill.style.height=t.offsetHeight+"px";
+  pill.style.width=t.offsetWidth+"px";
+  pill.style.transform="translateX("+t.offsetLeft+"px)";
+  if(!anim){void pill.offsetWidth;pill.style.transition=""}
+  if(!nav.classList.contains("has-pill"))nav.classList.add("has-pill");
+}
+if(nav){
+  pill=document.createElement("i");pill.className="nav-pill";nav.prepend(pill);
+  var activeTab=function(){return nav.querySelector(".workspace-tab.active")};
+  pillTo(activeTab(),false);
+  new MutationObserver(function(){pillTo(activeTab(),true)}).observe(nav,{subtree:true,attributes:true,attributeFilter:["class"]});
+  if(window.ResizeObserver)new ResizeObserver(function(){pillTo(activeTab(),false)}).observe(nav);
+  window.addEventListener("load",function(){pillTo(activeTab(),false)});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){pillTo(activeTab(),false)});
+}
+
+/* ---------- 2. Transisi pindah tab: fade-out lalu fade-in bertahap ---------- */
+var panelSel="#setup,details.guide,#historyCard,#toolsHeading,#shopHeading,#infoHeading,#changelogHeading";
+var panels=function(){return Array.prototype.filter.call(document.querySelectorAll(panelSel),function(e){return !e.hidden})};
+var pass=false,busy=false,pending=null,xTimer=0,rootStyle=document.documentElement.style;
+function goTab(t){
+  var all=Array.prototype.slice.call(nav.querySelectorAll(".workspace-tab"));
+  var dir=all.indexOf(t)>all.indexOf(nav.querySelector(".workspace-tab.active"))?1:-1;
+  busy=true;
+  rootStyle.setProperty("--mo-x",(dir*22)+"px");
+  pillTo(t,true);
+  var cur=panels();
+  cur.forEach(function(p){p.classList.add("mo-out")});
+  setTimeout(function(){
+    cur.forEach(function(p){p.classList.remove("mo-out")});
+    pass=true;try{t.click()}finally{pass=false}
+    clearTimeout(xTimer);
+    xTimer=setTimeout(function(){rootStyle.removeProperty("--mo-x")},800);
+    /* ketukan cepat tidak dibuang: tab terakhir yang diketuk tetap dibuka */
+    setTimeout(function(){
+      busy=false;
+      if(pending){var p=pending;pending=null;if(!p.classList.contains("active"))goTab(p)}
+    },140);
+  },100);
+}
+if(nav&&!reduce){
+  nav.addEventListener("click",function(e){
+    var t=e.target.closest&&e.target.closest(".workspace-tab");
+    if(!t||pass)return;
+    if(t.classList.contains("active")&&!busy)return;
+    e.stopImmediatePropagation();
+    if(busy){pending=t;return}
+    goTab(t);
+  },true);
+}
+
+function play(k,i){
+  k.style.setProperty("--mo-d",Math.min(i,8)*40+"ms");
+  k.classList.remove("mo-in");void k.offsetWidth;k.classList.add("mo-in");
+  var done=function(ev){
+    if(ev.target!==k)return;
+    k.classList.remove("mo-in");k.style.removeProperty("--mo-d");k.removeEventListener("animationend",done);
+  };
+  k.addEventListener("animationend",done);
+}
+function enter(el,i){
+  if(el.classList.contains("tools-library")){
+    var kids=[];
+    Array.prototype.forEach.call(el.children,function(c){
+      if(c.classList.contains("tool-library-grid"))Array.prototype.forEach.call(c.children,function(g){kids.push(g)});
+      else kids.push(c);
+    });
+    kids.forEach(function(k,n){play(k,n)});
+  }else play(el,i);
+}
+var enterIds=["setup","historyCard","toolsHeading","shopHeading","infoHeading","changelogHeading","profBox","engineBox","picked","engNote","sizeWarn","earlyWarn"];
+var enterEls=enterIds.map($).filter(Boolean).concat(Array.prototype.slice.call(document.querySelectorAll("details.guide")));
+if(!reduce){
+  new MutationObserver(function(recs){
+    var i=0;
+    recs.forEach(function(m){
+      var el=m.target;
+      if(!el.hidden&&m.oldValue!==null){enter(el,i);i++}
+    });
+  }).observe(document.body,{subtree:true,attributes:true,attributeFilter:["hidden"],attributeOldValue:true});
+}
+/* hanya elemen di enterEls yang dianimasikan */
+(function(){
+  if(reduce)return;
+  var set=new Set(enterEls);
+  var orig=enter;
+  enter=function(el,i){if(set.has(el))orig(el,i)};
+})();
+
+/* ---------- 3. Teks deskripsi Method/Engine: cross-fade + tinggi mulus ---------- */
+if(!reduce&&Element.prototype.animate){
+  var D_HTML=Object.getOwnPropertyDescriptor(Element.prototype,"innerHTML");
+  var D_TXT=Object.getOwnPropertyDescriptor(Node.prototype,"textContent");
+  var EASE="cubic-bezier(.16,1,.3,1)";
+  document.querySelectorAll(".modedesc").forEach(function(d){
+    var timer=0,latest=null,lastVal=null,aH=null,aT=null;
+    function fresh(){clearTimeout(timer);timer=0;if(aH){aH.cancel();aH=null}if(aT){aT.cancel();aT=null}d.style.opacity="";d.style.transform="";d.style.transition="";d.style.overflow=""}
+    function swap(val,apply){
+      if(val===lastVal)return;
+      lastVal=val;latest=apply;
+      if(timer)return; /* sudah menunggu fade-out: pakai teks terbaru saja */
+      var empty=!d.firstChild,h0=d.offsetHeight;
+      if(empty||!h0||!d.offsetParent){fresh();apply();return}
+      if(aH){aH.cancel();aH=null}if(aT){aT.cancel();aT=null}
+      d.style.transition="opacity .11s ease-in,transform .11s ease-in";
+      d.style.opacity="0";d.style.transform="translateY(-3px)";
+      timer=setTimeout(function(){
+        timer=0;d.style.transition="none";
+        latest();
+        d.style.opacity="";d.style.transform="";
+        var h1=d.offsetHeight;
+        d.style.overflow="hidden";
+        aH=d.animate([{height:h0+"px"},{height:h1+"px"}],{duration:340,easing:EASE});
+        aH.onfinish=function(){aH=null;d.style.overflow="";d.style.transition=""};
+        aT=d.animate([{opacity:0,transform:"translateY(6px)"},{opacity:1,transform:"none"}],{duration:320,easing:EASE,fill:"backwards"});
+        aT.onfinish=function(){aT=null};
+      },110);
+    }
+    Object.defineProperty(d,"innerHTML",{configurable:true,get:function(){return D_HTML.get.call(d)},set:function(v){v=String(v);swap("h"+v,function(){D_HTML.set.call(d,v)})}});
+    Object.defineProperty(d,"textContent",{configurable:true,get:function(){return D_TXT.get.call(d)},set:function(v){v=String(v);swap("t"+v,function(){D_TXT.set.call(d,v)})}});
+  });
+}
+
+/* ---------- 4. Segmented control: thumb yang meluncur ---------- */
+var segs=[];
+function place(seg,anim){
+  var th=seg._th,inp=seg.querySelector("input:checked"),lab=inp&&inp.closest("label");
+  if(!lab||!lab.offsetWidth){th.style.opacity="0";seg.classList.remove("sg-on");return}
+  if(!anim||!seg.classList.contains("sg-on"))th.style.transition="none";
+  th.style.width=lab.offsetWidth+"px";
+  th.style.height=lab.offsetHeight+"px";
+  th.style.transform="translate("+lab.offsetLeft+"px,"+lab.offsetTop+"px)";
+  th.style.opacity="";
+  if(th.style.transition==="none"){void th.offsetWidth;th.style.transition=""}
+  seg.classList.add("sg-on");
+}
+document.querySelectorAll(".seg").forEach(function(seg){
+  var th=document.createElement("i");th.className="seg-thumb";seg.prepend(th);seg._th=th;segs.push(seg);
+  place(seg,false);
+  seg.addEventListener("change",function(){place(seg,true)});
+  if(window.ResizeObserver)new ResizeObserver(function(){place(seg,false)}).observe(seg);
+});
+/* jaga-jaga kalau ada kode lain yang mengubah pilihan tanpa event change */
+document.addEventListener("click",function(){raf(function(){segs.forEach(function(s){place(s,true)})})});
+
+/* ---------- 5. Accordion <details>: tinggi beranimasi (FAQ, panduan, dll.) ---------- */
+function wire(d){
+  var s=d.querySelector(":scope>summary");
+  if(!s||d._sm)return;d._sm=1;
+  var anim=null,closing=false;
+  var h=function(){return parseFloat(getComputedStyle(d).height)};
+  var run=function(from,to,done){
+    d.style.overflow="hidden";
+    anim=d.animate({height:[from+"px",to+"px"]},{duration:380,easing:"cubic-bezier(.16,1,.3,1)"});
+    anim.onfinish=function(){anim=null;d.style.overflow="";if(done)done()};
+  };
+  s.addEventListener("click",function(e){
+    if(reduce||!d.animate)return;
+    e.preventDefault();
+    var cur=h();
+    if(anim){anim.onfinish=null;anim.cancel();anim=null}
+    if(d.open&&!closing){
+      closing=true;
+      d.open=false;var end=h();d.open=true;
+      run(cur,end,function(){d.open=false;closing=false});
+    }else{
+      closing=false;d.open=true;
+      run(cur,h());
+    }
+  });
+}
+document.querySelectorAll("details.faq-item,details.guide,details.vr-sec").forEach(wire);
+})();
+</script>
+
 </body>
 </html>
