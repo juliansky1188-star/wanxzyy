@@ -1086,6 +1086,32 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 @media(hover:hover){.tool-launch-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #0005}}
 </style>
 
+<style>
+/* TikTok Downloader: tampilan (hanya #ttCard) */
+#ttCard .tt-input{width:100%;padding:13px 15px;border-radius:14px;border:1px solid var(--line,#333);background:var(--ink,#0b0b0c);color:inherit;font:inherit;font-size:14px;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+#ttCard .tt-input:focus{outline:none;border-color:#9aa0a8;box-shadow:0 0 0 3px #ffffff14}
+#ttCard .tt-result{margin-top:16px;padding-top:16px;border-top:1px solid var(--line,#2a2e33)}
+#ttCard .tt-preview{display:flex;gap:14px;align-items:flex-start;padding:12px;border:1px solid var(--line,#2a2e33);border-radius:16px;background:#ffffff06}
+#ttCard .tt-cover{width:84px;height:112px;object-fit:cover;border-radius:12px;flex:none;background:#222}
+#ttCard .tt-info{min-width:0;flex:1}
+#ttCard .tt-info b{display:block;font-size:15px;letter-spacing:-.01em}
+#ttCard .tt-info .tool-note{margin:6px 0 0;word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#ttCard .tt-meta{margin:8px 0 0;font-size:12px;color:var(--muted,#9aa0a8)}
+#ttCard .tt-meta:empty{display:none}
+
+#ttCard .tt-prog{margin-top:16px;padding:12px 14px;border:1px solid var(--line,#2a2e33);border-radius:14px;background:#ffffff06}
+#ttCard .tt-prog[hidden]{display:none}
+#ttCard .tt-prog-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px}
+#ttCard .tt-prog-top b{font-variant-numeric:tabular-nums;font-size:15px}
+#ttCard .tt-prog .ff-bar{margin-top:9px}
+#ttCard .tt-prog .ff-bar i{transition:width .12s linear}
+#ttCard .tt-prog .ff-bar.indet i{width:35%}
+#ttCard .tt-prog-sub{margin-top:7px;font-size:12px;color:var(--muted,#9aa0a8);font-variant-numeric:tabular-nums;min-height:1em}
+#ttCard .tt-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+#ttCard .tt-buttons .btn{width:100%;min-width:0;margin:0}
+#ttCard .tt-buttons .btn.main,#ttCard .tt-buttons .btn:nth-child(2):last-child{grid-column:1/-1}
+#ttCard #ttStatus{margin-top:12px}
+</style>
 </head>
 <body>
 <main class="wrap">
@@ -1174,8 +1200,14 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
         <p>Kompres video ke MP4 H.264 atau H.265 dengan pilihan resolusi 1080p, 2K, atau 4K dan 60 atau 120 FPS langsung di browser. Pilih mode Hardware (WebCodecs, cepat) atau Software (FFmpeg, lebih lambat).</p>
         <button type="button" class="tool-open-btn" data-open-tool="ffmpeg">Buka Compressor <span>↗</span></button>
       </article>
+      <article class="tool-launch-card">
+        <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4"/><path d="M5 19h14"/></svg></div><span class="tool-tag">TIKTOK · TIKWM</span>
+        <h3>TikTok Downloader</h3>
+        <p>Unduh video TikTok tanpa watermark, versi HD, watermark, atau audio saja hanya dengan menempel link. Hasilnya bisa langsung dikirim ke Patcher.</p>
+        <button type="button" class="tool-open-btn" data-open-tool="tiktok">Buka Downloader <span>↗</span></button>
+      </article>
     </div>
-    <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan.</span></div>
+    <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan. TikTok Downloader mengirim link yang lu tempel ke tikwmapi.com untuk mengambil video.</span></div>
   </section>
 
   <section class="tools-library" id="shopHeading" hidden>
@@ -1477,6 +1509,29 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
     <pre class="log" id="ffLog"></pre>
     <div class="ff-out" id="ffOut"></div>
     <p class="tool-note">Hardware: WebGL2 + WebCodecs/Mediabunny. Software: FFmpeg WebAssembly/libx264 atau libx265 berjalan lokal di browser, menggunakan CPU. Keduanya menghasilkan MP4 H.264 atau H.265 (HEVC) dengan resolusi pilihanmu: 1080p, 2K (1440p), atau 4K (2160p). Sisi pendek mengikuti pilihan, rasio asli dipertahankan: 9:16, 16:9, 1:1, 3:5, dll; dengan 60 atau 120 FPS sesuai pilihanmu; kemampuan dan kecepatan bergantung pada browser dan perangkat.</p>
+  </section>
+  <section class="card tool-modal-tool" id="ttCard" hidden>
+    <h2>TikTok Downloader</h2>
+    <p class="tool-intro">Tempel link video TikTok, lalu unduh tanpa watermark (kualitas asli) atau ambil audio. Link dikirim ke tikwmapi.com untuk mengambil data video.</p>
+    <label class="ff-label" for="ttUrl">Link TikTok</label>
+    <input type="url" id="ttUrl" class="tt-input" inputmode="url" autocomplete="off" placeholder="https://www.tiktok.com/@user/video/123...">
+    <div class="ff-actions">
+      <button type="button" class="btn main" id="ttFetch">Ambil Video</button>
+      <button type="button" class="btn ghost" id="ttPaste">Tempel</button>
+    </div>
+    <p class="vr-status" id="ttStatus" role="status"></p>
+    <div id="ttResult" class="tt-result" hidden>
+      <div class="tt-preview">
+        <img id="ttCover" class="tt-cover" alt="">
+        <div class="tt-info"><b id="ttAuthor"></b><p id="ttTitle" class="tool-note"></p><p id="ttMeta" class="tt-meta"></p></div>
+      </div>
+      <div class="tt-prog" id="ttProg" hidden aria-live="polite">
+        <div class="tt-prog-top"><span id="ttProgLabel">Mengunduh…</span><b id="ttProgPct">0%</b></div>
+        <div class="ff-bar" id="ttBar"><i id="ttFill"></i></div>
+        <div class="tt-prog-sub" id="ttProgSub"></div>
+      </div>
+      <div class="ff-actions tt-buttons" id="ttButtons"></div>
+    </div>
   </section>
       </div>
     </section>
@@ -4077,15 +4132,121 @@ $("orderSend").addEventListener("click",()=>{
 
 const toolModal=$("toolModal"),toolModalTitle=$("toolModalTitle"),toolModalDescription=$("toolModalDescription"),inspectorCard=$("inspectorCard");
 let lastToolOpener=null;
-function openTool(which,opener){lastToolOpener=opener||null;const isFf=which==="ffmpeg";inspectorCard.hidden=isFf;$("ffCard").hidden=!isFf;
-  toolModalTitle.textContent=isFf?"Ffmpeg Video Compressor":"Resolution & Fps Video Checker";toolModal.querySelector(".tool-modal-panel").classList.toggle("wide",!isFf);
-  toolModalDescription.textContent=isFf?"Pilih video, pilih mode Hardware atau Software, lalu mulai kompresi. Tidak perlu mengetik perintah.":"Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov/mdat, warna, audio, dan tag.";toolModal.hidden=false;document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
+function openTool(which,opener){lastToolOpener=opener||null;const isFf=which==="ffmpeg",isTt=which==="tiktok";inspectorCard.hidden=isFf||isTt;$("ffCard").hidden=!isFf;$("ttCard").hidden=!isTt;
+  toolModalTitle.textContent=isTt?"TikTok Downloader":isFf?"Ffmpeg Video Compressor":"Resolution & Fps Video Checker";toolModal.querySelector(".tool-modal-panel").classList.toggle("wide",!isFf&&!isTt);
+  toolModalDescription.textContent=isTt?"Tempel link TikTok untuk mengunduh video tanpa watermark, HD, atau audio.":isFf?"Pilih video, pilih mode Hardware atau Software, lalu mulai kompresi. Tidak perlu mengetik perintah.":"Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov/mdat, warna, audio, dan tag.";toolModal.hidden=false;document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
 }
 function closeTool(){toolModal.hidden=true;document.body.classList.remove("modal-open");if(lastToolOpener)lastToolOpener.focus();}
 document.querySelectorAll("[data-open-tool]").forEach(btn=>btn.addEventListener("click",()=>openTool(btn.dataset.openTool,btn)));
 toolModal.querySelectorAll("[data-close-tool]").forEach(btn=>btn.addEventListener("click",closeTool));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!toolModal.hidden)closeTool();});
 $("fpsCheck").disabled=true;
+
+/* ---- TikTok Downloader (tool): tikwmapi.com ---- */
+(function(){
+  /* Semua request TikWM melewati Cloudflare Worker; API key hanya disimpan sebagai Secret di Worker. */
+  const TIKTOK_PROXY="https://tiktok-proxy.ganta4830.workers.dev";
+  const urlIn=$("ttUrl"),st=$("ttStatus"),res=$("ttResult"),btns=$("ttButtons"),fetchBtn=$("ttFetch"),pg=$("ttProg"),pgL=$("ttProgLabel"),pgP=$("ttProgPct"),pgB=$("ttBar"),pgF=$("ttFill"),pgS=$("ttProgSub");
+  const fmtB=n=>n>=1048576?(n/1048576).toFixed(1)+" MB":Math.max(1,Math.round(n/1024))+" KB";
+  function prog(label,p,sub){
+    pg.hidden=false;pgL.textContent=label;
+    if(Number.isFinite(p)){pgB.classList.remove("indet");const v=Math.max(0,Math.min(100,p));pgF.style.width=v+"%";pgP.textContent=Math.round(v)+"%";}
+    else{pgB.classList.add("indet");pgF.style.width="";pgP.textContent="…";}
+    pgS.textContent=sub||"";
+  }
+  const progHide=()=>{pg.hidden=true;};
+  const say=(t,bad)=>{st.textContent=t||"";st.style.color=bad?"#ff6b6b":"";};
+  const abs=u=>!u?"":(u.startsWith("http")?u:"https://api.tikwmapi.com"+u);
+  const safe=t=>(t||"tiktok").toString().replace(/[^\w\- ]+/g,"").trim().slice(0,50)||"tiktok";
+  const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  const proxy=TIKTOK_PROXY.replace(/\/+$/,"");
+  const viaProxy=u=>proxy?proxy+"/dl?u="+encodeURIComponent(u):u;
+  let cur=null;
+  const diag=m=>{try{window.__diag.push(m);}catch(_){}};
+  async function getBlob(url,label){
+    const r=await fetch(viaProxy(url));if(!r.ok)throw new Error("HTTP "+r.status);
+    label=label||"Mengunduh…";
+    const total=Number(r.headers.get("content-length"))||0;
+    if(!r.body||!r.body.getReader){prog(label,NaN,"");return await r.blob();}
+    const rd=r.body.getReader(),parts=[];let n=0,t0=performance.now(),tl=0;
+    prog(label,total?0:NaN,total?"0 / "+fmtB(total):"");
+    for(;;){
+      const {done,value}=await rd.read();if(done)break;
+      parts.push(value);n+=value.length;
+      const now=performance.now();
+      if(now-tl>90){tl=now;const sp=n/Math.max(.001,(now-t0)/1000);prog(label,total?n*100/total:NaN,(total?fmtB(n)+" / "+fmtB(total):fmtB(n))+" · "+fmtB(sp)+"/dtk");}
+    }
+    prog(label,total?100:NaN,fmtB(n));
+    return new Blob(parts,{type:r.headers.get("content-type")||"application/octet-stream"});
+  }
+  function triggerDownload(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),8000);}
+  function deliver(blob,name){
+    if(isIOS&&typeof canShareFiles!=="undefined"&&canShareFiles){
+      prog("Selesai",100,fmtB(blob.size));say("Siap. Tekan tombol di bawah untuk menyimpan ke Galeri / Files.");
+      const old=btns.querySelector("[data-ios-save]");if(old)old.remove();
+      const b=document.createElement("button");b.type="button";b.className="btn main";b.dataset.iosSave="1";b.textContent="Simpan / Bagikan";
+      b.addEventListener("click",()=>shareVideo(blob,name));btns.prepend(b);
+    }else{triggerDownload(blob,name);prog("Selesai",100,fmtB(blob.size));say("");}
+  }
+  function fallbackOpen(url,why){
+    say(why+" Video dibuka di tab baru: tekan ⋮ lalu Download, atau tahan videonya lalu Simpan. Untuk unduhan langsung, pasang proxy (lihat panduan).",true);
+    window.open(url,"_blank","noopener");
+  }
+  async function prepare(){
+    const src=cur.hd||cur.play;
+    say("Mengunduh video…");prog("Mengunduh video…",0,"");
+    let blob;
+    try{blob=await getBlob(src,"Mengunduh video…");}catch(e){diag("tiktok fetch: "+e.message);progHide();fallbackOpen(abs(src),"Server TikTok memblokir unduhan langsung dari halaman.");return null;}
+    blob=new Blob([blob],{type:"video/mp4"});
+    return blob;
+  }
+  async function withBtn(b,fn){const old=b.textContent;b.disabled=true;b.textContent="Memproses…";try{await fn();}finally{b.disabled=false;b.textContent=old;}}
+  async function saveFile(url,name){
+    try{const b=await getBlob(url,"Mengunduh "+name.split(".").pop().toUpperCase()+"…");triggerDownload(b,name);prog("Selesai",100,fmtB(b.size));}
+    catch(e){diag("tiktok dl: "+e.message);progHide();fallbackOpen(url,"Server TikTok memblokir unduhan langsung.");}
+  }
+  function addBtn(label,cls,fn){const b=document.createElement("button");b.type="button";b.className="btn "+cls;b.textContent=label;b.addEventListener("click",()=>withBtn(b,()=>fn(b)));btns.appendChild(b);}
+  async function callApi(link){
+    if(!proxy)throw new Error("TikTok Proxy belum dikonfigurasi.");
+    const q=new URLSearchParams({url:link,hd:"1"});
+    const r=await fetch(proxy+"/info?"+q);
+    if(!r.ok)throw new Error("Proxy HTTP "+r.status);
+    return await r.json();
+  }
+  async function run(){
+    const link=urlIn.value.trim();
+    if(!/tiktok\.com|vt\.tiktok|vm\.tiktok/i.test(link)){say("Masukkan link TikTok yang valid.",true);return;}
+    fetchBtn.disabled=true;res.hidden=true;progHide();btns.innerHTML="";cur=null;say("Mengambil data video…");
+    try{
+      const j=await callApi(link);
+      if(j&&(j.code===10429||j.code===10430))throw new Error(j.msg||"Limit API tercapai");
+      if(!j||j.code!==0||!j.data)throw new Error(j&&j.msg||"Video tidak ditemukan");
+      const d=j.data,au=d.author||{};
+      $("ttCover").src=abs(d.cover||d.origin_cover);
+      $("ttAuthor").textContent="@"+(au.unique_id||au.nickname||"tiktok");
+      $("ttTitle").textContent=d.title||"";
+      $("ttMeta").textContent=[d.duration?d.duration+" dtk":"",d.images?d.images.length+" foto":""].filter(Boolean).join(" · ");
+      const base=safe(au.unique_id)+"_"+safe(d.id||Date.now());
+      const isPhotos=Array.isArray(d.images)&&d.images.length;
+      if(isPhotos){
+        d.images.forEach((u,i)=>addBtn("Foto "+(i+1),"ghost",()=>saveFile(u,base+"_"+(i+1)+".jpg")));
+      }else if(d.play||d.hdplay){
+        cur={hd:abs(d.hdplay),play:abs(d.play),base};
+        addBtn("Unduh Video","main",async()=>{const b=await prepare();if(b)deliver(b,base+".mp4");});
+        addBtn("Kirim ke Patcher","ghost",async()=>{
+          const b=await prepare();if(!b)return;
+          setFile(new File([b],base+".mp4",{type:"video/mp4"}));closeTool();showWorkspace("patcher",true);window.scrollTo({top:0,behavior:"smooth"});
+        });
+      }
+      if(d.music)addBtn("Audio (MP3)","ghost",()=>saveFile(abs(d.music),base+".mp3"));
+      res.hidden=false;say("Siap diunduh.");
+    }catch(e){say("Gagal: "+e.message,true);diag("tiktok: "+e.message);}
+    finally{fetchBtn.disabled=false;}
+  }
+  fetchBtn.addEventListener("click",run);
+  urlIn.addEventListener("keydown",e=>{if(e.key==="Enter")run();});
+  $("ttPaste").addEventListener("click",async()=>{try{urlIn.value=await navigator.clipboard.readText();if(urlIn.value)run();}catch(_){toast("Izin clipboard ditolak, tempel manual.");}});
+})();
 
 /* ---- FFmpeg Terminal (tool): ffmpeg.wasm 0.12, dijalankan di perangkat ---- */
 (()=>{
