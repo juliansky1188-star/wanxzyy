@@ -187,6 +187,8 @@ body::before{content:"";position:fixed;inset:-20% -10% auto -10%;height:60vh;bac
 
 /* Obsidian Pro tools */
 .tool-intro{margin:-3px 0 16px;color:var(--muted);font-size:13px}
+/* judul & deskripsi sudah ada di header modal, jangan diulang di dalam kartu */
+#ffCard>h2,#tsCard>h2,#ttCard>h2,#ffCard>.tool-intro,#tsCard>.tool-intro,#ttCard>.tool-intro{display:none}
 .tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tool-tile{background:linear-gradient(145deg,#202226,#17191c);border:1px solid #35393f;border-radius:15px;padding:14px;min-width:0}
 .tool-tile .ti{width:34px;height:34px;border:1px solid #444950;background:#2b2e33;border-radius:10px;display:grid;place-items:center;margin-bottom:10px;color:#f4f5f6}
@@ -4363,8 +4365,10 @@ $("fpsCheck").disabled=true;
           setVal("fps",info.fps?Number(info.fps.toFixed(2))+" fps":"-");
           setVal("codec",CODEC[info.codec]||info.codec||"-");
         }else{setVal("res","-");setVal("fps","-");setVal("codec","-");}
-        const tool=info&&info.tool||"";
-        setVal("method",tool||"-",!tool);
+        let tool=info&&info.tool||"";
+        /* ©too bawaan TikTok (JSON re-encode) bukan tag method kita -> Unknown */
+        if(tool&&/^[\[{]/.test(tool.trim()))tool="";
+        setVal("method",tool||"Unknown",!tool);
         setVal("bit",size&&dd?(size*8/dd/1e6).toFixed(2)+" Mbps":"-");
         say("Selesai");if(fromCache){const b=document.createElement("span");b.className="ts-badge";b.textContent="Cache";st.appendChild(b);}
       }catch(e){$("tsProg").hidden=true;["res","fps","bit","codec","method"].forEach(k=>setVal(k,"-"));say("Statistik selesai, detail video gagal dibaca ("+(e&&e.message||e)+").");try{window.__diag.push("ttstats probe: "+e);}catch(_){}}
