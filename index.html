@@ -1087,6 +1087,38 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 </style>
 
 <style>
+/* TikTok Statistik (hanya #tsCard) */
+#tsCard .tt-input{width:100%;padding:13px 15px;border-radius:14px;border:1px solid var(--line,#333);background:var(--ink,#0b0b0c);color:inherit;font:inherit;font-size:14px;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+#tsCard .tt-input:focus{outline:none;border-color:#9aa0a8;box-shadow:0 0 0 3px #ffffff14}
+#tsCard .ts-head{display:flex;gap:12px;align-items:center;margin:14px 0 12px}
+#tsCard .ts-cover{width:64px;height:86px;object-fit:cover;border-radius:10px;border:1px solid #30343a;background:#141619;flex:none}
+#tsCard .ts-head b{display:block;font-size:14px}
+#tsCard .ts-head p{margin:4px 0 0;font-size:12px;line-height:1.45;color:#9298a0;overflow-wrap:anywhere}
+#tsCard .ts-tags{white-space:pre-line;margin:0 0 12px;padding:11px 13px;border-radius:12px;border:1px solid #30343a;background:#141619;font:600 13px/1.6 var(--body);color:#e6e8ea;overflow-wrap:anywhere}
+#tsCard .vr-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:520px){#tsCard .vr-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#tsCard .ts-list{border:1px solid #30343a;border-radius:14px;background:#141619;padding:2px 14px;margin:0 0 12px}
+#tsCard .ts-r{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px dashed #30343a;font-size:13px}
+#tsCard .ts-r:last-child{border-bottom:0}
+#tsCard .ts-r span{color:#9298a0;flex:none}
+#tsCard .ts-r b{text-align:right;font-weight:700;color:#f5f6f7;overflow-wrap:anywhere;min-width:0}
+#tsCard .ts-r b.mute{color:#7d838b;font-weight:500}
+#tsCard .ts-prog{margin:12px 0;padding:12px 14px;border:1px solid #30343a;border-radius:14px;background:#ffffff06}
+#tsCard .ts-prog[hidden]{display:none}
+#tsCard .ts-prog-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px}
+#tsCard .ts-prog-top b{font-variant-numeric:tabular-nums;font-size:15px}
+#tsCard .ts-prog .ff-bar i{transition:width .12s linear}
+#tsCard .ts-prog .ff-bar.indet i{width:35%}
+#tsCard .ts-prog-sub{margin-top:7px;font-size:12px;color:#9aa0a8;font-variant-numeric:tabular-nums;min-height:1em}
+#tsCard #tsStatus{margin:12px 0 0;padding:9px 13px;display:flex;align-items:center;gap:8px;line-height:1.4;font-weight:600}
+#tsCard #tsStatus:empty{display:none}
+#tsCard .ts-badge{margin-left:auto;flex:none;padding:2px 9px;border-radius:999px;border:1px solid #2f6f8f;background:#1d3a4a;color:#5cc6f5;font-size:11px;font-weight:700;letter-spacing:.02em}
+#tsCard #tsResult{margin-top:16px;padding-top:16px;border-top:1px solid var(--line,#2a2e33)}
+#tsCard .ts-head{margin:0 0 14px;align-items:flex-start}
+#tsCard .ts-head p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#tsCard .ts-prog{margin:16px 0 0}
+#tsCard #tsResult .ff-actions{margin-top:0}
+#tsCard .ts-url{padding:12px 14px;border-radius:12px;border:1px solid #30343a;background:#141619;font-size:13px;overflow-wrap:anywhere;margin:6px 0 12px;color:#e6e8ea}
 /* TikTok Downloader: tampilan (hanya #ttCard) */
 #ttCard .tt-input{width:100%;padding:13px 15px;border-radius:14px;border:1px solid var(--line,#333);background:var(--ink,#0b0b0c);color:inherit;font:inherit;font-size:14px;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
 #ttCard .tt-input:focus{outline:none;border-color:#9aa0a8;box-shadow:0 0 0 3px #ffffff14}
@@ -1206,8 +1238,14 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
         <p>Unduh video TikTok tanpa watermark, versi HD, watermark, atau audio saja hanya dengan menempel link. Hasilnya bisa langsung dikirim ke Patcher.</p>
         <button type="button" class="tool-open-btn" data-open-tool="tiktok">Buka Downloader <span>↗</span></button>
       </article>
+      <article class="tool-launch-card">
+        <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></div><span class="tool-tag">TIKTOK · TIKWM</span>
+        <h3>TikTok Statistik</h3>
+        <p>Lihat views, likes, komentar, share, simpan, dan engagement rate sebuah video TikTok hanya dengan menempel link. Hasilnya bisa disalin sebagai laporan.</p>
+        <button type="button" class="tool-open-btn" data-open-tool="ttstats">Buka Statistik <span>↗</span></button>
+      </article>
     </div>
-    <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan. TikTok Downloader mengirim link yang lu tempel ke tikwmapi.com untuk mengambil video.</span></div>
+    <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan. TikTok Downloader dan TikTok Statistik mengirim link yang lu tempel ke tikwmapi.com untuk mengambil data video.</span></div>
   </section>
 
   <section class="tools-library" id="shopHeading" hidden>
@@ -1509,6 +1547,30 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
     <pre class="log" id="ffLog"></pre>
     <div class="ff-out" id="ffOut"></div>
     <p class="tool-note">Hardware: WebGL2 + WebCodecs/Mediabunny. Software: FFmpeg WebAssembly/libx264 atau libx265 berjalan lokal di browser, menggunakan CPU. Keduanya menghasilkan MP4 H.264 atau H.265 (HEVC) dengan resolusi pilihanmu: 1080p, 2K (1440p), atau 4K (2160p). Sisi pendek mengikuti pilihan, rasio asli dipertahankan: 9:16, 16:9, 1:1, 3:5, dll; dengan 60 atau 120 FPS sesuai pilihanmu; kemampuan dan kecepatan bergantung pada browser dan perangkat.</p>
+  </section>
+  <section class="card tool-modal-tool" id="tsCard" hidden>
+    <h2>TikTok Statistik</h2>
+    <p class="tool-intro">Tempel link video TikTok untuk melihat views, likes, engagement, dan detail videonya (resolusi, FPS, bitrate).</p>
+    <label class="ff-label" for="tsUrl">Link TikTok</label>
+    <input type="url" id="tsUrl" class="tt-input" inputmode="url" autocomplete="off" placeholder="https://www.tiktok.com/@user/video/123...">
+    <div class="ff-actions">
+      <button type="button" class="btn main" id="tsFetch">Ambil Statistik</button>
+      <button type="button" class="btn ghost" id="tsPaste">Tempel</button>
+    </div>
+    <p class="vr-status" id="tsStatus" role="status"></p>
+    <div class="ts-prog" id="tsProg" hidden aria-live="polite">
+      <div class="ts-prog-top"><span id="tsProgLabel">Mengunduh video…</span><b id="tsProgPct">0%</b></div>
+      <div class="ff-bar" id="tsBar"><i id="tsFill"></i></div>
+      <div class="ts-prog-sub" id="tsProgSub"></div>
+    </div>
+    <div id="tsResult" hidden>
+      <div class="ts-head"><img id="tsCover" class="ts-cover" alt=""><div><b id="tsAuthor"></b><p id="tsTitle"></p></div></div>
+      <div class="ts-list" id="tsMetaList"></div>
+      <div class="ts-list" id="tsStatList"></div>
+      <label class="ff-label">TikTok Video URL</label>
+      <div class="ts-url" id="tsLink"></div>
+      <div class="ff-actions"><button type="button" class="btn ghost" id="tsCopy">Salin Laporan</button><button type="button" class="btn ghost" id="tsRaw">Salin Data Mentah</button></div>
+    </div>
   </section>
   <section class="card tool-modal-tool" id="ttCard" hidden>
     <h2>TikTok Downloader</h2>
@@ -4132,15 +4194,194 @@ $("orderSend").addEventListener("click",()=>{
 
 const toolModal=$("toolModal"),toolModalTitle=$("toolModalTitle"),toolModalDescription=$("toolModalDescription"),inspectorCard=$("inspectorCard");
 let lastToolOpener=null;
-function openTool(which,opener){lastToolOpener=opener||null;const isFf=which==="ffmpeg",isTt=which==="tiktok";inspectorCard.hidden=isFf||isTt;$("ffCard").hidden=!isFf;$("ttCard").hidden=!isTt;
-  toolModalTitle.textContent=isTt?"TikTok Downloader":isFf?"Ffmpeg Video Compressor":"Resolution & Fps Video Checker";toolModal.querySelector(".tool-modal-panel").classList.toggle("wide",!isFf&&!isTt);
-  toolModalDescription.textContent=isTt?"Tempel link TikTok untuk mengunduh video tanpa watermark, HD, atau audio.":isFf?"Pilih video, pilih mode Hardware atau Software, lalu mulai kompresi. Tidak perlu mengetik perintah.":"Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov/mdat, warna, audio, dan tag.";toolModal.hidden=false;document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
+function openTool(which,opener){lastToolOpener=opener||null;const isFf=which==="ffmpeg",isTt=which==="tiktok",isTs=which==="ttstats";inspectorCard.hidden=isFf||isTt||isTs;$("ffCard").hidden=!isFf;$("ttCard").hidden=!isTt;$("tsCard").hidden=!isTs;
+  toolModalTitle.textContent=isTs?"TikTok Statistik":isTt?"TikTok Downloader":isFf?"Ffmpeg Video Compressor":"Resolution & Fps Video Checker";toolModal.querySelector(".tool-modal-panel").classList.toggle("wide",!isFf&&!isTt&&!isTs);
+  toolModalDescription.textContent=isTs?"Tempel link TikTok untuk melihat views, likes, komentar, share, dan engagement rate.":isTt?"Tempel link TikTok untuk mengunduh video tanpa watermark, HD, atau audio.":isFf?"Pilih video, pilih mode Hardware atau Software, lalu mulai kompresi. Tidak perlu mengetik perintah.":"Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov/mdat, warna, audio, dan tag.";toolModal.hidden=false;document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
 }
 function closeTool(){toolModal.hidden=true;document.body.classList.remove("modal-open");if(lastToolOpener)lastToolOpener.focus();}
 document.querySelectorAll("[data-open-tool]").forEach(btn=>btn.addEventListener("click",()=>openTool(btn.dataset.openTool,btn)));
 toolModal.querySelectorAll("[data-close-tool]").forEach(btn=>btn.addEventListener("click",closeTool));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!toolModal.hidden)closeTool();});
 $("fpsCheck").disabled=true;
+
+/* ---- TikTok Statistik (tool): lewat Worker proxy, tanpa API key di browser ---- */
+(function(){
+  /* Daftar proxy khusus Statistik, dicoba berurutan (otomatis pindah kalau error). Taruh URL Worker baru lu di paling atas. */
+  const PROXIES=["https://wanxzyy-analytics.ganta4830.workers.dev"].map(u=>u.replace(/\/+$/,""));
+  const TAG_LABEL="Method";
+  /* Cache hasil baca header video (per ID video) di browser: video yang sudah dicek tidak diunduh ulang */
+  const CK="tsProbeCache.v1",CMAX=60;
+  const cget=id=>{try{const m=JSON.parse(localStorage.getItem(CK)||"{}");return m[id]||null;}catch(_){return null;}};
+  const cset=(id,v)=>{try{const m=JSON.parse(localStorage.getItem(CK)||"{}");m[id]={info:v.info,total:v.total,t:Date.now()};const ks=Object.keys(m);if(ks.length>CMAX)ks.sort((a,b)=>m[a].t-m[b].t).slice(0,ks.length-CMAX).forEach(k=>delete m[k]);localStorage.setItem(CK,JSON.stringify(m));}catch(_){}};
+  const urlIn=$("tsUrl"),st=$("tsStatus"),res=$("tsResult"),btn=$("tsFetch"),metaL=$("tsMetaList"),statL=$("tsStatList");
+  const say=(t,bad)=>{st.textContent=t||"";st.style.color=bad?"#ff6b6b":"";};
+  const n=v=>Number(v)||0,fmt=v=>n(v).toLocaleString("id-ID");
+  const dur=s=>{s=n(s);return s>=60?Math.floor(s/60)+"m "+(s%60)+"s":s+"s";};
+  const mb=b=>(b/1048576).toFixed(2)+" MB";
+  const abs=u=>!u?"":(u.startsWith("http")?u:"https://api.tikwmapi.com"+u);
+  function setRows(list,rows){list.textContent="";rows.forEach(r=>{const row=vrEl("div","ts-r");row.dataset.k=r[0];row.appendChild(vrEl("span","",r[1]));const b=vrEl("b",r[3]?"mute":"",r[2]);row.appendChild(b);list.appendChild(row);});}
+  function setVal(k,v,mute){const b=res.querySelector('.ts-r[data-k="'+k+'"] b');if(b){b.textContent=v;b.className=mute?"mute":"";}}
+  /* ---- Baca header MP4 (moov) dari awal stream saja, lalu hentikan unduhan ---- */
+  function boxes(b,dv,s,e){const o=[];let p=s;while(p+8<=e){let sz=dv.getUint32(p),h=8;const t=String.fromCharCode(b[p+4],b[p+5],b[p+6],b[p+7]);if(sz===1){sz=Number(dv.getBigUint64(p+8));h=16;}else if(sz===0)sz=e-p;if(sz<h||p+sz>e)break;o.push({t,s:p+h,e:p+sz});p+=sz;}return o;}
+  /* Jalan di top-level box. Hasil: {s,e} moov lengkap | {at} butuh data sampai offset itu | null bila tidak ada */
+  function findMoov(b){const dv=new DataView(b.buffer,b.byteOffset,b.byteLength);let p=0;for(;;){if(p+16>b.length)return{at:p+16};let sz=dv.getUint32(p),h=8;const t=String.fromCharCode(b[p+4],b[p+5],b[p+6],b[p+7]);if(sz===1){sz=Number(dv.getBigUint64(p+8));h=16;}else if(sz===0)return null;if(sz<h)return null;if(t==="moov")return p+sz<=b.length?{s:p+h,e:p+sz}:{at:p+sz};p+=sz;}}
+  /* Tag "@too" = atom ©too (encoding tool) di udta/meta/ilst; fallback scan byte kalau struktur tidak standar */
+  function readTool(b,dv,moov){
+    const dec=new TextDecoder("utf-8"),kid=(par,t)=>boxes(b,dv,par.s,par.e).find(x=>x.t===t);
+    const fromAtom=a=>{const d=kid(a,"data");return d?dec.decode(b.subarray(d.s+8,d.e)).replace(/\0+$/,"").trim():"";};
+    try{
+      const udta=kid(moov,"udta"),meta=udta&&kid(udta,"meta");
+      if(meta){
+        for(const off of [4,0]){const ilst=boxes(b,dv,meta.s+off,meta.e).find(x=>x.t==="ilst");if(ilst){const a=boxes(b,dv,ilst.s,ilst.e).find(x=>x.t==="\u00A9too");if(a){const v=fromAtom(a);if(v)return v;}}}
+      }
+    }catch(_){}
+    for(let i=moov.s;i+8<moov.e;i++){
+      if(b[i]===0xA9&&b[i+1]===0x74&&b[i+2]===0x6F&&b[i+3]===0x6F){
+        const bs=i-4,sz=dv.getUint32(bs);if(sz>16&&bs+sz<=moov.e){const d=boxes(b,dv,bs+8,bs+sz).find(x=>x.t==="data");if(d){const v=dec.decode(b.subarray(d.s+8,d.e)).replace(/\0+$/,"").trim();if(v)return v;}}
+      }
+    }
+    return "";
+  }
+  function parseMoov(b,moov){
+    const dv=new DataView(b.buffer,b.byteOffset,b.byteLength),kid=(par,t)=>boxes(b,dv,par.s,par.e).find(x=>x.t===t);
+    const tool=readTool(b,dv,moov);
+    for(const trak of boxes(b,dv,moov.s,moov.e).filter(x=>x.t==="trak")){
+      const mdia=kid(trak,"mdia");if(!mdia)continue;
+      const hdlr=kid(mdia,"hdlr");if(!hdlr||String.fromCharCode(b[hdlr.s+8],b[hdlr.s+9],b[hdlr.s+10],b[hdlr.s+11])!=="vide")continue;
+      const out={},tk=kid(trak,"tkhd");
+      if(tk){const v1=b[tk.s]===1,o=v1?88:76;out.w=Math.round(dv.getUint32(tk.s+o)/65536);out.h=Math.round(dv.getUint32(tk.s+o+4)/65536);}
+      const md=kid(mdia,"mdhd");let ts=0,du=0;
+      if(md){if(b[md.s]===1){ts=dv.getUint32(md.s+20);du=Number(dv.getBigUint64(md.s+24));}else{ts=dv.getUint32(md.s+12);du=dv.getUint32(md.s+16);}}
+      const minf=kid(mdia,"minf"),stbl=minf&&kid(minf,"stbl");
+      if(stbl){
+        const sts=kid(stbl,"stts");
+        if(sts){const c=dv.getUint32(sts.s+4);let cnt=0,tot=0;for(let i=0;i<c&&sts.s+8+i*8+8<=sts.e;i++){const sc=dv.getUint32(sts.s+8+i*8),dl=dv.getUint32(sts.s+12+i*8);cnt+=sc;tot+=sc*dl;}if(tot&&ts)out.fps=cnt/(tot/ts);}
+        const sd=kid(stbl,"stsd");if(sd)out.codec=String.fromCharCode(b[sd.s+12],b[sd.s+13],b[sd.s+14],b[sd.s+15]);
+      }
+      if(ts&&du)out.dur=du/ts;
+      out.tool=tool;
+      return out;
+    }
+    return tool?{tool}:null;
+  }
+  async function probe(url,base,onProg){
+    const ctl=new AbortController();
+    const fmtB=v=>v>=1048576?(v/1048576).toFixed(1)+" MB":Math.max(1,Math.round(v/1024))+" KB";
+    try{
+      const r=await fetch(base+"/dl?u="+encodeURIComponent(url),{signal:ctl.signal});
+      if(!r.ok)throw new Error("HTTP "+r.status);
+      const total=Number(r.headers.get("content-length"))||0;
+      if(!r.body||!r.body.getReader)throw new Error("stream tidak didukung");
+      const rd=r.body.getReader(),t0=performance.now();
+      let chunks=[],got=0,nextAt=262144,tl=0,buf=new Uint8Array(0),eof=false;
+      const merge=()=>{if(chunks.length){const m=new Uint8Array(buf.length+got-buf.length);let o=0;m.set(buf,0);o=buf.length;for(const c of chunks){m.set(c,o);o+=c.length;}buf=m;chunks=[];}};
+      for(;;){
+        const {done,value}=await rd.read();
+        if(done){eof=true;break;}
+        chunks.push(value);got+=value.length;
+        const now=performance.now();
+        if(now-tl>90){tl=now;onProg&&onProg(got,total,got/Math.max(.001,(now-t0)/1000),fmtB);}
+        if(got>=nextAt){
+          merge();
+          const f=findMoov(buf);
+          if(f&&f.s!==undefined){onProg&&onProg(total||got,total||got,0,fmtB,true);return{info:parseMoov(buf,f),total};}
+          if(!f)break;
+          nextAt=f.at;
+        }
+      }
+      merge();
+      onProg&&onProg(got,total||got,0,fmtB,true);
+      const f=findMoov(buf);
+      if(f&&f.s!==undefined)return{info:parseMoov(buf,f),total:total||got};
+      return{info:null,total:total||got};
+    }finally{try{ctl.abort();}catch(_){}}
+  }
+  const CODEC={avc1:"H.264 (AVC)",avc3:"H.264 (AVC)",hvc1:"H.265 (HEVC)",hev1:"H.265 (HEVC)",av01:"AV1",vp09:"VP9"};
+  async function run(){
+    const link=urlIn.value.trim();
+    if(!/tiktok\.com/i.test(link)){say("Tempel link TikTok yang valid dulu.",true);return;}
+    btn.disabled=true;res.hidden=true;say("Mengambil statistik…");
+    try{
+      let j=null,lastErr=null,used=PROXIES[0];
+      for(const base of PROXIES){
+        try{
+          const q=new URLSearchParams({url:link,hd:"1"});
+          const r=await fetch(base+"/info?"+q);
+          if(!r.ok)throw new Error("HTTP "+r.status);
+          const x=await r.json();
+          if(x&&(x.code===10429||x.code===10430))throw new Error(x.msg||"Limit API tercapai");
+          if(!x||x.code!==0||!x.data)throw new Error((x&&x.msg)||"Video tidak ditemukan");
+          j=x;used=base;break;
+        }catch(e){lastErr=e;}
+      }
+      if(!j)throw lastErr||new Error("Semua proxy gagal");
+      const d=j.data,au=d.author||{};
+      const views=n(d.play_count),likes=n(d.digg_count),com=n(d.comment_count),sh=n(d.share_count),sv=n(d.collect_count),dl=n(d.download_count);
+      const eng=views?(likes+com+sh+sv)/views*100:0;
+      const name="@"+(au.unique_id||"unknown")+(au.nickname?" · "+au.nickname:"");
+      $("tsAuthor").textContent=name;$("tsTitle").textContent=d.title||"(tanpa judul)";
+      const cv=$("tsCover");cv.src=abs(d.cover||d.origin_cover);cv.hidden=!(d.cover||d.origin_cover);
+      const when=d.create_time?new Date(n(d.create_time)*1000).toLocaleString("id-ID",{day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"}):"-";
+      let region="-";if(d.region){try{region=new Intl.DisplayNames(["id"],{type:"region"}).of(String(d.region).toUpperCase())||d.region;}catch(_){region=d.region;}}
+      window.__tsRaw=j;
+      const mention="";
+      const isPhotos=Array.isArray(d.images)&&d.images.length;
+      const vurl=abs(d.hdplay)||abs(d.play);
+      const fallbackSize=n(d.hd_size)||n(d.size);
+      setRows(metaL,[
+        ["date","Tanggal Upload",when],["region","Region",region],
+        ["res","Resolusi",isPhotos?"-":"Membaca…",!isPhotos],["fps","Frame Rate (FPS)",isPhotos?"-":"Membaca…",!isPhotos],
+        ["bit","Bitrate",isPhotos?"-":"Membaca…",!isPhotos],["codec","Codec",isPhotos?"-":"Membaca…",!isPhotos],
+        ["dur","Durasi",d.duration!=null?dur(d.duration):"-"],["size","Ukuran File",fallbackSize?mb(fallbackSize):"-"],
+        ["method",TAG_LABEL,isPhotos?"-":"Membaca…",true]
+      ]);
+      setRows(statL,[["views","Views",fmt(views)],["likes","Likes",fmt(likes)],["com","Komentar",fmt(com)],["share","Dibagikan",fmt(sh)],["save","Disimpan",fmt(sv)],["dl","Unduhan",fmt(dl)],["eng","Engagement",eng.toFixed(2)+"%"]]);
+      $("tsLink").textContent=link;
+      res.hidden=false;say("Membaca detail video...");
+      if(!vurl||isPhotos){say("Selesai.");return;}
+      try{
+        const pg=$("tsProg"),bar=$("tsBar"),fill=$("tsFill");
+        const vid=d.id?String(d.id):"",hit=vid?cget(vid):null;
+        let info,total,fromCache=false;
+        if(hit&&hit.info){info=hit.info;total=hit.total;fromCache=true;}
+        else{
+          pg.hidden=false;bar.classList.add("indet");fill.style.width="";$("tsProgPct").textContent="…";$("tsProgLabel").textContent="Mengunduh video untuk dicek…";$("tsProgSub").textContent="";
+          const r=await probe(vurl,used,(got,tot,sp,fb,fin)=>{
+            if(tot){bar.classList.remove("indet");const v=Math.min(100,got*100/tot);fill.style.width=v+"%";$("tsProgPct").textContent=Math.round(v)+"%";}
+            $("tsProgLabel").textContent=fin?"Selesai dicek":"Mengunduh video untuk dicek…";
+            $("tsProgSub").textContent=fin?fb(got):(tot?fb(got)+" / "+fb(tot):fb(got))+" · "+fb(sp)+"/dtk";
+          });
+          info=r.info;total=r.total;
+          if(vid&&info)cset(vid,{info,total});
+        }
+        pg.hidden=true;
+        const size=total||fallbackSize;
+        if(size)setVal("size",mb(size));
+        const dd=n(d.duration)||(info&&info.dur)||0;
+        if(info){
+          setVal("res",info.w&&info.h?info.w+" x "+info.h:"-");
+          setVal("fps",info.fps?Number(info.fps.toFixed(2))+" fps":"-");
+          setVal("codec",CODEC[info.codec]||info.codec||"-");
+        }else{setVal("res","-");setVal("fps","-");setVal("codec","-");}
+        const tool=info&&info.tool||"";
+        setVal("method",tool||"-",!tool);
+        setVal("bit",size&&dd?(size*8/dd/1e6).toFixed(2)+" Mbps":"-");
+        say("Selesai");if(fromCache){const b=document.createElement("span");b.className="ts-badge";b.textContent="Cache";st.appendChild(b);}
+      }catch(e){$("tsProg").hidden=true;["res","fps","bit","codec","method"].forEach(k=>setVal(k,"-"));say("Statistik selesai, detail video gagal dibaca ("+(e&&e.message||e)+").");try{window.__diag.push("ttstats probe: "+e);}catch(_){}}
+    }catch(e){say("Gagal mengambil statistik: "+(e&&e.message||e),true);try{window.__diag.push("ttstats: "+e);}catch(_){}}
+    finally{btn.disabled=false;}
+  }
+  btn.addEventListener("click",run);
+  urlIn.addEventListener("keydown",e=>{if(e.key==="Enter")run();});
+  $("tsPaste").addEventListener("click",async()=>{try{urlIn.value=(await navigator.clipboard.readText()).trim();if(urlIn.value)run();}catch(_){say("Izin clipboard ditolak. Tempel manual ke kolom.",true);}});
+  $("tsRaw").addEventListener("click",async()=>{const ok=await copyText(JSON.stringify(window.__tsRaw||{},null,2));say(ok?"Data mentah disalin.":"Gagal menyalin.",!ok);});
+  $("tsCopy").addEventListener("click",async()=>{
+    const lines=["TikTok Statistik",$("tsAuthor").textContent,$("tsTitle").textContent,""];
+    res.querySelectorAll(".ts-r").forEach(r=>lines.push(r.children[0].textContent+": "+r.children[1].textContent));
+    lines.push("",$("tsLink").textContent);
+    const ok=await copyText(lines.join("\n"));say(ok?"Laporan disalin.":"Gagal menyalin.",!ok);
+  });
+})();
 
 /* ---- TikTok Downloader (tool): tikwmapi.com ---- */
 (function(){
