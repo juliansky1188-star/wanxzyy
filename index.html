@@ -456,6 +456,14 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 .cl-tag.fix{background:#2a2010;border-color:#6b4a1c;color:#ffb454}
 .cl-tag.chg{background:#1b2634;border-color:#34506e;color:#9cc4ff}
 .tool-launch-card.wide{grid-column:1/-1}
+.tool-launch-card.donate{border-color:#2f6b52;background:linear-gradient(145deg,#17251f,#141a17);box-shadow:0 10px 28px #62d9a512}
+.tool-launch-card.donate .tool-launch-icon{background:#1f3a2e;border-color:#2f6b52;color:#62d9a5}
+.qris-panel{width:min(100%,400px)!important}
+.qris-box{padding:10px;border-radius:16px;background:#fff;box-sizing:border-box}
+.qris-box img{display:block;width:100%;height:auto;image-rendering:pixelated}
+.qris-name{font:400 11px/1.5 "Space Grotesk",sans-serif;color:#a6abb2;margin:12px 0 0;text-align:center}
+.qris-save{margin-top:12px}
+
 .info-warn{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;border:1px solid #6b4a1c;border-left:4px solid #ffb454;background:linear-gradient(135deg,#2a2010,#1d1810);border-radius:14px;padding:14px 15px;font:400 12.5px/1.6 "Space Grotesk",sans-serif;color:#f0d9b0;box-shadow:0 8px 24px #ffb45414}
 .info-warn>svg{color:#ffb454;margin-top:1px}
 .info-warn .iw-title{display:block;font:800 11px "Space Grotesk",sans-serif;letter-spacing:.14em;color:#ffb454;margin-bottom:4px}
@@ -1290,6 +1298,11 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
         <p>Saluran WhatsApp terbaru untuk pengumuman dan pembaruan website.</p>
         <a class="tool-open-btn" href="https://whatsapp.com/channel/0029Vb8hscgKAwEew5Lbao1X" target="_blank" rel="noopener noreferrer">Gabung Saluran <span>↗</span></a>
       </article>
+      <article class="tool-launch-card wide donate">
+        <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.4 2.7 5 6 5c2 0 3.3 1 4 2.2h4C14.7 6 16 5 18 5c3.3 0 5.2 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg></div><span class="tool-tag">SUPPORT · QRIS</span><h3>Dukung Developer</h3>
+        <p>Setiap dukungan kecil sangat berarti untuk membantu pengembangan. Bersifat sukarela.</p>
+        <button type="button" class="tool-open-btn" id="qrisOpenBtn">Buka QRIS <span>↗</span></button>
+      </article>
       <article class="tool-launch-card wide">
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M12 8.5v4"/><path d="M12 15.6v.1"/></svg></div><span class="tool-tag">SUPPORT · WHATSAPP</span><h3>Lapor Error</h3>
         <p>Ada video yang gagal diproses? Kirim laporan ke admin lewat WhatsApp. Info perangkat, browser, Forge, mode, dan ukuran video terisi otomatis. Log diagnostik juga bisa disalin untuk ditempel ke chat admin.</p>
@@ -1426,6 +1439,17 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
   </div>
   <div class="fg-toast" id="fgToast" role="status" aria-live="polite"></div>
 
+  <div class="tool-modal" id="qrisModal" hidden>
+    <button type="button" class="tool-modal-scrim" data-close-qris aria-label="Tutup QRIS"></button>
+    <section class="tool-modal-panel qris-panel" role="dialog" aria-modal="true" aria-labelledby="qrisTitle">
+      <header class="tool-modal-head"><div><p class="eyebrow">WANXZYY / SUPPORT</p><h2 id="qrisTitle">Dukung via QRIS</h2><p>Scan dengan e-wallet atau mobile banking apa pun.</p></div><button type="button" class="tool-modal-close" data-close-qris aria-label="Tutup">×</button></header>
+      <div class="tool-modal-content">
+        <div class="qris-box"><img id="qrisImg" src="data:image/png;base64,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" alt="QRIS Wanzyy, Digital &amp; Kreatif" width="772" height="780"></div>
+        <p class="qris-name">WANZYY, DIGITAL &amp; KREATIF · NMID ID1026584574200</p>
+        <a class="tool-open-btn qris-save" href="#" download="QRIS-Wanzyy.png" onclick="this.href=document.getElementById('qrisImg').src">Simpan QR <span>⇩</span></a>
+      </div>
+    </section>
+  </div>
   <div class="tool-modal" id="toolModal" hidden>
     <button type="button" class="tool-modal-scrim" data-close-tool aria-label="Tutup jendela tools"></button>
     <section class="tool-modal-panel" role="dialog" aria-modal="true" aria-labelledby="toolModalTitle">
@@ -4203,6 +4227,11 @@ function openTool(which,opener){lastToolOpener=opener||null;const isFf=which==="
 function closeTool(){toolModal.hidden=true;document.body.classList.remove("modal-open");if(lastToolOpener)lastToolOpener.focus();}
 document.querySelectorAll("[data-open-tool]").forEach(btn=>btn.addEventListener("click",()=>openTool(btn.dataset.openTool,btn)));
 toolModal.querySelectorAll("[data-close-tool]").forEach(btn=>btn.addEventListener("click",closeTool));
+(function(){const m=$("qrisModal"),o=$("qrisOpenBtn");if(!m||!o)return;
+function close(){m.hidden=true;document.body.classList.remove("modal-open");o.focus()}
+o.addEventListener("click",()=>{m.hidden=false;document.body.classList.add("modal-open")});
+m.querySelectorAll("[data-close-qris]").forEach(b=>b.addEventListener("click",close));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)close()})})();
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!toolModal.hidden)closeTool();});
 $("fpsCheck").disabled=true;
 
