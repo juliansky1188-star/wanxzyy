@@ -1313,7 +1313,7 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 
     <p class="info-sec">FAQ</p>
     <div class="faq-list">
-      <details class="faq-item"><summary>Apa beda Local Forge dan Cloud Forge?</summary><p><strong>Local Forge</strong> untuk akun di bawah 10 ribu pengikut: video diproses langsung di perangkatmu, tanpa dikirim ke server dan tanpa encode ulang. <strong>Cloud Forge</strong> untuk akun 10 ribu pengikut atau lebih: video diproses di server, jadi pastikan koneksi internetmu cepat dan stabil.</p></details>
+      <details class="faq-item"><summary>Apa beda Local Forge dan Cloud Forge?</summary><p><strong>Local Forge:</strong> Pemrosesan video langsung di perangkat Anda tanpa proses unggah ke server.<br><strong>Cloud Forge:</strong> Pemrosesan dan encoding video melalui server cloud. Disarankan menggunakan koneksi internet yang stabil.</p></details>
       <details class="faq-item"><summary>Apa beda Standard, Medium, dan Pro di Local Forge?</summary><p><strong>Standard:</strong> mengubah timestamp memakai FFmpeg stream copy di perangkat, tanpa encode ulang.<br>FPS terdeteksi otomatis: 60 FPS memakai faktor 2× dan 120 FPS memakai faktor 4×.<br>Video dan audio disalin tanpa re-encode; durasi menjadi lebih panjang.<br><br><strong>Medium:</strong> metode High Quality dengan pilihan profil Apex (lebih stabil) atau Apex Beta, diproses di perangkatmu. Identifikasi audio sudah diperbaiki, jadi hasilnya bisa diposting ke Story.<br><br><strong>Pro:</strong> metode Quality + FPS (SL/SR audio); butuh MP4 dengan tepat satu track audio AAC-LC stereo.</p></details>
       <details class="faq-item"><summary>Apa beda Pro dan Ultra di Cloud Forge?</summary><p><strong>Pro:</strong> hanya encode ulang video menggunakan tools khusus, dalam satu tahap.<br><br><strong>Ultra:</strong> video di-patch terlebih dahulu, lalu hasilnya di-encode ulang dengan pemrosesan lanjutan.</p></details>
       <details class="faq-item"><summary>Kenapa video saya ditolak karena ukurannya?</summary><p>Cloud Forge punya batas ukuran file <strong>60MB</strong>. Kalau videomu lebih besar, pakai video lain atau perkecil dulu lewat <strong>Video Compressor</strong> di tab Tools, lalu kirim hasilnya langsung ke Patcher.</p></details>
@@ -5815,8 +5815,8 @@ const ENGINE_STATUS_TEXT={active:"Active",maintenance:"Perbaikan",soon:"Segera h
 const forgeEls=document.querySelectorAll('input[name="forge"]');
 const getForge=()=>document.querySelector('input[name="forge"]:checked')?.value||"local";
 const FORGES={
-  cloud:"<b>Untuk akun 10 ribu pengikut atau lebih.</b><br>Video akan diproses di server. Pastikan koneksi internet Anda cepat &amp; stabil.",
-  local:"<b>Untuk akun di bawah 10 ribu pengikut / di atas 10 ribu pengikut (Engine Standard &amp; Pro).</b><br>Video diproses langsung di perangkatmu, tanpa dikirim ke server."
+  cloud:"<b>Video diproses melalui server. Memerlukan koneksi internet yang cepat &amp; stabil.</b>",
+  local:"<b>Video diproses langsung di perangkat lokal tanpa dikirim ke server.</b>"
 };
 const profEls=document.querySelectorAll('input[name="lprof"]');
 const getProfile=()=>document.querySelector('input[name="lprof"]:checked')?.value||"medium";
