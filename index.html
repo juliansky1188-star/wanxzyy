@@ -458,11 +458,6 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 .tool-launch-card.wide{grid-column:1/-1}
 .tool-launch-card.donate{border-color:#2f6b52;background:linear-gradient(145deg,#17251f,#141a17);box-shadow:0 10px 28px #62d9a512}
 .tool-launch-card.donate .tool-launch-icon{background:#1f3a2e;border-color:#2f6b52;color:#62d9a5}
-.qris-panel{width:min(100%,400px)!important}
-.qris-box{padding:10px;border-radius:16px;background:#fff;box-sizing:border-box}
-.qris-box img{display:block;width:100%;height:auto;image-rendering:pixelated}
-.qris-name{font:400 11px/1.5 "Space Grotesk",sans-serif;color:#a6abb2;margin:12px 0 0;text-align:center}
-.qris-save{margin-top:12px}
 
 .info-warn{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;border:1px solid #6b4a1c;border-left:4px solid #ffb454;background:linear-gradient(135deg,#2a2010,#1d1810);border-radius:14px;padding:14px 15px;font:400 12.5px/1.6 "Space Grotesk",sans-serif;color:#f0d9b0;box-shadow:0 8px 24px #ffb45414}
 .info-warn>svg{color:#ffb454;margin-top:1px}
@@ -576,6 +571,41 @@ a.tool-open-btn{text-decoration:none;box-sizing:border-box}
 
 /* Diagnostik */
 .diag-copy{margin-top:10px}
+
+
+/* Donation popup only — keeps the existing site theme and layout untouched. */
+.donation-float-trigger{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:12000;display:flex;align-items:center;gap:8px;padding:11px 15px;border:1px solid #555;background:#111;color:#fff;border-radius:999px;font:700 12px/1 "Space Grotesk",sans-serif;letter-spacing:.02em;box-shadow:0 8px 28px #0008;cursor:pointer;touch-action:manipulation;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .22s,box-shadow .22s}
+.donation-float-trigger:active{transform:scale(.96)}
+.donation-float-trigger .donation-heart{font-size:16px;line-height:1;display:inline-block;animation:donationHeart 2.2s ease-in-out infinite}
+@keyframes donationHeart{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+.donation-popup{position:fixed;right:16px;bottom:calc(68px + env(safe-area-inset-bottom));z-index:11999;width:min(300px, calc(100vw - 32px));padding:16px 16px 14px;border:1px solid #414141;border-radius:16px;background:#111;color:#f7f7f7;box-shadow:0 18px 55px #000a;opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(22px,10px,0) scale(.97);transform-origin:bottom right;transition:opacity .24s ease,transform .34s cubic-bezier(.16,1,.3,1),visibility .24s}
+.donation-popup.is-open{opacity:1;visibility:visible;pointer-events:auto;transform:translate3d(0,0,0) scale(1)}
+.donation-popup .donation-close{position:absolute;top:10px;right:10px;width:26px;height:26px;padding:0;display:flex;align-items:center;justify-content:center;border:1px solid #444;border-radius:50%;background:#222;color:#fff;font-size:16px;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.donation-popup .donation-close:active{background:#333}
+.donation-popup h3{margin:0 0 6px;padding-right:32px;color:#fff;font:700 16px/26px "Space Grotesk",sans-serif}
+.donation-popup p{margin:0 0 12px;color:#c4c4c4;font:400 12px/1.5 "Space Grotesk",sans-serif}
+.donation-popup .donation-link{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px 14px;border:1px solid #eee;border-radius:10px;background:#f5f5f5;color:#111;text-decoration:none;font:700 12px/1 "Space Grotesk",sans-serif;transition:transform .2s ease,background .2s ease}
+.donation-popup .donation-link:active{transform:scale(.98);background:#ddd}
+@media(max-width:480px){.donation-float-trigger{right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}.donation-popup{right:12px;bottom:calc(62px + env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){.donation-float-trigger,.donation-popup,.donation-popup .donation-link{animation:none!important;transition:none!important}}
+
+
+/* Progressive, softened entrances for History and Tools; keep existing layout/colors intact. */
+@keyframes softRiseIn{from{opacity:0;transform:translate3d(0,12px,0) scale(.99)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+.history-dialog .history-dialog-head,.history-dialog .hstore,.history-dialog .history-list,.history-dialog .history-dialog-foot{animation:softRiseIn .48s cubic-bezier(.16,1,.3,1) both}
+.history-dialog .history-dialog-head{animation-delay:.035s}.history-dialog .hstore{animation-delay:.09s}.history-dialog .history-list{animation-delay:.14s}.history-dialog .history-dialog-foot{animation-delay:.19s}
+.history-list .history-row{animation:softRiseIn .42s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(.16s + var(--row-i,0) * 42ms)}
+.tool-modal-panel .tool-modal-head{animation:softRiseIn .44s cubic-bezier(.16,1,.3,1) .035s both}
+.tool-modal-panel .tool-modal-content{animation:softRiseIn .48s cubic-bezier(.16,1,.3,1) .09s both}
+.tool-modal-content .tool-modal-tool{animation:softRiseIn .44s cubic-bezier(.16,1,.3,1) .13s both}
+.tool-action-mark{width:7px;height:7px;flex:none;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;transform:rotate(45deg);opacity:.65;margin-right:3px}
+.tool-open-btn{gap:10px}
+.donation-popup .donation-link{letter-spacing:.01em}
+@media(prefers-reduced-motion:reduce){.history-dialog .history-dialog-head,.history-dialog .hstore,.history-dialog .history-list,.history-dialog .history-dialog-foot,.history-list .history-row,.tool-modal-panel .tool-modal-head,.tool-modal-panel .tool-modal-content,.tool-modal-content .tool-modal-tool{animation:none!important}}
+
+/* Small rendering optimizations for existing animated controls; no visual restyling. */
+@media(prefers-reduced-motion:no-preference){.nav-pill,.seg-thumb{backface-visibility:hidden;transform-style:preserve-3d}.nav-pill,.seg-thumb,.workspace-tab{ -webkit-font-smoothing:antialiased}}
+
 </style>
 <style>
 /* OBSIDIAN PRO v2: refined monochrome layout */
@@ -1060,7 +1090,7 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 .mo-swap{animation:moSwap .32s var(--ease-out) backwards}
 .modedesc{text-wrap:pretty}
 .modedesc .mnote{animation:moSwap .45s var(--ease-out) .14s backwards}
-.mo-out{opacity:0!important;transform:translate3d(calc(var(--mo-x,0px) * -.5),-4px,0) scale(.992)!important;transition:opacity .1s ease-in,transform .1s ease-in!important}
+.mo-out{opacity:0!important;transform:translate3d(calc(var(--mo-x,0px) * -.5),-4px,0) scale(.992)!important;transition:opacity .06s ease-in,transform .06s ease-in!important}
 
 /* ===== Tab buttons: hover, press, label color ===== */
 .workspace-tab{transition:color .3s var(--ease-io),transform .4s var(--spring),background .18s,border-color .18s,box-shadow .18s;touch-action:manipulation;-webkit-user-select:none;user-select:none}
@@ -1153,6 +1183,63 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 #ttCard .tt-buttons .btn{width:100%;min-width:0;margin:0}
 #ttCard .tt-buttons .btn.main,#ttCard .tt-buttons .btn:nth-child(2):last-child{grid-column:1/-1}
 #ttCard #ttStatus{margin-top:12px}
+/* ===== Polesan: Riwayat Proses (interaksi lebih halus) & TikTok tools (lebih minimalis) ===== */
+.history-item,.history-del{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.history-item{transition:border-color .28s var(--ease-out),background-color .28s var(--ease-out),transform .22s var(--ease-out)}
+.history-item:active{transform:scale(.985);background:#24222b}
+.history-del{transition:border-color .28s var(--ease-out),background-color .28s var(--ease-out),color .28s var(--ease-out),min-width .3s var(--ease-out),transform .22s var(--ease-out)}
+.history-del:active{transform:scale(.94)}
+.history-del.armed{min-width:72px;padding:0 10px;animation:histArm .3s var(--ease-out)}
+@keyframes histArm{from{opacity:.55}to{opacity:1}}
+.history-row{transition:opacity .22s ease,transform .22s var(--ease-out)}
+.history-row.removing{opacity:0;transform:translateX(14px) scale(.98);pointer-events:none}
+.history-list.no-anim .history-row{animation:none!important}
+@media(hover:none){.history-item:hover{border-color:#363640;background:#1b1c22}.history-item:active{border-color:#655775;background:#24222b}.history-del:hover{border-color:#363640;color:#b9b3c4}.history-del.armed:hover{border-color:#7a3d4a;color:#ffb3bf}}
+@media(prefers-reduced-motion:reduce){.history-item,.history-del,.history-row{transition:none!important}.history-del.armed{animation:none!important}}
+/* TikTok Downloader & Statistik: hilangkan ruang kosong */
+#ttCard>.ff-label:first-of-type,#tsCard>.ff-label:first-of-type{margin-top:0}
+#ttCard .vr-status:empty,#tsCard .vr-status:empty{display:none;margin:0;padding:0;border:0}
+#ttCard .vr-status,#tsCard .vr-status{margin:10px 0 0}
+#ttCard .ff-actions,#tsCard .ff-actions{margin-top:10px}
+#ttCard .tt-result,#tsCard #tsResult{margin-top:12px;padding-top:12px}
+#ttCard .tt-prog{margin-top:10px}
+#ttCard .tt-buttons{margin-top:10px}
+#tsCard .ts-head{margin-bottom:10px}
+#tsCard .ts-list{margin-bottom:10px}
+/* ===== Polesan 2: tombol hapus tanpa animasi layout, modal detail & hapus semua lebih ringan ===== */
+.history-row{grid-template-columns:minmax(0,1fr) 56px}
+.history-del{min-width:0;width:56px;transition:border-color .24s var(--ease-out),background-color .24s var(--ease-out),color .24s var(--ease-out),transform .2s var(--ease-out)}
+.history-del.armed{min-width:0;width:56px;padding:0;font-size:10.5px;animation:none}
+.history-del svg{display:block;pointer-events:none}
+.history-row{will-change:auto;backface-visibility:hidden}
+.history-detail-modal .history-backdrop{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(5,6,9,.88)}
+.history-empty{animation:softRiseIn .4s var(--ease-out) both}
+.history-clear{-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background-color .24s var(--ease-out),border-color .24s var(--ease-out),color .24s var(--ease-out),transform .2s var(--ease-out)}
+.history-clear:active{transform:scale(.97)}
+/* ===== Polesan 3: buka/tutup detail video riwayat ===== */
+.history-detail-dialog{min-height:min(66dvh,520px)}
+.history-preview{opacity:0;transition:opacity .35s var(--ease-out)}
+.history-preview.ready{opacity:1}
+.history-info-row,.history-change-note{animation:softRiseIn .36s var(--ease-out) both}
+.history-info-row:nth-child(n+4),.history-change-note{animation-delay:.05s}
+@media(prefers-reduced-motion:reduce){.history-preview{transition:none}.history-info-row,.history-change-note{animation:none}}
+</style>
+<style id="gpu-smooth">
+/* GPU compositing: promote animated layers, animate only transform/opacity */
+.nav-pill,.seg-thumb,.fill,.tool-modal-panel,.donation-popup{will-change:transform;backface-visibility:hidden}
+.fill{width:100%!important;transform:scaleX(0);transform-origin:left center;transition:none!important}
+html{-webkit-tap-highlight-color:transparent;text-rendering:optimizeSpeed}
+</style>
+<style id="gpu-smooth2">
+/* bar indeterminate: geser pakai transform (compositor), bukan left/margin-left (layout tiap frame) */
+@keyframes slide{0%{transform:translate3d(-100%,0,0)}100%{transform:translate3d(285%,0,0)}}
+@keyframes ffslide{from{transform:translate3d(0,0,0)}to{transform:translate3d(185%,0,0)}}
+.mini.indet i{left:0!important;will-change:transform}
+.ff-bar.indet i{margin-left:0!important;will-change:transform}
+/* bayangan blur 40px di kartu besar mahal saat ikut dianimasikan: perkecil */
+.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 16px rgba(0,0,0,.3)}
+/* tombol & tab: respons sentuh tanpa jeda 300ms */
+button,a,label,.workspace-tab{touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -1235,24 +1322,24 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
       <article class="tool-launch-card">
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></div><span class="tool-tag">RESOLUSI · FPS · MOOV</span><h3>Resolution &amp; Fps Video Checker</h3>
         <p>Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov &amp; mdat, keyframe, warna/HDR, audio, dan tag encoder. Tanpa upload.</p>
-        <button type="button" class="tool-open-btn" data-open-tool="fps">Buka Checker <span>↗</span></button>
+        <button type="button" class="tool-open-btn" data-open-tool="fps">Buka Checker <span class="tool-action-mark" aria-hidden="true"></span></button>
       </article>
       <article class="tool-launch-card">
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l5 5m0 0V5m0 4H5"/><path d="M20 4l-5 5m0 0V5m0 4h4"/><path d="M4 20l5-5m0 0v4m0-4H5"/><path d="M20 20l-5-5m0 0v4m0-4h4"/></svg></div><span class="tool-tag">FFMPEG · WEBCODECS</span><h3>Ffmpeg Video Compressor</h3>
         <p>Kompres video ke MP4 H.264 atau H.265 dengan pilihan resolusi 1080p, 2K, atau 4K dan 60 atau 120 FPS langsung di browser. Pilih mode Hardware (WebCodecs, cepat) atau Software (FFmpeg, lebih lambat).</p>
-        <button type="button" class="tool-open-btn" data-open-tool="ffmpeg">Buka Compressor <span>↗</span></button>
+        <button type="button" class="tool-open-btn" data-open-tool="ffmpeg">Buka Compressor <span class="tool-action-mark" aria-hidden="true"></span></button>
       </article>
       <article class="tool-launch-card">
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4"/><path d="M5 19h14"/></svg></div><span class="tool-tag">TIKTOK · TIKWM</span>
         <h3>TikTok Downloader</h3>
         <p>Unduh video TikTok tanpa watermark, versi HD, watermark, atau audio saja hanya dengan menempel link. Hasilnya bisa langsung dikirim ke Patcher.</p>
-        <button type="button" class="tool-open-btn" data-open-tool="tiktok">Buka Downloader <span>↗</span></button>
+        <button type="button" class="tool-open-btn" data-open-tool="tiktok">Buka Downloader <span class="tool-action-mark" aria-hidden="true"></span></button>
       </article>
       <article class="tool-launch-card">
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></div><span class="tool-tag">TIKTOK · TIKWM</span>
         <h3>TikTok Statistik</h3>
         <p>Lihat views, likes, komentar, share, simpan, dan engagement rate sebuah video TikTok hanya dengan menempel link. Hasilnya bisa disalin sebagai laporan.</p>
-        <button type="button" class="tool-open-btn" data-open-tool="ttstats">Buka Statistik <span>↗</span></button>
+        <button type="button" class="tool-open-btn" data-open-tool="ttstats">Buka Statistik <span class="tool-action-mark" aria-hidden="true"></span></button>
       </article>
     </div>
     <div class="tool-library-note"><b>Privasi & batasan</b><span>Video baru dibaca setelah lu memilih tool dan menjalankan aksinya. Video Compressor memproses video di browser pada perangkatmu. Modul Mediabunny diunduh dari CDN saat pertama digunakan. TikTok Downloader dan TikTok Statistik mengirim link yang lu tempel ke tikwmapi.com untuk mengambil data video.</span></div>
@@ -1290,23 +1377,23 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
         <span class="official-badge"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8 7.5 9.5 4.3-1.5 7.5-5 7.5-9.5V6L12 3z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg> RESMI</span>
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="currentColor" aria-hidden="true"><path d="M19.6 7.1a6.8 6.8 0 0 1-4.2-1.5v8.1a6.1 6.1 0 1 1-5.3-6.1v3.3a2.9 2.9 0 1 0 2 2.8V2.5h3.3c.2 2 1.8 3.6 4.2 3.8z"/></svg></div><span class="tool-tag">TIKTOK · @WANX.PRSTT</span><h3>TikTok Resmi Admin</h3>
         <p>Akun TikTok resmi admin untuk informasi, pembaruan, dan kontak.</p>
-        <a class="tool-open-btn" href="https://www.tiktok.com/@wanx.prstt" target="_blank" rel="noopener noreferrer">Buka TikTok <span>↗</span></a>
+        <a class="tool-open-btn" href="https://www.tiktok.com/@wanx.prstt" target="_blank" rel="noopener noreferrer">Buka TikTok <span class="tool-action-mark" aria-hidden="true"></span></a>
       </article>
       <article class="tool-launch-card official">
         <span class="official-badge"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8 7.5 9.5 4.3-1.5 7.5-5 7.5-9.5V6L12 3z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg> RESMI · SALURAN BARU</span>
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="currentColor" aria-hidden="true"><path d="M20 3.9A11.8 11.8 0 0 0 1.6 18.1L0 24l6.1-1.6A11.9 11.9 0 0 0 24 12a11.8 11.8 0 0 0-4-8.1ZM12 21.8a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.6.9 1-3.5-.3-.4A9.8 9.8 0 1 1 12 21.8Zm5.4-7.3c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-.9 1.1-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.2-.4c.1-.2 0-.4 0-.5l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4s-1 1-1 2.4 1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.1-1.4s-.2-.2-.5-.3Z"/></svg></div><span class="tool-tag">WHATSAPP · CHANNEL</span><h3>Saluran Resmi Admin</h3>
         <p>Saluran WhatsApp terbaru untuk pengumuman dan pembaruan website.</p>
-        <a class="tool-open-btn" href="https://whatsapp.com/channel/0029Vb8hscgKAwEew5Lbao1X" target="_blank" rel="noopener noreferrer">Gabung Saluran <span>↗</span></a>
+        <a class="tool-open-btn" href="https://whatsapp.com/channel/0029Vb8hscgKAwEew5Lbao1X" target="_blank" rel="noopener noreferrer">Gabung Saluran <span class="tool-action-mark" aria-hidden="true"></span></a>
       </article>
       <article class="tool-launch-card wide donate">
-        <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.4 2.7 5 6 5c2 0 3.3 1 4 2.2h4C14.7 6 16 5 18 5c3.3 0 5.2 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg></div><span class="tool-tag">SUPPORT · QRIS</span><h3>Dukung Developer</h3>
+        <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.4 2.7 5 6 5c2 0 3.3 1 4 2.2h4C14.7 6 16 5 18 5c3.3 0 5.2 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg></div><span class="tool-tag">SUPPORT · SAWERIA</span><h3>Dukung Developer</h3>
         <p>Setiap dukungan kecil sangat berarti untuk membantu pengembangan. Bersifat sukarela.</p>
-        <button type="button" class="tool-open-btn" id="qrisOpenBtn">Buka QRIS <span>↗</span></button>
+        <a class="tool-open-btn" href="https://saweria.co/wanxzyprstt" target="_blank" rel="noopener noreferrer">Dukung via Saweria <span class="tool-action-mark" aria-hidden="true"></span></a>
       </article>
       <article class="tool-launch-card wide">
         <div class="tool-launch-icon"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M12 8.5v4"/><path d="M12 15.6v.1"/></svg></div><span class="tool-tag">SUPPORT · WHATSAPP</span><h3>Lapor Error</h3>
         <p>Ada video yang gagal diproses? Kirim laporan ke admin lewat WhatsApp. Info perangkat, browser, Forge, mode, dan ukuran video terisi otomatis. Log diagnostik juga bisa disalin untuk ditempel ke chat admin.</p>
-        <button type="button" class="tool-open-btn" id="reportInfoBtn">Lapor via WhatsApp <span>↗</span></button>
+        <button type="button" class="tool-open-btn" id="reportInfoBtn">Lapor via WhatsApp <span class="tool-action-mark" aria-hidden="true"></span></button>
         <button type="button" class="tool-open-btn diag-copy" id="diagCopyBtn">Salin log diagnostik <span>⧉</span></button>
       </article>
     </div>
@@ -1410,7 +1497,7 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
       <section class="fg-notice-section fg-channel-section fg-channel-compact">
         <h3>Pembaruan saluran WhatsApp</h3>
         <p><span class="fg-key-copy">Saluran lama telah diretas dan disalahgunakan untuk promosi judi online. Itu bukan dari kami dan tidak lagi kami gunakan. Mohon berhenti mengikuti saluran tersebut dan laporkan ke pihak WhatsApp.</span></p>
-        <a class="fg-ok fg-channel-link" href="https://whatsapp.com/channel/0029Vb8hscgKAwEew5Lbao1X" target="_blank" rel="noopener noreferrer">Gabung Saluran Terbaru <span>↗</span></a>
+        <a class="fg-ok fg-channel-link" href="https://whatsapp.com/channel/0029Vb8hscgKAwEew5Lbao1X" target="_blank" rel="noopener noreferrer">Gabung Saluran Terbaru <span class="tool-action-mark" aria-hidden="true"></span></a>
       </section>
 
       <button type="button" class="fg-ok" id="fgOk">Mengerti &amp; Lanjutkan (5)</button>
@@ -1439,17 +1526,6 @@ body{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
   </div>
   <div class="fg-toast" id="fgToast" role="status" aria-live="polite"></div>
 
-  <div class="tool-modal" id="qrisModal" hidden>
-    <button type="button" class="tool-modal-scrim" data-close-qris aria-label="Tutup QRIS"></button>
-    <section class="tool-modal-panel qris-panel" role="dialog" aria-modal="true" aria-labelledby="qrisTitle">
-      <header class="tool-modal-head"><div><p class="eyebrow">WANXZYY / SUPPORT</p><h2 id="qrisTitle">Dukung via QRIS</h2><p>Scan dengan e-wallet atau mobile banking apa pun.</p></div><button type="button" class="tool-modal-close" data-close-qris aria-label="Tutup">×</button></header>
-      <div class="tool-modal-content">
-        <div class="qris-box"><img id="qrisImg" src="data:image/png;base64,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" alt="QRIS Wanzyy, Digital &amp; Kreatif" width="772" height="780"></div>
-        <p class="qris-name">WANZYY, DIGITAL &amp; KREATIF · NMID ID1026584574200</p>
-        <a class="tool-open-btn qris-save" href="#" download="QRIS-Wanzyy.png" onclick="this.href=document.getElementById('qrisImg').src">Simpan QR <span>⇩</span></a>
-      </div>
-    </section>
-  </div>
   <div class="tool-modal" id="toolModal" hidden>
     <button type="button" class="tool-modal-scrim" data-close-tool aria-label="Tutup jendela tools"></button>
     <section class="tool-modal-panel" role="dialog" aria-modal="true" aria-labelledby="toolModalTitle">
@@ -3827,7 +3903,10 @@ function friendlyStatus(s){
     .replace(/Hasil HQ/g,one).replace(/HQ Method/g,one).replace(/Encode video/g,two).replace(/Hasil akhir/g,two)
 }
 const say=(s,cls="")=>{try{window.__diag&&window.__diag.push((cls==="err"?"[patcher ERR] ":"[patcher] ")+s)}catch(e){}statusEl.textContent=friendlyStatus(s);statusEl.className=cls;const isError=cls==="err";$("proc").classList.toggle("has-error",isError);};
-const progress=n=>{const v=Math.max(0,Math.min(100,n));fill.style.width=v+"%";pctNum.textContent=Math.round(v);fill.parentElement.setAttribute("aria-valuenow",Math.round(v))};
+let progTarget=0,progCur=0,progRaf=0,progLast=0;
+const progPaint=()=>{fill.style.transform="scaleX("+(progCur/100)+")";pctNum.textContent=Math.round(progCur);fill.parentElement.setAttribute("aria-valuenow",Math.round(progCur))};
+const progTick=t=>{const dt=Math.min(64,t-(progLast||t));progLast=t;progCur+=(progTarget-progCur)*(1-Math.pow(0.001,dt/400));if(Math.abs(progTarget-progCur)<0.05)progCur=progTarget;progPaint();if(progCur!==progTarget)progRaf=requestAnimationFrame(progTick);else{progRaf=0;progLast=0}};
+const progress=n=>{const v=Math.max(0,Math.min(100,n));progTarget=v;if(v===0||v<progCur-30){progCur=v;progPaint();return}if(!progRaf)progRaf=requestAnimationFrame(progTick)};
 const LABEL={wait:"Menunggu",active:"Berjalan",done:"Selesai",skip:"Dilewati",fail:"Gagal"};
 const stepFor=l=>/^(HQ|Hasil HQ)/.test(l)?hq:enc;
 const KIND={upload:"Upload",server:"Server memproses",download:"Mengunduh"};
@@ -4222,16 +4301,11 @@ const toolModal=$("toolModal"),toolModalTitle=$("toolModalTitle"),toolModalDescr
 let lastToolOpener=null;
 function openTool(which,opener){lastToolOpener=opener||null;const isFf=which==="ffmpeg",isTt=which==="tiktok",isTs=which==="ttstats";inspectorCard.hidden=isFf||isTt||isTs;$("ffCard").hidden=!isFf;$("ttCard").hidden=!isTt;$("tsCard").hidden=!isTs;
   toolModalTitle.textContent=isTs?"TikTok Statistik":isTt?"TikTok Downloader":isFf?"Ffmpeg Video Compressor":"Resolution & Fps Video Checker";toolModal.querySelector(".tool-modal-panel").classList.toggle("wide",!isFf&&!isTt&&!isTs);
-  toolModalDescription.textContent=isTs?"Tempel link TikTok untuk melihat views, likes, komentar, share, dan engagement rate.":isTt?"Tempel link TikTok untuk mengunduh video tanpa watermark, HD, atau audio.":isFf?"Pilih video, pilih mode Hardware atau Software, lalu mulai kompresi. Tidak perlu mengetik perintah.":"Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov/mdat, warna, audio, dan tag.";toolModal.hidden=false;document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
+  toolModalDescription.textContent=isTs?"Tempel link TikTok untuk melihat views, likes, komentar, share, dan engagement rate.":isTt?"Tempel link TikTok untuk mengunduh video tanpa watermark, HD, atau audio.":isFf?"Pilih video, pilih mode Hardware atau Software, lalu mulai kompresi. Tidak perlu mengetik perintah.":"Cek resolusi dan FPS video dari header file, plus durasi, bitrate, codec, letak moov/mdat, warna, audio, dan tag.";toolModal.hidden=false;const modalPanel=toolModal.querySelector(".tool-modal-panel");if(modalPanel){modalPanel.querySelectorAll(".tool-modal-head,.tool-modal-content,.tool-modal-tool").forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""})}document.body.classList.add("modal-open");const close=toolModal.querySelector("[data-close-tool]");if(close)close.focus();
 }
 function closeTool(){toolModal.hidden=true;document.body.classList.remove("modal-open");if(lastToolOpener)lastToolOpener.focus();}
 document.querySelectorAll("[data-open-tool]").forEach(btn=>btn.addEventListener("click",()=>openTool(btn.dataset.openTool,btn)));
 toolModal.querySelectorAll("[data-close-tool]").forEach(btn=>btn.addEventListener("click",closeTool));
-(function(){const m=$("qrisModal"),o=$("qrisOpenBtn");if(!m||!o)return;
-function close(){m.hidden=true;document.body.classList.remove("modal-open");o.focus()}
-o.addEventListener("click",()=>{m.hidden=false;document.body.classList.add("modal-open")});
-m.querySelectorAll("[data-close-qris]").forEach(b=>b.addEventListener("click",close));
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)close()})})();
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!toolModal.hidden)closeTool();});
 $("fpsCheck").disabled=true;
 
@@ -5402,7 +5476,7 @@ function renderHistory(){
   host.innerHTML="";
   if(!items.length){host.innerHTML='<div class="history-empty">Belum ada riwayat proses.<br>Hasil proses berikutnya akan muncul di sini.</div>';return}
   items.forEach((item,idx)=>{
-    const wrap=document.createElement("div");wrap.className="history-row";
+    const wrap=document.createElement("div");wrap.className="history-row";wrap.style.setProperty("--row-i",String(idx));
     const row=document.createElement("button");row.type="button";row.className="history-item";row.setAttribute("aria-label","Buka detail video "+item.name);row.addEventListener("click",()=>openHistoryDetail(item));
     const info=document.createElement("div"),name=document.createElement("b"),meta=document.createElement("span"),state=document.createElement("small");
     name.textContent=item.name;const bytes=item.id?historySizes[item.id]:0;
@@ -5412,7 +5486,7 @@ function renderHistory(){
     const del=document.createElement("button");del.type="button";del.className="history-del";del.setAttribute("aria-label","Hapus riwayat "+item.name);del.innerHTML=trashSvg;
     let t=null;del.addEventListener("click",()=>{
       if(!del.classList.contains("armed")){del.classList.add("armed");del.textContent="Hapus?";t=setTimeout(()=>{del.classList.remove("armed");del.innerHTML=trashSvg},2600);return}
-      clearTimeout(t);deleteHistoryItem(idx)
+      clearTimeout(t);if(del.dataset.busy)return;del.dataset.busy='1';host.classList.add('no-anim');wrap.classList.add('removing');setTimeout(()=>deleteHistoryItem(idx),230)
     });
     wrap.append(row,del);host.append(wrap)
   })
@@ -5427,26 +5501,28 @@ drop.addEventListener("drop",ev=>{const f=ev.dataTransfer.files[0];if(f)setFile(
 
 const historyModal=$("historyModal");
 function closeHistory(){historyModal.hidden=true;document.body.style.overflow="";}
-$("historyOpen").addEventListener("click",()=>{renderHistory();refreshHistoryStorage();historyModal.hidden=false;document.body.style.overflow="hidden";$("historyClose").focus()});
+$("historyOpen").addEventListener("click",()=>{$("historyList").classList.remove("no-anim");renderHistory();refreshHistoryStorage();historyModal.hidden=false;historyModal.querySelectorAll(".history-dialog-head,.hstore,.history-list,.history-dialog-foot").forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""});document.body.style.overflow="hidden";$("historyClose").focus()});
 $("historyClose").addEventListener("click",closeHistory);
 historyModal.querySelectorAll("[data-history-close]").forEach(el=>el.addEventListener("click",closeHistory));
 document.addEventListener("keydown",ev=>{if(ev.key==="Escape"&&!historyModal.hidden)closeHistory()});
 const historyDetailModal=$("historyDetailModal"),historyPreview=$("historyPreview");let historyPreviewUrl=null;
 let historyCompareCtx=null,historyCompareToken=0,historyShareCtx=null,historyPostCtx=null;
 function resetHistoryCompare(){historyCompareToken++;historyCompareCtx=null;historyShareCtx=null;historyPostCtx=null;$("historyPost").hidden=true;$("historyShare").hidden=true;const out=$("historyCompareOut"),b=$("historyCompare");out.hidden=true;out.innerHTML="";b.hidden=true;b.disabled=false;b.dataset.state="";b.textContent="Bandingkan (sebelum & sesudah)"}
-function closeHistoryDetail(){historyDetailModal.hidden=true;historyPreview.pause();historyPreview.removeAttribute("src");historyPreview.load();if(historyPreviewUrl)URL.revokeObjectURL(historyPreviewUrl);historyPreviewUrl=null;resetHistoryCompare()}
+function cleanHistoryPreview(){historyPreview.pause();historyPreview.removeAttribute("src");try{historyPreview.load()}catch{}if(historyPreviewUrl)URL.revokeObjectURL(historyPreviewUrl);historyPreviewUrl=null;historyPreview.classList.remove("ready")}
+function closeHistoryDetail(){historyDetailModal.hidden=true;historyCompareToken++;try{historyPreview.pause()}catch{}setTimeout(()=>{if(!historyDetailModal.hidden)return;cleanHistoryPreview();resetHistoryCompare()},420)}
 async function openHistoryDetail(item){
   const info=$("historyDetailInfo");
   $("historyDetailTitle").textContent=item.name||"Detail Video";$("historyDetailDate").textContent=item.date||"Riwayat proses";info.innerHTML="";
-  resetHistoryCompare();
+  cleanHistoryPreview();resetHistoryCompare();const tok=historyCompareToken;
+  historyPreview.preload="metadata";historyPreview.hidden=false;historyDetailModal.hidden=false;
   const addInfo=(label,value)=>{const row=document.createElement("div");row.className="history-info-row";const a=document.createElement("span"),b=document.createElement("b");a.textContent=label;b.textContent=value||"—";row.append(a,b);info.append(row)};
   const addNote=t=>{const note=document.createElement("div");note.className="history-change-note";note.textContent=t;info.append(note)};
   addInfo("Status",item.status);addInfo("Ukuran hasil",item.size);addInfo("Nama file",item.outputName||item.name);
-  historyPreview.hidden=true;
   try{
-    const media=item.id?await getHistoryMedia(item.id):null;
+    await new Promise(r=>setTimeout(r,240));if(tok!==historyCompareToken)return;
+    const media=item.id?await getHistoryMedia(item.id):null;if(tok!==historyCompareToken)return;
     if(media?.output){
-      historyPreviewUrl=URL.createObjectURL(media.output);historyPreview.src=historyPreviewUrl;historyPreview.hidden=false;
+      historyPreviewUrl=URL.createObjectURL(media.output);historyPreview.src=historyPreviewUrl;historyPreview.hidden=false;requestAnimationFrame(()=>historyPreview.classList.add("ready"));
       historyShareCtx={blob:media.output,name:item.outputName||((item.name||"video").replace(/\.[^.]+$/,"")+"_Wanxzy.mp4")};if(canShareFiles)$("historyShare").hidden=false;
       historyPostCtx={blob:media.output,name:historyShareCtx.name};$("historyPost").hidden=false;
       addInfo("Ukuran video asli",media.original?mb(media.original.size):"Tidak tersimpan");addInfo("Ukuran video hasil",mb(media.output.size));
@@ -5460,7 +5536,8 @@ async function openHistoryDetail(item){
       addNote("Riwayat ini dibuat sebelum fitur penyimpanan video hasil tersedia. Proses berikutnya akan menyimpan video asli dan hasil agar bisa dibandingkan dari sini.");
     }
   }catch{addInfo("Video hasil","Tidak dapat membaca file tersimpan di browser.")}
-  historyDetailModal.hidden=false
+  if(tok===historyCompareToken&&!historyPreviewUrl)historyPreview.hidden=true;
+  
 }
 async function historyBuildDiff(item,media){
   const read=(blob,name)=>VideoReport.analyze({size:blob.size,read:async(o,n)=>new Uint8Array(await blob.slice(o,o+n).arrayBuffer())},{name,type:blob.type||"video/mp4",lastModified:0});
@@ -5573,9 +5650,13 @@ document.addEventListener("keydown",ev=>{if(ev.key==="Escape"&&!historyDetailMod
 {const b=$("historyClear");let t=null;const label=b.textContent;
 b.addEventListener("click",async()=>{
   if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Yakin hapus semua?";t=setTimeout(()=>{b.classList.remove("armed");b.textContent=label},2600);return}
-  clearTimeout(t);b.classList.remove("armed");b.textContent=label;
-  const ids=getHistory().map(x=>x.id).filter(Boolean);try{localStorage.removeItem(HISTORY_KEY)}catch{}
-  await deleteHistoryMediaAsync(Object.keys(historySizes).concat(ids));renderHistory();refreshHistoryStorage();toast("Semua riwayat dihapus")
+  clearTimeout(t);if(b.dataset.busy)return;b.dataset.busy="1";b.classList.remove("armed");b.textContent=label;
+  const ids=getHistory().map(x=>x.id).filter(Boolean),hl=$("historyList");hl.classList.add("no-anim");
+  hl.querySelectorAll(".history-row").forEach((r,i)=>{r.style.transitionDelay=Math.min(i,6)*30+"ms";r.classList.add("removing")});
+  await new Promise(r=>setTimeout(r,hl.querySelector(".history-row")?340:0));
+  try{localStorage.removeItem(HISTORY_KEY)}catch{}
+  renderHistory();toast("Semua riwayat dihapus");b.dataset.busy="";
+  await deleteHistoryMediaAsync(Object.keys(historySizes).concat(ids));refreshHistoryStorage()
 })}
 {const b=$("historyTrimMedia");let t=null;
 b.addEventListener("click",async()=>{
@@ -8656,8 +8737,8 @@ function goTab(t){
     setTimeout(function(){
       busy=false;
       if(pending){var p=pending;pending=null;if(!p.classList.contains("active"))goTab(p)}
-    },140);
-  },100);
+    },80);
+  },60);
 }
 if(nav&&!reduce){
   nav.addEventListener("click",function(e){
@@ -8791,6 +8872,37 @@ function wire(d){
   });
 }
 document.querySelectorAll("details.faq-item,details.guide,details.vr-sec").forEach(wire);
+})();
+</script>
+
+
+
+<!-- Floating donation popup: intentionally separate from the existing Info layout. -->
+<button type="button" class="donation-float-trigger" id="donationPopupToggle" aria-expanded="false" aria-controls="donationPopup"><span class="donation-heart" aria-hidden="true">♡</span><span>Support</span></button>
+<aside class="donation-popup" id="donationPopup" aria-hidden="true" aria-label="Dukung developer">
+  <button type="button" class="donation-close" id="donationPopupClose" aria-label="Tutup popup">×</button>
+  <h3>Dukung Developer</h3>
+  <p>Setiap dukungan kecil sangat berarti untuk membantu pengembangan. Bersifat sukarela.</p>
+  <a class="donation-link" href="https://saweria.co/wanxzyprstt" target="_blank" rel="noopener noreferrer">Dukung via Saweria</a>
+</aside>
+<script>
+(function(){
+  var panel=document.getElementById('donationPopup');
+  var toggle=document.getElementById('donationPopupToggle');
+  var close=document.getElementById('donationPopupClose');
+  if(!panel||!toggle||!close)return;
+  function setOpen(open){
+    panel.classList.toggle('is-open',open);
+    panel.setAttribute('aria-hidden',String(!open));
+    toggle.setAttribute('aria-expanded',String(open));
+  }
+  toggle.addEventListener('click',function(){setOpen(!panel.classList.contains('is-open'))});
+  close.addEventListener('click',function(){setOpen(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false)});
+  var startX=0,startY=0;
+  panel.addEventListener('touchstart',function(e){if(!e.touches||!e.touches[0])return;startX=e.touches[0].clientX;startY=e.touches[0].clientY},{passive:true});
+  panel.addEventListener('touchend',function(e){if(!e.changedTouches||!e.changedTouches[0])return;var dx=e.changedTouches[0].clientX-startX;var dy=e.changedTouches[0].clientY-startY;if(dx>65&&Math.abs(dx)>Math.abs(dy)*1.2)setOpen(false)},{passive:true});
+  document.addEventListener('click',function(e){if(panel.classList.contains('is-open')&&!panel.contains(e.target)&&!toggle.contains(e.target))setOpen(false)});
 })();
 </script>
 
